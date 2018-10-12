@@ -1,0 +1,17 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/logs/logs",
+    "pages/store/commodity"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#3f88bf",
+    "navigationBarTitleText": "随心菜单",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#000000",
+    "backgroundColorTop": "#943e3e",
+    "backgroundColorBottom": "#943e3e"
+  },
+  "resizable": true
+}

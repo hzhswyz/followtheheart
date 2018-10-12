@@ -1,0 +1,359 @@
+/* pages/store/commodity.wxss */
+.storehead{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-image: linear-gradient(to bottom, #f9d423 0%,  #fda95a 50%, #f0806c 100%);
+}
+.storeinfo{
+  width: 100%;
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  
+}
+
+.storeinfoimage{
+  display: flex;
+  flex-direction: row;
+  justify-content:center;
+  width: 20%;
+}
+
+.storeimage{
+  width: 80%;
+  height: 60px;
+}
+
+.storeinfotext{
+  width: 35%;
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+}
+
+.starsview{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.starsimg{
+  width:10px;
+  height:10px;
+}
+
+.noticeview{
+  display: flex;
+  flex-direction: column;
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 45%;
+  font-size: 13px;
+  overflow-y: auto;
+}
+
+.choiceview{
+width: 100%;
+height: 40px;
+display: flex;
+flex-direction: row;
+align-items: center;
+}
+
+.choiceitem{
+  width: 20%;
+  height: 100%;
+  display: flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items: center;
+  font-size: 16px; 
+}
+
+.divisionview{
+  width: 1px;
+  height: 25px;
+  background-color: rgb(218, 218, 218)
+}
+
+.scrollview{
+  width: 100%;
+  display: block;
+  overflow: auto;
+  padding-top: 5px;
+  background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+}
+
+.foodview{
+  width: 50%;
+  height: 165px;
+  display: inline-block;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.foodimage{
+  margin-left: 2%;
+  margin-right: 2%;
+  width: 96%;
+  height: 120px;
+  border-radius: 5px;
+  display: block;
+}
+
+.foodnameview{
+  display: block;
+  position: relative;
+  height:20px;
+  margin-left: 2%;
+  margin-right: 2%;
+  padding-left: 5px;
+  padding-top:5px;
+}
+
+.foodnumtext{
+  position: absolute;
+  right: 18%;
+  color: #1296db;
+}
+
+.foodpriceview{
+  display: block;
+  position: relative;
+  height:20px;
+  margin-left: 2%;
+  margin-right: 2%;
+  border-radius: 0px 0px 5px 5px ;
+  padding-left: 5px;
+  color: red;
+}
+
+.reducebutton{
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  right: 35%;
+  bottom: 1px;
+}
+
+.addbutton{
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  right: 8%;
+  bottom: 1px;
+}
+
+.shoppingcart{
+  display: flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items: center;
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background-image: linear-gradient(-60deg, #ff5858 0%, #f09819 100%);
+  box-shadow:1px 1px 8px #333333;
+  border-radius: 60px;
+  right: 5%;
+  bottom: 10%;
+  z-index: 1000;
+}
+
+.shoppingcartimag{
+  width: 35px;
+  height: 35px;
+}
+
+.shoppingnumview{
+  display: flex;
+  flex-direction:row;
+  justify-content:center;
+  align-items: center;
+  position: absolute;
+  right: -6px;
+  top: -7px;
+  width: 25px;
+  height: 25px;
+  border-radius: 25px;
+  background-color: red;
+  color: white;
+}
+
+.orderoutview{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(49, 49, 49, 0.5);
+  left: 0px;
+  top: 0px;
+}
+
+.orderview{
+  display: flex;
+  flex-direction:column;
+  align-items: center;
+  position: absolute;
+  width: 80%;
+  height: 68%;
+  left: 10%;
+  top: 60px;
+  border-radius: 20px;
+  background-image: linear-gradient(to top, #e2bc88 0%, #eacda3 100%);
+}
+
+.ordertitle{
+  display: flex;
+  flex-direction:column;
+  justify-content:center;
+  font-size: 25px;
+  height: 10%;
+  font-family: "STXingkai";
+}
+
+.ordercontentview{
+  width: 100%;
+  height: 70%;
+}
+
+.nofoodnotic{
+  width: 100%;
+  text-align: center;
+  vertical-align: middle;
+  padding-top: 50%;
+  font-size: 25px;
+  font-family: "STXingkai";
+}
+
+.orderitemtitle{
+  width: 100%;
+  height: 10%;
+  display: flex;
+  flex-direction:row;
+  align-items: center;
+  justify-content:center;
+  font-family: "STXingkai";
+  border-top: 2px dotted;
+  font-size: 23px;
+}
+
+.orderitemtitletext1{
+  text-align: center;
+  width: 35%;
+  color: #0061bb;
+}
+
+.orderitemtitletext2{
+  text-align: center;
+  width: 20%;
+  color: #0061bb;
+}
+
+.orderitemtitletext3{
+  text-align: center;
+  width: 25%;
+  color: #0061bb;
+}
+
+.orderitem{
+  width: 100%;
+  min-height: 40px;
+  display: flex;
+  flex-direction:row;
+  justify-content:center;
+  align-items: center;
+}
+
+.orderitemname{
+  font-family: "STXingkai";
+  text-align: center;
+  width: 35%;
+  color: #0061bb;
+}
+
+.orderitemnum{
+  text-align: center;
+  width: 20%;
+  color: #0061bb;
+}
+
+.orderitemprice{
+  text-align: center;
+  width: 25%;
+  color: red;
+}
+
+.ordertotal{
+  display: flex;
+  flex-direction:row;
+  justify-content:center;
+  align-items: center;
+  width: 100%;
+  height: 10%;
+}
+
+.totalamount{
+  display: flex;
+  flex-direction:row;
+  justify-content:center;
+  align-items: center;
+  width: 60%;
+}
+
+.totalamounttext1{
+  color: #0061bb;
+}
+
+.totalamounttext2{
+  color: red;
+  font-weight: bold;
+  font-size: 28px;
+}
+
+.pay{
+  display: flex;
+  flex-direction:row;
+  justify-content:center;
+  align-items: center;
+  width: 30%;
+  background-color: #eb9054;
+  height: 80%;
+  border-radius: 10px;
+  color: rgb(240, 240, 240);
+}
+
+
+::-webkit-scrollbar-track
+{
+	box-shadow: inset 0 0 6px rgb(255, 161, 118);
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar
+{
+	width: 3px;
+	background-color: #F5F5F5;
+}
+
+.noticeview::-webkit-scrollbar
+{
+	width: 3px;
+  display: none;
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb
+{
+	background-color: #F90;	
+	background-image: -webkit-linear-gradient(45deg,
+	                    rgba(255, 255, 255, .2) 25%,
+											  transparent 25%,
+											  transparent 50%,
+											  rgba(255, 255, 255, .2) 50%,
+											  rgba(255, 255, 255, .2) 75%,
+											  transparent 75%,
+											  transparent)
+}
+

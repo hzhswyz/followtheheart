@@ -1,0 +1,31 @@
+/* pages/index/navigationbar.wxss */
+.title{
+display: flex;
+flex-direction:row;
+width: 100%;
+}
+
+.title-item{
+  width: 20%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.title-item-hover{
+  background-color: rgb(233, 233, 233);
+}
+
+.title-content{
+  align-self: center;
+  max-width: 50px;
+  max-height: 50px;
+}
+
+.title-text{
+  padding-top: 5px;
+  align-self: center;
+  color: #41506b;
+  font-size: 12px;
+}

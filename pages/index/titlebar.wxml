@@ -1,0 +1,9 @@
+<!--pages/index/navigationbar.wxml-->
+<view class='title'>
+    <block wx:for="{{titlearray}}" wx:key="imgsrc">
+      <view class='title-item' hover-class="title-item-hover" hover-start-time="200" bindtap="{{item.bindtapfunction}}">
+        <image class="title-content" src='{{item.imgsrc}}' mode='aspectFit'></image>
+        <text class='title-text'>{{item.titletext}}</text>
+      </view>
+    </block>
+</view>

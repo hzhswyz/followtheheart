@@ -1,0 +1,73 @@
+<!--index.wxml-->
+<view class="container" >
+  <view class="userinfo">
+    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+    <block wx:else>
+      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+    </block>
+  </view>
+
+<import src="/wxSearch/wxSearch.wxml"/>
+  <view class="wxSearch-section">
+    <view class="wxSearch-pancel">
+      <input bindinput="wxSearchInput" bindfocus="wxSerchFocus" value="{{wxSearchData.value}}" bindblur="wxSearchBlur"     class="wxSearch-input" placeholder="搜索" />
+      <button class="wxSearch-button" bindtap="wxSearchFn" size="mini" plain="true" style='background-color: rgb(245, 245, 245);'>搜索</button>
+    </view>
+  </view>
+  <template is="wxSearch" data="{{wxSearchData}}" />
+  
+<titlebar titlearray="{{titlearray}}" style="width:100%;"></titlebar>
+  
+  <view class="swiperoutview">
+    <swiper
+    class="swiperview" bindtap='clickswiper' bindchange="changswiperindex" data-swipercurrentindex='{{swipercurrentindex}}'
+    indicator-dots="true" autoplay="true" circular="true" previous-margin="60rpx" next-margin="60rpx"
+    interval="4000" >
+      <swiper-item wx:for="{{swiperarray}}" wx:key="imgsrc" class="swiper-item">
+        <view class="{{swipercurrentindex==index ? 'swiper-item-view':'swiper-item-currentview'}}" >
+          <image class="swiper-img" src="{{item.imgsrc}}" mode="aspectFill" ></image>
+        </view>
+      </swiper-item>
+    </swiper>
+  </view>
+
+
+  <view class="secondtitle">
+    <image src='{{choiceimg}}' class='secondtitleimg' mode="aspectFit"></image>
+    精 选 商 户
+  </view>
+
+  <view class="recommendationview" wx:for="{{Recommendarray}}" wx:key="imgsrc" bindtap='openstore' data-id="{{item.id}}">
+
+    <view  class="recommendationimgview">
+      <image class="foodimg" mode="aspectFill" src="{{item.imgsrc}}"></image>
+
+      <view class="recommendationtextview">
+        <view class='recommendationtextview1'>
+          <view class='recommendationtextview2'>
+            <image class="recommendationicon" src="{{recommendationiconshop}}" mode='aspectFit'></image>
+            <text>店名：{{item.name}}</text>
+          </view>
+          <view class='recommendationtextview2'>
+            <image class="recommendationicon" src="{{recommendationiconposition}}" mode='aspectFit'></image>
+            <text>位置：{{item.position}}</text>
+          </view>
+        </view>
+        <view class="recommendationtextview1">
+          <view class='recommendationtextview2'>
+            <image class="recommendationicon" src="{{recommendationiconsales}}" mode='aspectFit'></image>
+            <text>月销量：{{item.sales}}笔</text>
+          </view>
+          <view class='recommendationtextview2'>
+            <image class="recommendationicon" src="{{recommendationiconconsume}}" mode='aspectFit'></image>
+            <text>人均消费：{{item.consume}}元</text>
+          </view>
+        </view>
+      </view>
+
+    </view>
+
+  </view>
+
+</view>

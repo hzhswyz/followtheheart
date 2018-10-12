@@ -1,0 +1,77 @@
+<!--pages/store/commodity.wxml-->
+<view class='storehead'>
+  <view class='storeinfo'>
+    <view class='storeinfoimage'>
+      <image class='storeimage' src='{{store.image}}' mode='aspectFit'></image>
+    </view>
+    <view class='storeinfotext'>
+      <text>月销量：{{store.sales}}单</text>
+      <text>人均消费：{{store.consume}}元</text>
+      <view class='starsview'>
+        <text>星级评定：</text> <block wx:for="{{store.stars}}"><image src='{{starssrc}}' class='starsimg' mode='aspectFit'></image></block>
+      </view>
+    </view>
+    <view class='noticeview'>
+      <text style='align-self: center;font-weight: bold;'>店铺公告</text>
+      <text>{{store.notice ? store.notice : "暂无公告！"}}</text>
+    </view>
+  </view>
+  <view class='choiceview'>
+    <block wx:for="{{store.type}}">
+      <view class='choiceitem' data-index='{{index}}' bindtap='changefoodtype' 
+      style="{{index==typeindex ? 'color:white;font-weight:bold;':''}}">
+      {{item}}</view>
+      <view class='divisionview'></view>
+    </block>
+  </view>
+</view>
+<scroll-view class='scrollview' scroll-y="true" style='height:{{screenHeight}}px'>
+  <block wx:for="{{foodlist}}" wx:if="{{item.type==typeindex}}">
+    <view class='foodview'>
+      <image src='{{item.imgsrc}}' mode='scaleToFill' class='foodimage'></image>
+      <view class='foodnameview'>
+        <text>{{item.name}}</text>
+        <text class='foodnumtext'  wx:if="{{item.num>0}}" >{{item.num}}份</text>
+      </view>
+      <view class='foodpriceview'>
+        <text>￥ {{item.price}}</text>
+        <image wx:if="{{item.num>0}}" class='reducebutton' src='/pages/static/img/indexpage/reduce.png' 
+        data-foodid='{{item.id}}' bindtap='reducefood'></image>
+        <image class='addbutton' src='/pages/static/img/indexpage/add.png' data-foodid='{{item.id}}' bindtap='addfood'></image>
+      </view>
+    </view>
+  </block>
+</scroll-view>
+<view class='shoppingcart' bindtap='showorder'>
+  <image class="shoppingcartimag" src='/pages/static/img/indexpage/shoppingcart.png' mode='scaleToFill'></image>
+  <view wx:if="{{totalnum>0}}" class="shoppingnumview">{{totalnum}}</view>
+</view>
+<view class='orderoutview' wx:if="{{isshoworder}}">
+  <view class='orderview'>
+    <text class='ordertitle'>--- 订单 ---</text>
+    <view wx:if="{{totalnum>0}}" class="orderitemtitle">
+      <text class='orderitemtitletext1'>菜名</text>
+      <text class='orderitemtitletext2'>数量</text>
+      <text class='orderitemtitletext2'>单价</text>
+      <text class='orderitemtitletext3'>总价</text>
+    </view>
+    <scroll-view class="ordercontentview" scroll-y="true">
+      <view wx:if="{{totalnum<1}}" class="nofoodnotic">您还没有点菜哦！</view>
+      <block wx:for="{{foodarray}}">
+        <view class='orderitem'>
+          <text class="orderitemname">{{item.name}}</text>
+          <text class="orderitemnum">* {{item.num}}</text>
+          <text class="orderitemnum">{{item.price}}￥</text>
+          <text class="orderitemprice">{{item.num*item.price}}￥</text>
+        </view>
+      </block>
+    </scroll-view>
+    <view class='ordertotal' wx:if="{{totalnum>0}}">
+    <view class='totalamount'>
+      <text class='totalamounttext1'>总计金额：</text>
+      <text class='totalamounttext2'>{{totalamount}}￥</text>
+    </view>
+    <view class='pay' bindtap='pay'>买 单</view>
+    </view>
+  </view>
+</view>
