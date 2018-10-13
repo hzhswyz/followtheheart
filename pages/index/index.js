@@ -79,14 +79,13 @@ Page({
       success: function (res){
         console.log(res);
         if ("scope.userLocation" in res.authSetting){
-          console.log("已经获取用户位置授权");
+          console.log("已经获取用户位置授权了");
           wx.getLocation({
             success: function (res) {
-              console.log(res.latitude);
-              console.log(res.longitude);
-              console.log(res.accuracy);
-              console.log(res.verticalAccuracy);
-              console.log(res.horizontalAccuracy);
+   
+              console.log("经度"+res.latitude);
+              console.log("纬度"+res.longitude);
+             
               qqmapsdk.reverseGeocoder({
                 location: {
                   latitude: res.latitude,
@@ -94,13 +93,18 @@ Page({
                 success:function(res){
                   console.log(res);
                   pageobject.setData({
-                    position: res.result.address
+                    position: res.result.address_component.street
                   })
                 },
                 fail: function (res) {
                   console.log(res);
                 }
               });
+
+
+            },
+            fail: function (res) {
+              console.log(res);
             }
           });
         }
