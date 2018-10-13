@@ -4,7 +4,8 @@ const app = getApp();
 var rurl = app.globalData.requestdomainname;
 var QQMapWX = require('../lib/map/qqmap-wx-jssdk.js');
 var qqmapsdk;
-var WxSearch = require('../../wxSearch/wxSearch.js')
+var WxSearch = require('../../wxSearch/wxSearch.js');
+var position = "";
 var store_list;
 Page({
   data: {
@@ -91,7 +92,10 @@ Page({
                   latitude: res.latitude,
                   longitude: res.longitude},
                 success:function(res){
-                  console.log(res.result.address);
+                  console.log(res);
+                  pageobject.setData({
+                    position: res.result.address
+                  })
                 },
                 fail: function (res) {
                   console.log(res);

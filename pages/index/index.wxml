@@ -11,8 +11,9 @@
 <import src="/wxSearch/wxSearch.wxml"/>
   <view class="wxSearch-section">
     <view class="wxSearch-pancel">
-      <input bindinput="wxSearchInput" bindfocus="wxSerchFocus" value="{{wxSearchData.value}}" bindblur="wxSearchBlur"     class="wxSearch-input" placeholder="搜索" />
-      <button class="wxSearch-button" bindtap="wxSearchFn" size="mini" plain="true" style='background-color: rgb(245, 245, 245);'>搜索</button>
+      <view class='wxposition'>{{position}}</view>
+      <input bindinput="wxSearchInput" bindfocus="wxSerchFocus" value="{{wxSearchData.value}}" bindblur="wxSearchBlur"     class="wxSearch-input" placeholder="输入商店ID" />
+      <view class="wxSearch-button" bindtap="wxSearchFn" size="mini" plain="true" style='background-color: rgb(245, 245, 245);'>搜索</view>
     </view>
   </view>
   <template is="wxSearch" data="{{wxSearchData}}" />
