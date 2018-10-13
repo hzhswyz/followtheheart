@@ -68,6 +68,37 @@ Page({
   onLoad: function () {
     //pageobject为page对象
     var pageobject = this;
+    //获取用户位置
+    wx.getSetting({
+      success: function (res){
+        console.log(res);
+        if ("scope.userLocation" in res.authSetting){
+          console.log("已经获取用户位置授权");
+        }
+        else{
+            console.log("提前向用户获取位置授权");
+            wx.authorize({
+            scope: "scope.userLocation",
+            success: function () {
+              console.log("获取用户位置授权成功")
+              wx.getLocation({
+                success: function (res) {
+                  console.log(res.latitude);
+                  console.log(res.longitude);
+                  console.log(res.accuracy);
+                  console.log(res.verticalAccuracy);
+                  console.log(res.horizontalAccuracy);
+                }
+              });
+            },
+            fail: function () {
+              console.log("获取用户位置授权失败")
+            }
+          });
+        }
+      }
+    });
+    
     //初始化的时候向服务器获取首页精选商户对象数组 “imgsrc”=图片路径
     wx.request({
       url: rurl +"/getrecommendationstore?format=json",
@@ -83,9 +114,9 @@ Page({
       },
       dataType:"json"
     });
-    var that = this
+
     //初始化的时候渲染wxSearchdata
-    WxSearch.init(that, 43, ['weappdev', '小程序', 'wxParse', 'wxSearch', 'wxNotification']);
+    WxSearch.init(pageobject, 43, ['weappdev', '小程序', 'wxParse', 'wxSearch', 'wxNotification']);
     WxSearch.initMindKeys(['weappdev.com', '微信小程序开发', '微信开发', '微信小程序']);
 
     if (app.globalData.userInfo) {
@@ -115,6 +146,9 @@ Page({
       })
     }
   },
+
+
+  
   onShareAppMessage(Object){
     var url = "/pages/index/share.png";
     return {
