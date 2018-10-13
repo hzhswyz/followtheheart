@@ -74,6 +74,15 @@ Page({
         console.log(res);
         if ("scope.userLocation" in res.authSetting){
           console.log("已经获取用户位置授权");
+          wx.getLocation({
+            success: function (res) {
+              console.log(res.latitude);
+              console.log(res.longitude);
+              console.log(res.accuracy);
+              console.log(res.verticalAccuracy);
+              console.log(res.horizontalAccuracy);
+            }
+          });
         }
         else{
             console.log("提前向用户获取位置授权");
