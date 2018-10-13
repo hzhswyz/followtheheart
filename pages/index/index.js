@@ -2,6 +2,8 @@
 //获取应用实例
 const app = getApp();
 var rurl = app.globalData.requestdomainname;
+var QQMapWX = require('../lib/map/qqmap-wx-jssdk.js');
+var qqmapsdk;
 var WxSearch = require('../../wxSearch/wxSearch.js')
 var store_list;
 Page({
@@ -66,6 +68,9 @@ Page({
     })
   },
   onLoad: function () {
+    qqmapsdk = new QQMapWX({
+      key: 'OKWBZ-H3RRF-D76JH-JE5BA-U5FQ5-NXBTH'
+    });
     //pageobject为page对象
     var pageobject = this;
     //获取用户位置
@@ -81,6 +86,17 @@ Page({
               console.log(res.accuracy);
               console.log(res.verticalAccuracy);
               console.log(res.horizontalAccuracy);
+              qqmapsdk.reverseGeocoder({
+                location: {
+                  latitude: res.latitude,
+                  longitude: res.longitude},
+                success:function(res){
+                  console.log(res.result.address);
+                },
+                fail: function (res) {
+                  console.log(res);
+                }
+              });
             }
           });
         }
