@@ -33,11 +33,16 @@
   align-self: center;
   flex-direction: row;
   align-items: center;
-  width: 17.5%;
+  justify-content: center;
+  width: 37.5%;
   height: 40px;
   font-size: 17px;
-  overflow-x: scroll;
+  overflow-x: auto;
   white-space:nowrap;
+}
+
+.wxpositionnone{
+  display: none;
 }
 
 ::-webkit-scrollbar-track
@@ -69,13 +74,23 @@ rgba(255, 255, 255, .2) 25%,
 
 .wxSearch-input{
   height: 30px;
-  width: 57.5%;
-  background-color: rgb(240, 240, 240);
+  min-width: 37.5%;
+  background-color: #f0f0f0;
   padding: 5px 10px;
   border-radius: 5px;
   margin-right: 2.5%;
   margin-left: 2.5%;
 }
+
+.wxSearch-inputwide{
+  height: 30px;
+  width: 77.5%;
+  background-color: rgb(240, 240, 240);
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-right: 2.5%;
+}
+
 .wxSearch-button{
   width: 20%;
   height: 40px;

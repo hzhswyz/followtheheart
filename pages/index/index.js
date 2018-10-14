@@ -8,6 +8,7 @@ var WxSearch = require('../../wxSearch/wxSearch.js');
 var position = "";
 var store_list;
 var userinfo = {};
+var search_display= false;
 Page({
   data: {
     // wxSearchData:{
@@ -15,6 +16,7 @@ Page({
     //     isShow: true
     //   }
     // }
+    searchdisplay: search_display,
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
@@ -89,16 +91,18 @@ Page({
             console.log("已经获取用户位置授权了");
             resolve();
           }
+          else{
+            reject(new Error("error:没有获取位置授权，将通过wx.authorize获取用户位置获取"));
+          }
         },
         fail: function (res) {
-          console.log("用户没有授权位置权限，将通过wx.authorize获取用户位置获取");
+          console.log("调用wx.getSetting（）失败，将通过wx.authorize获取用户位置获取");
           console.log(res);
-          reject(new Error("用户没有授权位置权限，将通过wx.authorize获取用户位置获取"));
+          reject(new Error("调用wx.getSetting（）失败，将通过wx.authorize获取用户位置获取"));
         }
       });
     });
-
-    userpositionpromise.then(function (){
+    userpositionpromise.catch(function (){
       //通过wx.authorize获取用户位置权限
       var authorizepromise = new Promise(function (resolve, reject) {
         wx.authorize({
@@ -177,12 +181,13 @@ Page({
     }).then(function(){
       //通过qqmapsdk.calculateDistance获得用户与商店的距离
       var getdistancetpromise = new Promise(function (resolve, reject) {
+        var count = 0;
         for (var i = 0; i < store_list.length; i++) {
           store_list[i].imgsrc = rurl + "/static/image/recommendimg" + store_list[i].id + ".jpg";
           //console.log(store_list[i].latitude + "  " + store_list[i].longitude)
           qqmapsdk.calculateDistance({
             //num避免success中store_list[i]产生闭包
-            num: i,
+            num:i,
             from: {
               latitude: 29.972889,
               longitude: 106.276791
@@ -192,9 +197,12 @@ Page({
               longitude: store_list[i].longitude
             }],
             success: function (res) {
-              console.log(res)
+              count++;
+              console.log("store_list[" + this.num + "] 距离我：" + res.result.elements[0].distance)
               store_list[this.num].distance = res.result.elements[0].distance;
-              if (this.num == store_list.length-1) resolve();
+              if (count == store_list.length){
+                resolve();
+              } 
             },
             fail: function (res) {
               console.log(res);
@@ -208,8 +216,8 @@ Page({
       pageobject.setData({
         Recommendarray: store_list
       })
-    }).catch(function(){
-      console.log("发生错误")
+    }).catch(function(mes){
+      console.log(mes)
     })
 
    
@@ -373,36 +381,50 @@ Page({
   },
   handleTap1: function (event) {
     console.log(event)
-  }, wxSearchFn: function (e) {
+  },
+   wxSearchFn: function (e) {
+    console.log("wxSearchFn");
     var that = this
     WxSearch.wxSearchAddHisKey(that);
-
   },
   wxSearchInput: function (e) {
+    console.log("wxSearchInput");
     var that = this
     WxSearch.wxSearchInput(e, that);
   },
-  wxSerchFocus: function (e) {
+  wxSearchFocus: function (e) {
+    console.log("wxSearchFocus");
+    this.setData({
+      searchdisplay: true
+    });
     var that = this
     WxSearch.wxSearchFocus(e, that);
   },
   wxSearchBlur: function (e) {
+    console.log("wxSearchBlur");
     var that = this
     WxSearch.wxSearchBlur(e, that);
   },
   wxSearchKeyTap: function (e) {
+    console.log("wxSearchKeyTap");
     var that = this
     WxSearch.wxSearchKeyTap(e, that);
   },
   wxSearchDeleteKey: function (e) {
+    console.log("wxSearchDeleteKey");
     var that = this
     WxSearch.wxSearchDeleteKey(e, that);
   },
   wxSearchDeleteAll: function (e) {
-    var that = this;
+    console.log("wxSearchDeleteAll");
+    var that = this
     WxSearch.wxSearchDeleteAll(that);
   },
   wxSearchTap: function (e) {
+    console.log("wxSearchTap");
+    this.setData({
+      searchdisplay: false
+    })
     var that = this
     WxSearch.wxSearchHiddenPancel(that);
   },
