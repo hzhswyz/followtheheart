@@ -7,6 +7,7 @@ var qqmapsdk;
 var WxSearch = require('../../wxSearch/wxSearch.js');
 var position = "";
 var store_list;
+var userinfo = {};
 Page({
   data: {
     // wxSearchData:{
@@ -68,13 +69,151 @@ Page({
       swipercurrentindex: event.detail.current
     })
   },
+
+
   onLoad: function () {
+
+    //pageobject为page对象
+    var pageobject = this;
+    //获取腾讯地图API
     qqmapsdk = new QQMapWX({
       key: 'OKWBZ-H3RRF-D76JH-JE5BA-U5FQ5-NXBTH'
     });
-    //pageobject为page对象
-    var pageobject = this;
-    //获取用户位置
+
+    var userpositionpromise = new Promise(function (resolve, reject) {
+      //获取用户位置
+      wx.getSetting({
+        success: function (res) {
+          console.log(res);
+          if ("scope.userLocation" in res.authSetting) {
+            console.log("已经获取用户位置授权了");
+            resolve();
+          }
+        },
+        fail: function (res) {
+          console.log("用户没有授权位置权限，将通过wx.authorize获取用户位置获取");
+          console.log(res);
+          reject(new Error("用户没有授权位置权限，将通过wx.authorize获取用户位置获取"));
+        }
+      });
+    });
+
+    userpositionpromise.then(function (){
+      //通过wx.authorize获取用户位置权限
+      var authorizepromise = new Promise(function (resolve, reject) {
+        wx.authorize({
+          scope: "scope.userLocation",
+          success: function () {
+            console.log("用户同意授权位置权限");
+            resolve();
+          },
+          fail: function () {
+            console.log("用户拒绝授权位置权限");
+            reject();
+          }
+        });
+      });
+      return authorizepromise;
+    }).then(function(){
+      //通过wx.getLocation获取用户位置权限
+      var getLocationpromise = new Promise(function (resolve, reject) {
+
+        wx.getLocation({
+          success: function (res) {
+            console.log("经度" + res.latitude);
+            console.log("纬度" + res.longitude);
+            userinfo.latitude = res.latitude;
+            userinfo.longitude = res.longitude;
+            resolve();
+          },
+          fail: function (res) {
+            console.log(res);
+            reject();
+          }
+        });
+      });
+      return getLocationpromise;
+    }).then(function (){
+      //通过qqmapsdk.reverseGeocoder将经纬度转换为普通地址，精确到街道
+      var getuseraddresspromise = new Promise(function (resolve, reject) {
+
+        qqmapsdk.reverseGeocoder({
+          location: {
+            latitude: userinfo.latitude,
+            longitude: userinfo.longitude
+          },
+          success: function (res) {
+            console.log(res);
+            pageobject.setData({
+              position: res.result.address_component.street
+            });
+            resolve();
+          },
+          fail: function (res) {
+            console.log(res);
+            reject();
+          }
+        });
+      });
+      return getuseraddresspromise;
+    }).then(function(){
+      //通过request请求得到附件精选商户列表
+      var getstorelistpromise = new Promise(function (resolve, reject) {
+        wx.request({
+          url: rurl + "/getrecommendationstore?format=json",
+          success: function success(res) {
+            var storelist = res.data.pageList;
+            console.log(storelist);
+            store_list = storelist;
+            resolve();
+          },
+          dataType: "json",
+          fail: function (res) {
+            reject();
+          }
+        });
+      });
+      return getstorelistpromise;
+    }).then(function(){
+      //通过qqmapsdk.calculateDistance获得用户与商店的距离
+      var getdistancetpromise = new Promise(function (resolve, reject) {
+        for (var i = 0; i < store_list.length; i++) {
+          store_list[i].imgsrc = rurl + "/static/image/recommendimg" + store_list[i].id + ".jpg";
+          //console.log(store_list[i].latitude + "  " + store_list[i].longitude)
+          qqmapsdk.calculateDistance({
+            //num避免success中store_list[i]产生闭包
+            num: i,
+            from: {
+              latitude: 29.972889,
+              longitude: 106.276791
+            },
+            to: [{
+              latitude: store_list[i].latitude,
+              longitude: store_list[i].longitude
+            }],
+            success: function (res) {
+              console.log(res)
+              store_list[this.num].distance = res.result.elements[0].distance;
+              if (this.num == store_list.length-1) resolve();
+            },
+            fail: function (res) {
+              console.log(res);
+              reject();
+            }
+          });
+        }
+      });
+      return getdistancetpromise;
+    }).then(function(){
+      pageobject.setData({
+        Recommendarray: store_list
+      })
+    }).catch(function(){
+      console.log("发生错误")
+    })
+
+   
+    /*获取用户位置
     wx.getSetting({
       success: function (res){
         console.log(res);
@@ -85,6 +224,8 @@ Page({
    
               console.log("经度"+res.latitude);
               console.log("纬度"+res.longitude);
+              userinfo.latitude = res.latitude;
+              userinfo.longitude = res.longitude;
              
               qqmapsdk.reverseGeocoder({
                 location: {
@@ -116,6 +257,8 @@ Page({
               console.log("获取用户位置授权成功")
               wx.getLocation({
                 success: function (res) {
+                  userinfo.latitude = res.latitude;
+                  userinfo.longitude = res.longitude;
                   console.log(res.latitude);
                   console.log(res.longitude);
                   console.log(res.accuracy);
@@ -132,21 +275,43 @@ Page({
       }
     });
     
+
     //初始化的时候向服务器获取首页精选商户对象数组 “imgsrc”=图片路径
     wx.request({
-      url: rurl +"/getrecommendationstore?format=json",
-      success: function success(res){
+      url: rurl + "/getrecommendationstore?format=json",
+      success: function success(res) {
         var storelist = res.data.pageList;
         console.log(storelist);
-        for (var i = 0; i < storelist.length; i++)
-          storelist[i].imgsrc = rurl +"/static/image/recommendimg" + storelist[i].id +".jpg";
+        for (var i = 0; i < storelist.length; i++) {
+          storelist[i].imgsrc = rurl + "/static/image/recommendimg" + storelist[i].id + ".jpg";
+          console.log(storelist[i].latitude + "  " + storelist[i].longitude)
+          qqmapsdk.calculateDistance({
+            //num避免success中storelist[i]产生闭包
+            num: i,
+            from: {
+              latitude: 29.972889,
+              longitude: 106.276791
+            },
+            to: [{
+              latitude: storelist[i].latitude,
+              longitude: storelist[i].longitude
+            }],
+            success: function (res) {
+              console.log(res)
+              storelist[this.num].distance = res.result.elements[0].distance;
+            },
+            fail: function (res) {
+              console.log(res);
+            }
+          });
+        }
         store_list = storelist;
         pageobject.setData({
           Recommendarray: storelist
         })
       },
-      dataType:"json"
-    });
+      dataType: "json"
+    });*/
 
     //初始化的时候渲染wxSearchdata
     WxSearch.init(pageobject, 43, ['weappdev', '小程序', 'wxParse', 'wxSearch', 'wxNotification']);
@@ -178,6 +343,8 @@ Page({
         }
       })
     }
+
+
   },
 
 

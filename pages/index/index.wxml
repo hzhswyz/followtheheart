@@ -52,7 +52,7 @@
           </view>
           <view class='recommendationtextview2'>
             <image class="recommendationicon" src="{{recommendationiconposition}}" mode='aspectFit'></image>
-            <text>位置：{{item.position}}</text>
+            <text>距离我：{{item.distance}} 米</text>
           </view>
         </view>
         <view class="recommendationtextview1">
