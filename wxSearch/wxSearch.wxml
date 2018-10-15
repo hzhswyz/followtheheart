@@ -1,9 +1,9 @@
 <template name="wxSearch">
-  <view class="wxSearch" bindtap="wxSearchTap"  style="display:{{wxSearchData.view.isShow ? 'block':'none'}};height:{{wxSearchData.view.seachHeight}}px;top:{{wxSearchData.view.barHeight}}px;">
+  <view class="wxSearch" bindtap="wxSearchTap"  style="height:{{wxSearchData.view.isShow ? wxSearchData.view.seachHeight:'0'}}px;top:{{wxSearchData.view.barHeight}}px;">
     <view  class="wxSearchInner">
 
-        <view class="wxSearchMindKey">
-            <view class="wxSearchMindKeyList">
+        <view class="wxSearchMindKey" >
+            <view class="wxSearchMindKeyList" >
                 <block wx:for="{{wxSearchData.mindKeys}}">
                     <view class="wxSearchMindKeyItem" bindtap="wxSearchKeyTap" data-key="{{item}}">{{item}}</view>
                 </block>
@@ -11,15 +11,21 @@
         </view>
 
         <view class="wxSearchKey" style="display:{{wxSearchData.view.isShowSearchKey ? 'block':'none'}}">
-            <text class="wxSearchTitle">热门搜索</text>
+            <view class='wxSearchTitleview'>
+              <image src='/wxSearch/images/hot.png' class='wxSearchimg' mode='widthFix'></image><text class="wxSearchTitle">热门搜索</text>
+            </view>
             <view class="wxSearchKeyList">
-                <block wx:for="{{wxSearchData.keys}}">
-                    <view class="wxSearchKeyItem" bindtap="wxSearchKeyTap" data-key="{{item}}">{{item}}</view>
-                </block>
+              <block wx:for="{{wxSearchData.keys}}">
+                 <view class="wxSearchKeyItem" bindtap="wxSearchKeyTap" data-key="{{item}}">{{item}}</view>
+              </block>
             </view>
         </view>
+
         <view class="wxSearchHistory" style="display:{{wxSearchData.view.isShowSearchHistory ? 'block':'none'}}">
+          <view class='wxSearchTitleview'>
+            <image src='/wxSearch/images/history.png' class='wxSearchimg' mode='widthFix'></image>
             <text class="wxSearchTitle">搜索历史</text>
+          </view>
             <view wx:if="{{wxSearchData.his[0]}}" class="wxSearchHistoryList">
                 <block wx:for="{{wxSearchData.his}}">
                     <view class="wxSearchHistoryItem">

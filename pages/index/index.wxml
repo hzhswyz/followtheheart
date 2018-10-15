@@ -12,14 +12,16 @@
   <view class="wxSearch-section" >
     <view class="wxSearch-pancel">
       <view  class='display:{{searchdisplay?"wxpositionnone":"wxposition"}};'>
-      <image src='/pages/static/img/indexpage/address.png' style="width:18px;margin-right:2px;" mode='widthFix'></image>{{position}}
+        <image src='/pages/static/img/indexpage/address.png' style="width:18px;margin-right:2px;" mode='widthFix'></image>{{position}}
       </view>
       <input bindinput="wxSearchInput" bindfocus="wxSerchFocus" value="{{wxSearchData.value}}" bindblur="wxSearchBlur"
-      bindfocus="wxSearchFocus"   class='display:{{searchdisplay?"wxSearch-inputwide":"wxSearch-input"}};'placeholder="输入商店ID" />
-      <view class="wxSearch-button" bindtap="wxSearchFn" size="mini" plain="true" style='background-color: rgb(245, 245, 245);'>搜索        </view>
+      bindfocus="" bindtap='wxSearchFocus' class='{{searchdisplay?"wxSearch-inputwide":"wxSearch-input"}};'
+      placeholder="输入商店ID" />
+      <view class='{{searchdisplay?"wxSearch-buttonwidth":"wxSearch-button"}};'  bindtap="wxSearchFn" size="mini" plain="true"
+      style='background-color: rgb(245, 245, 245);'>搜索</view>
     </view>
   </view>
-  <template is="wxSearch" data="{{wxSearchData}}" />
+<template is="wxSearch" data="{{wxSearchData}}"/>
   
 <titlebar titlearray="{{titlearray}}" style="width:100%;"></titlebar>
   
@@ -46,7 +48,7 @@
     var getdistance = function(distance){
     var result;
     if(distance>1000)
-      result = parseInt(distance/1000)+" 千米";
+      result = (distance/1000).toFixed(1) +" 千米";
     else
       result = distance+" 米";
     return result;
@@ -55,7 +57,6 @@
   </wxs>
 
   <view class="recommendationview" wx:for="{{Recommendarray}}" wx:key="imgsrc" bindtap='openstore' data-id="{{item.id}}">
-
     <view  class="recommendationimgview">
       <image class="foodimg" mode="aspectFill" src="{{item.imgsrc}}"></image>
 

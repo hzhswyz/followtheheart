@@ -135,6 +135,7 @@ Page({
             reject();
           }
         });
+        
       });
       return getLocationpromise;
     }).then(function (){
@@ -147,7 +148,8 @@ Page({
             longitude: userinfo.longitude
           },
           success: function (res) {
-            console.log(res);
+            console.log("经纬度转地址");
+            console.log( res);
             pageobject.setData({
               position: res.result.address_component.street
             });
@@ -167,6 +169,7 @@ Page({
           url: rurl + "/getrecommendationstore?format=json",
           success: function success(res) {
             var storelist = res.data.pageList;
+            console.log("商店列表：");
             console.log(storelist);
             store_list = storelist;
             resolve();
@@ -198,7 +201,7 @@ Page({
             }],
             success: function (res) {
               count++;
-              console.log("store_list[" + this.num + "] 距离我：" + res.result.elements[0].distance)
+              console.log("store_list[" + this.num + "] 距离我：" + res.result.elements[0].distance+"m")
               store_list[this.num].distance = res.result.elements[0].distance;
               if (count == store_list.length){
                 resolve();
@@ -322,7 +325,7 @@ Page({
     });*/
 
     //初始化的时候渲染wxSearchdata
-    WxSearch.init(pageobject, 43, ['weappdev', '小程序', 'wxParse', 'wxSearch', 'wxNotification']);
+    WxSearch.init(pageobject, 50, ['小炒肉', '肉末茄子', '茄子牛肉', '麻辣串串香', '大盘鸡']);
     WxSearch.initMindKeys(['weappdev.com', '微信小程序开发', '微信开发', '微信小程序']);
 
     if (app.globalData.userInfo) {
