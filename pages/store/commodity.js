@@ -38,7 +38,7 @@ Page({
       title: storeinfo.name
     })
     wx.request({
-      url: rurl +"/getstorefoods?format=json",
+      url: rurl + "/getstorefoods?format=json&storeid=" + storeinfo.id,
       success: function success(res) {
         var foodlist = res.data.pageList;
         console.log(foodlist); 

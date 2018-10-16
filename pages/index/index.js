@@ -121,7 +121,6 @@ Page({
     }).then(function(){
       //通过wx.getLocation获取用户位置权限
       var getLocationpromise = new Promise(function (resolve, reject) {
-
         wx.getLocation({
           success: function (res) {
             console.log("经度" + res.latitude);
@@ -134,14 +133,12 @@ Page({
             console.log(res);
             reject();
           }
-        });
-        
+        });    
       });
       return getLocationpromise;
     }).then(function (){
       //通过qqmapsdk.reverseGeocoder将经纬度转换为普通地址，精确到街道
       var getuseraddresspromise = new Promise(function (resolve, reject) {
-
         qqmapsdk.reverseGeocoder({
           location: {
             latitude: userinfo.latitude,
@@ -150,8 +147,13 @@ Page({
           success: function (res) {
             console.log("经纬度转地址");
             console.log( res);
+            var str = "无法定位";
+            str = res.result.address_component.street;
+            if (str.length>=6){
+              str = str.substring(0, 4) +"‧‧‧‧";
+            }
             pageobject.setData({
-              position: res.result.address_component.street
+              position: str
             });
             resolve();
           },
@@ -181,25 +183,55 @@ Page({
         });
       });
       return getstorelistpromise;
-    }).then(function(){
+      })/*.then(function () {
+        var storeaddressresolution = new Promise(function (resolve, reject) {
+          var count = 0;
+          for (var i = 0; i < store_list.length; i++) {
+            console.log(store_list[i].position);
+            qqmapsdk.geocoder({
+              num:i,
+              address: store_list[i].position,
+              success: function (res) {
+                count++;
+                console.log("store_list[" + this.num + "]" + res.result.location);
+                store_list[this.num].lat = res.result.location.lat;
+                store_list[this.num].lng = res.result.location.lng;
+                if (count == store_list.length) {
+                  resolve();
+                }
+              },
+              fail: function (res) {
+                console.log("商店地址转经纬度失败"+res);
+                reject(new Error("商店地址转经纬度失败"));
+              },
+              complete: function (res) {
+                console.log(res);
+              }
+            });
+          }
+        })
+        return storeaddressresolution;
+      })*/.then(function(){
       //通过qqmapsdk.calculateDistance获得用户与商店的距离
       var getdistancetpromise = new Promise(function (resolve, reject) {
         var count = 0;
         for (var i = 0; i < store_list.length; i++) {
           store_list[i].imgsrc = rurl + "/static/image/recommendimg" + store_list[i].id + ".jpg";
-          //console.log(store_list[i].latitude + "  " + store_list[i].longitude)
+          store_list[i].type = store_list[i].type.split(",");
+          //console.log(store_list[i].storeAddress.latitude + "  " + store_list[i].storeAddress.longitude)
           qqmapsdk.calculateDistance({
             //num避免success中store_list[i]产生闭包
             num:i,
             from: {
-              latitude: 29.972889,
-              longitude: 106.276791
+              latitude: userinfo.latitude,
+              longitude: userinfo.longitude
             },
             to: [{
-              latitude: store_list[i].latitude,
-              longitude: store_list[i].longitude
+              latitude: store_list[i].storeAddress.latitude,
+              longitude: store_list[i].storeAddress.longitude
             }],
             success: function (res) {
+              console.log(res);
               count++;
               console.log("store_list[" + this.num + "] 距离我：" + res.result.elements[0].distance+"m")
               store_list[this.num].distance = res.result.elements[0].distance;
@@ -435,7 +467,8 @@ Page({
   },
   openstore: function (event){
     console.log("点击第"+event.currentTarget.dataset.id)
-    let str = JSON.stringify(store_list[event.currentTarget.dataset.id]);
+    let str = JSON.stringify(store_list[event.currentTarget.dataset.id-1]);
+    console.log(str)
     wx.navigateTo({
       url: '../store/commodity?storeinfo='+str
     })
