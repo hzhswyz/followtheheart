@@ -8,7 +8,10 @@
       <text>月销量：{{store.sales}}单</text>
       <text>人均：{{store.consume}}元</text>
       <view class='starsview'>
-        <text>星级：</text> <block wx:for="{{store.stars}}"><image src='{{starssrc}}' class='starsimg' mode='aspectFit'></image></block>
+        <text>星级：</text> 
+        <block wx:for="{{store.stars}}" data-key="{{index}}">
+        <image src='{{starssrc}}' class='starsimg' mode='aspectFit'></image>
+        </block>
       </view>
     </view>
     <view class='noticeview'>

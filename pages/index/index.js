@@ -324,9 +324,11 @@ Page({
       dataType: "json"
     });*/
 
+
+
     //初始化的时候渲染wxSearchdata
     WxSearch.init(pageobject, 50, ['小炒肉', '肉末茄子', '茄子牛肉', '麻辣串串香', '大盘鸡']);
-    WxSearch.initMindKeys(['weappdev.com', '微信小程序开发', '微信开发', '微信小程序']);
+    WxSearch.initMindKeys(['小炒肉', '肉末茄子', '茄子牛肉', '麻辣串串香', '大盘鸡']);
 
     if (app.globalData.userInfo) {
       this.setData({
