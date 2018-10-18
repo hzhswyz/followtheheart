@@ -59,7 +59,6 @@ Page({
     })
     wx.getSystemInfo({
       success: function(res) {
-        console.log(res.windowHeight-105);
         pageobject.setData({
           screenHeight:res.windowHeight-105
         })
@@ -212,7 +211,15 @@ Page({
    * 用户支付账单
    */
   pay: function(){
-    wx.login({
+    var payinfo = {};
+    payinfo.money = totalamount;
+    payinfo.store = store_info.name;
+    let str = JSON.stringify(payinfo);
+    console.log(str)
+    wx.navigateTo({
+      url: '../pay/pay?payinfo=' + str
+    })
+    /*wx.login({
       timeout:3000,
       success: function (res){
         console.log("登陆成功")
@@ -227,6 +234,6 @@ Page({
       fail:function(){
         console.log("登陆失败")
       }
-    })
+    })*/
   }
 })

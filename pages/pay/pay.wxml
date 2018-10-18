@@ -1,0 +1,26 @@
+<!--pages/pay/pay.wxml-->
+<view class="container">
+
+  <view class='top'>
+    <text class='title'>随心菜单</text>
+    <text class='moneytext'>￥ {{payinfo.money}}</text>
+  </view>
+
+  <view class='middle'>
+    <view class="middleview1">
+    <text class='middleview1text1'>收款方</text>
+    <text class='middleview1text2'>{{payinfo.store}}</text>
+    <text class='middleview1text1'>商品</text>
+    <text class='middleview1text2'>差评</text>
+    </view>
+    <view class="middleview1">
+    <text class='middleview1text1'>商品</text>
+    <text class='middleview1text2'>商品</text>
+    </view>
+  </view>
+
+  <view class='bottom'>
+  
+  </view>
+</view>
+

@@ -467,7 +467,7 @@ Page({
   },
   openstore: function (event){
     console.log("点击第"+event.currentTarget.dataset.id)
-    let str = JSON.stringify(store_list[event.currentTarget.dataset.id-1]);
+    let str = JSON.stringify(store_list[event.currentTarget.dataset.id]);
     console.log(str)
     wx.navigateTo({
       url: '../store/commodity?storeinfo='+str
