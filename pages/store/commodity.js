@@ -211,29 +211,30 @@ Page({
    * 用户支付账单
    */
   pay: function(){
-    var payinfo = {};
-    payinfo.money = totalamount;
-    payinfo.store = store_info.name;
-    let str = JSON.stringify(payinfo);
-    console.log(str)
-    wx.navigateTo({
-      url: '../pay/pay?payinfo=' + str
-    })
-    /*wx.login({
-      timeout:3000,
-      success: function (res){
+    wx.login({
+      timeout: 3000,
+      success: function (res) {
         console.log("登陆成功")
         wx.request({
-          url: rurl +"/getuserinfo",
-          data:{code:res.code,format:"json"},
-          success: function (res){
+          url: rurl + "/getuserinfo",
+          data: { code: res.code, format: "json" },
+          success: function (res) {
             console.log(res);
+            var payinfo = {};
+            payinfo.money = totalamount;
+            payinfo.store = store_info.name;
+            let str = JSON.stringify(payinfo);
+            console.log(str)
+            wx.navigateTo({
+              url: '../pay/pay?payinfo=' + str
+            })
           }
         })
       },
-      fail:function(){
+      fail: function () {
         console.log("登陆失败")
       }
-    })*/
+    })
+    
   }
 })

@@ -1,9 +1,9 @@
 /* pages/pay/pay.wxss */
+page{
+  background-image: linear-gradient(to top, #fff1eb 0%, #ace0f9 100%);
+}
 .container{
-  display: flex;
-  flex-direction: column;
-  justify-content:center;
-  align-items: center;
+  display: block;
 }
 .top{
   margin-top: 20px;
@@ -16,11 +16,12 @@
 .title{
   margin-bottom: 10px;
   font-size: 20px;
-  color: rgb(104, 104, 104);
+  color: rgb(255, 239, 226)
 }
 .moneytext{
   font-size: 50px;
   font-weight: bold;
+  color: red;
 }
 .middle{
   display: flex;
@@ -29,30 +30,102 @@
   justify-content:center;
   padding-top: 10px;
   align-items: center; 
-  border-top:2px solid rgb(218, 218, 218)
+  border-top:2px solid rgb(240, 240, 240)
 }
-.middleview1{
-  margin-left: 20px;
+.middleview{
   width: 100%;
   display: block;
 }
-.middleview2{
-margin-right: 20px;
-width: 100%;
-display: flex;
-flex-direction: row;
-justify-content:center;
+.middleviewtext1{
+  margin-left: 20px;
+  float: left;
+  color: rgb(114, 113, 113);
 }
-.middleview1text1{
-float: left;
-color: rgb(138, 138, 138);
-}
-.middleview1text2{
-float: right;
+.middleviewtext2{
+  float: right;
+  margin-right: 20px;
+  color: #df5925;
 }
 .bottom{
+  border-top:2px solid rgb(240, 240, 240);
   display: flex;
   flex-direction: column;
   justify-content:center;
   align-items: center; 
+  margin-top: 10px;
+}
+.buttonview{
+  margin-top: 50px;
+  width: 80%;
+  height: 50px;
+  background-image: radial-gradient(circle 248px at center, #16d9e3 0%, #30c7ec 47%, #46aef7 100%);
+  border-radius: 20px;
+  font-size: 25px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items: center; 
+}
+
+
+html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{display:block}audio,canvas,progress,video{display:inline-block;vertical-align:baseline}audio:not([controls]){display:none;height:0}[hidden],template{display:none}a{background:transparent}a:active,a:hover{outline:0}abbr[title]{border-bottom:1px dotted}b,strong{font-weight:bold}dfn{font-style:italic}h1{font-size:2em;margin:0.67em 0}mark{background:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-0.5em}sub{bottom:-0.25em}img{border:0}svg:not(:root){overflow:hidden}figure{margin:1em 40px}hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0}pre{overflow:auto}code,kbd,pre,samp{font-family:monospace, monospace;font-size:1em}button,input,optgroup,select,textarea{color:inherit;font:inherit;margin:0}button{overflow:visible}button,select{text-transform:none}button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}button[disabled],html input[disabled]{cursor:default}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}input{line-height:normal}input[type="checkbox"],input[type="radio"]{-moz-box-sizing:border-box;box-sizing:border-box;padding:0}input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{height:auto}input[type="search"]{-webkit-appearance:textfield;-moz-box-sizing:content-box;box-sizing:content-box}input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none}fieldset{border:1px solid #c0c0c0;margin:0 2px;padding:0.35em 0.625em 0.75em}legend{border:0;padding:0}textarea{overflow:auto}optgroup{font-weight:bold}table{border-collapse:collapse;border-spacing:0}td,th{padding:0}
+body {
+  background-color: #444;
+}
+
+h1 {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 3em;
+  letter-spacing: 0.1em;
+  color: #30c7ec;
+  animation: rotate 2s ease-in-out alternate infinite;
+}
+h1:before {
+  content: attr(data-shadow);
+  color: transparent;
+  text-shadow: 0 0 15px #111;
+  position: absolute;
+  z-index: -1;
+  margin: -0.1em 0 0 0;
+  animation: skew 2s ease-in-out alternate infinite;
+  transform-origin: bottom;
+}
+@keyframes rotate {
+  from {
+    transform: rotateY(-10deg);
+    text-shadow:  1px -1px #30c7ec,
+                  2px -1px #2cb3d4,
+                  3px -2px #2591ac,
+                  4px -2px #1a7288,
+                  5px -3px #166174,
+                  6px -3px #0d3e4b;
+  }
+  to {
+    transform: rotateY(10deg);
+    text-shadow:  -1px -1px #30c7ec,
+                  -2px -1px #2cb3d4,
+                  -3px -2px #2591ac,
+                  -4px -2px #1a7288,
+                  -5px -3px #166174,
+                  -6px -3px #0d3e4b;
+  }
+}
+@keyframes skew {
+  from {
+    transform: scaleY(0.3) skewX(-15deg);
+  }
+  to {
+    transform: scaleY(0.3) skewX(-20deg);
+  }
+}
+footer {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  font-size: 13px;
+  background: #DDD;
+  padding: 5px 10px;
+  margin: 5px;
 }

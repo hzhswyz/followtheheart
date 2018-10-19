@@ -69,5 +69,8 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  confirmpayment: function () {
+    
   }
 })

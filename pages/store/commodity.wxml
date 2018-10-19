@@ -51,7 +51,9 @@
 </view>
 <view class='orderoutview' wx:if="{{isshoworder}}">
   <view class='orderview'>
-    <text class='ordertitle'>--- 订单 ---</text>
+    <view class='ordertitleview'>
+      <text decode="{{true}}">&nbsp;——订单——&nbsp;</text>
+    </view>
     <view wx:if="{{totalnum>0}}" class="orderitemtitle">
       <text class='orderitemtitletext1'>菜名</text>
       <text class='orderitemtitletext2'>数量</text>

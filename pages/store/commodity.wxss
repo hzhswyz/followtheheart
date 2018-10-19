@@ -203,14 +203,15 @@ align-items: center;
   border-radius: 20px;
   background-image: linear-gradient(to top, #e2bc88 0%, #eacda3 100%);
 }
-
-.ordertitle{
+.ordertitleview{
   display: flex;
   flex-direction:column;
   justify-content:center;
   font-size: 25px;
   height: 10%;
   font-family: "STXingkai";
+  background-color: #b18048;
+  border-radius: 0px 0px 10px 10px;
 }
 
 .ordercontentview{
@@ -235,7 +236,6 @@ align-items: center;
   align-items: center;
   justify-content:center;
   font-family: "STXingkai";
-  border-top: 2px dotted;
   font-size: 23px;
 }
 
