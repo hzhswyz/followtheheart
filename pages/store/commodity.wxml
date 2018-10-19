@@ -51,8 +51,10 @@
 </view>
 <view class='orderoutview' wx:if="{{isshoworder}}">
   <view class='orderview'>
+    <image class="clip" src='/pages/static/img/indexpage/clip.png' mode='widthFix'></image>
     <view class='ordertitleview'>
-      <text decode="{{true}}">&nbsp;——订单——&nbsp;</text>
+      <image src='/pages/static/img/indexpage/pencil.png' style='width:20px;height:20px;margin-right:20px;' mode='widthFix'></image>
+      <text decode="{{true}}">订单</text>
     </view>
     <view wx:if="{{totalnum>0}}" class="orderitemtitle">
       <text class='orderitemtitletext1'>菜名</text>
@@ -61,7 +63,7 @@
       <text class='orderitemtitletext3'>总价</text>
     </view>
     <scroll-view class="ordercontentview" scroll-y="true">
-      <view wx:if="{{totalnum<1}}" class="nofoodnotic">您还没有点菜哦！</view>
+      <view wx:if="{{totalnum<1}}" class="nofoodnotic">您还没有点菜哦 ！</view>
       <block wx:for="{{foodarray}}" wx:key="{{index}}">
         <view class='orderitem'>
           <text class="orderitemname">{{item.name}}</text>
