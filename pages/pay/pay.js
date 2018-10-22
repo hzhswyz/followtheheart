@@ -110,7 +110,7 @@ Page({
   },
   revieworder: function(){
     wx.redirectTo({
-      url:"../order/order"
+      url: "../order/orderdetails?orderid=" + pay_info.orderid
     })
   }
 })

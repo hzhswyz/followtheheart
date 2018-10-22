@@ -2,7 +2,7 @@
 <view class='container'>
 
   <view class='title'>
-      <image src='{{payinfo.store.image}}' class='storeimg' mode='widthFix'></image>{{payinfo.store.name}}
+    <image src='{{payinfo.store.image}}' class='storeimg' mode='widthFix'></image>{{payinfo.store.name}}
   </view>
 
   <view class='money'>
@@ -16,7 +16,7 @@
         <text>交易时间：</text>
       </view>
       <view class="tabletd2">
-        <text class='transactiondatetext'>{{payinfo.date}}</text>
+        <text class='transactiondatetext'>{{payinfo.transdate}}</text>
       </view>
     </view>
 
