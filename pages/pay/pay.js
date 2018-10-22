@@ -21,7 +21,7 @@ Page({
     let payinfo = JSON.parse(options.payinfo);
     pay_info = payinfo;
     wx.setNavigationBarTitle({
-      title: "向 "  + payinfo.store + " 支付"
+      title: "向 "  + payinfo.store.name + " 支付"
     })
     this.setData({
       payinfo: payinfo
@@ -96,8 +96,8 @@ Page({
           pageobject.setData({
             payinfo: pay_info
           })
-          console.log("将餐馆" + pay_info.storeid +"内的点餐列表删除");
-          store_food_map.delete(pay_info.storeid);
+          console.log("将餐馆" + pay_info.store.id +"内的点餐列表删除");
+          store_food_map.delete(pay_info.store.id);
         }
         else{
           console.log("支付失败")

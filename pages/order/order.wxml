@@ -1,12 +1,22 @@
 <!--pages/order/order.wxml-->
+<view class='container'>
+<scroll-view scroll-y="true" class='scrollview' style='height:{{screenHeight}}px'>
 <block wx:for="{{orderlist}}" wx:key="{{index}}">
-  <view class='orderitem'>
+  <view class='orderitem' data-orderid='{{item.orderid}}' bindtap='vieworderdetails'>
     <view class='item1'>
-      <text class='storename'>商家：{{item.storename}}</text>
-      <text class='money'>金额：{{item.money}}元</text>
+      <view  class='storename'>
+        <image class="storeimg" src='/pages/static/img/indexpage/order_store.png' mode='widthFix'></image>
+        <text >{{item.storename}}</text>
+      </view>
+      <view class='money'>
+        <image class="storeimg" src='/pages/static/img/indexpage/order_money.png' mode='widthFix'></image>
+        <text >{{item.money}}元</text>
+      </view>
     </view>
     <view class='item2'>
       <text class='paydate'>{{item.paymenttime==null?"未付款":item.paymenttime}}</text>
     </view>
   </view>
 </block>
+</scroll-view>
+</view>

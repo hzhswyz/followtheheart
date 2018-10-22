@@ -16,6 +16,13 @@ Page({
    */
   onLoad: function (options) {
     pageobject = this;
+    wx.getSystemInfo({
+      success: function (res) {
+        pageobject.setData({
+          screenHeight: res.windowHeight
+        })
+      }
+    })
     if(app.openid==undefined){
       console.log("用户未登录,请求登录");
       wx.login({
@@ -119,5 +126,11 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  vieworderdetails:function (event){
+    console.log(event,"查看订单详情")
+    wx.navigateTo({
+      url: 'orderdetails?orderid=' + event.currentTarget.dataset.orderid
+    })
   }
 })

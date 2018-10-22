@@ -5,12 +5,12 @@
   flex-direction: column;
   background-image: linear-gradient(to bottom, #f9d423 0%,  #fda95a 50%, #f0806c 100%);
 }
+
 .storeinfo{
   width: 100%;
   height: 60px;
   display: flex;
   flex-direction: row;
-  
 }
 
 .storeinfoimage{

@@ -16,7 +16,7 @@
     </view>
     <view class="middleview" >
       <text class='middleviewtext1' >收款方</text>
-      <text class='middleviewtext2'>{{payinfo.store}}</text>
+      <text class='middleviewtext2'>{{payinfo.store.name}}</text>
     </view>
     <view class="middleview">
       <text class='middleviewtext1' >商品类型</text>

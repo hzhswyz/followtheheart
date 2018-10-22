@@ -1,13 +1,18 @@
 /* pages/order/order.wxss */
+.container{
+background-image: linear-gradient(to top, #ebbba7 0%, #cfc7f8 100%);
+}
+.scrollview{
+
+}
 .orderitem{
 display: flex;
 flex-direction: column;
 padding: 10px;
-background-color: #CDDCDC;
-background-image: radial-gradient(at 50% 100%, rgba(255,255,255,0.50) 0%, rgba(0,0,0,0.50) 100%), linear-gradient(to bottom, rgba(255,255,255,0.25) 0%, rgba(0,0,0,0.25) 100%);
-background-blend-mode: screen, overlay;
+background-color: rgba(255, 255, 255, 0.6);
 margin: 6px 6px 0px 6px;
-border-radius: 10px;
+border-radius: 5px;
+color: #363636;
 }
 .item1{
 display: block;
@@ -18,10 +23,26 @@ display: block;
 }
 .storename{
 float: left;
+display: flex;
+flex-direction: row;
+justify-content:center;
+align-items: center;
+}
+.storeimg{
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
 }
 .money{
 float: right;
+display: flex;
+flex-direction: row;
+justify-content:center;
+align-items: center;
+color: #1296db;
 }
 .paydate{
 float: right;
+font-size: 15px;
+color: rgb(122, 122, 122);
 }

@@ -113,7 +113,7 @@ Page({
           },
           fail: function () {
             console.log("用户拒绝授权位置权限");
-            reject();
+            reject(new Error("用户拒绝授权位置权限"));
           }
         });
       });
@@ -131,7 +131,7 @@ Page({
           },
           fail: function (res) {
             console.log(res);
-            reject();
+            reject(new Error("wx.getLocation获取用户位置权限失败"));
           }
         });    
       });
@@ -159,7 +159,7 @@ Page({
           },
           fail: function (res) {
             console.log(res);
-            reject();
+            reject(new Error("经纬度转换失败"));
           }
         });
       });
@@ -178,7 +178,7 @@ Page({
           },
           dataType: "json",
           fail: function (res) {
-            reject();
+            reject(new Error("获取附件精选商户列表失败"));
           }
         });
       });

@@ -4,7 +4,8 @@
     "pages/logs/logs",
     "pages/store/commodity",
     "pages/pay/pay",
-    "pages/order/order"
+    "pages/order/order",
+    "pages/order/orderdetails"
   ],
   "window": {
     "backgroundTextStyle": "light",

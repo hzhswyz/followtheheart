@@ -246,11 +246,11 @@ Page({
           data: { usercode: res.code, format: "json" },
           success: function (res) {
             console.log(res);
-            app.openid = res.data.pageList.openid;
             var payinfo = {};
             payinfo.money = res.data.pageList.money;
-            payinfo.store = res.data.pageList.store.name;
-            payinfo.storeid = res.data.pageList.store.id;
+            payinfo.store = {};
+            payinfo.store.name = res.data.pageList.store.name;
+            payinfo.store.id = res.data.pageList.store.id;
             payinfo.orderid = res.data.pageList.orderid;
             payinfo.type = res.data.pageList.type;
             payinfo.state = res.data.pageList.state;

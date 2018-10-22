@@ -1,0 +1,56 @@
+<!--pages/order/orderdetails.wxml-->
+<view class='container'>
+
+  <view class='title'>
+      <image src='{{payinfo.store.image}}' class='storeimg' mode='widthFix'></image>{{payinfo.store.name}}
+  </view>
+
+  <view class='money'>
+    <text>{{payinfo.m}}￥</text>
+  </view>
+
+  <view class='detailstable'>
+  
+    <view class='tabletr'>
+      <view class='tabletd1'>
+        <text>交易时间：</text>
+      </view>
+      <view class="tabletd2">
+        <text class='transactiondatetext'>{{payinfo.date}}</text>
+      </view>
+    </view>
+
+    <view class='tabletr'>
+      <view class='tabletd1'>
+        <text >付款时间：</text>
+      </view>
+      <view class="tabletd2">
+        <text class="paymenttimetext" style='{{payinfo.paytime==null?"color:red;":""}}'>{{payinfo.paytime==null?"未付款":payinfo.paytime}}</text>
+      </view>
+    </view>
+
+    <view class="tabletr">
+      <view class='tabletd1'>
+        <text>订单编号：</text>
+      </view>
+      <view class="tabletd2">
+        <text class='orderidtext'>{{payinfo.orderid}}</text>
+      </view>
+    </view>
+
+    <view class='tabletr'>
+      <view class='tabletd1'>
+        <text >商店地址：</text>
+      </view>
+      <view class="tabletd2">
+        <text class='addresstext'>{{payinfo.store.storeAddress.address}}</text>
+      </view>
+    </view>
+    
+  </view>
+
+  <view class='buttonview' wx:if="{{payinfo.paytime==null}}" bindtap='continuetopay' data-payinfo='{{payinfo}}'>
+    继续支付
+  </view>
+
+</view>
