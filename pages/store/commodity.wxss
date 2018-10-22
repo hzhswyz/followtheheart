@@ -201,16 +201,17 @@ align-items: center;
   left: 10%;
   top: 60px;
   border-radius: 20px;
-  background: #eacda3;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #d6ae7b, #eacda3);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #d6ae7b, #eacda3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(to right, #d6ae7b, #eacda3);
 }
+
 .clip{
   position: absolute;
   width: 70px;
   height: 40px;
   top:-35px;
+  display: none;
 }
+
 .ordertitleview{
   display: flex;
   flex-direction:row;
@@ -228,7 +229,7 @@ align-items: center;
 
 .ordercontentview{
   width: 100%;
-  height: 70%;
+  height: 65%;
 }
 
 .nofoodnotic{
@@ -304,7 +305,7 @@ align-items: center;
   justify-content:center;
   align-items: center;
   width: 100%;
-  height: 10%;
+  height: 15%;
 }
 
 .totalamount{
@@ -332,7 +333,7 @@ align-items: center;
   align-items: center;
   width: 30%;
   background-color: #eb9054;
-  height: 80%;
+  height: 70%;
   border-radius: 10px;
   color: rgb(240, 240, 240);
 }

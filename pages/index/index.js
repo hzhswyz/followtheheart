@@ -31,7 +31,7 @@ Page({
         imgsrc: "/pages/static/img/indexpage/titlecontent1.png",
       titletext: "预定"
     }, {
-      bindtapfunction: 'clickorder',
+        bindtapfunction: 'clickorderlist',
         imgsrc: "/pages/static/img/indexpage/titlecontent2.png",
       titletext: "订单"
     }, {
@@ -254,7 +254,6 @@ Page({
     }).catch(function(mes){
       console.log(mes)
     })
-
    
     /*获取用户位置
     wx.getSetting({

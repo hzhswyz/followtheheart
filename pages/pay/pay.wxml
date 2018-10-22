@@ -5,23 +5,47 @@
     <h1 data-shadow="随心菜单">
     随心菜单
     </h1>
-    <text class='moneytext'>￥ {{payinfo.money}}</text>
+    <text class='moneytext' style='{{payinfo.state==1?"display:none":"display:inline-block"}}'>￥ {{payinfo.money}}</text>
+    <text class='moneytext' style='{{payinfo.state==1?"display:inline-block;font-size:35px;":"display:none"}}'>支付成功!</text>
   </view>
 
   <view class='middle'>
-    <view class="middleview">
-      <text class='middleviewtext1'>收款方</text>
+    <view class="middleview" style='{{payinfo.state==1?"display:flex":"display:none"}}'>
+      <text class='middleviewtext1'>支付金额</text>
+      <text class='middleviewtext2'>{{payinfo.money}}￥</text>
+    </view>
+    <view class="middleview" >
+      <text class='middleviewtext1' >收款方</text>
       <text class='middleviewtext2'>{{payinfo.store}}</text>
     </view>
     <view class="middleview">
-      <text class='middleviewtext1'>商品</text>
-      <text class='middleviewtext2'>餐饮消费</text>
+      <text class='middleviewtext1' >商品类型</text>
+      <text class='middleviewtext2'>{{payinfo.type}}</text>
+    </view>
+    <view class="middleview">
+      <text class='middleviewtext1'>下单时间</text>
+      <text class='middleviewtext2'>{{payinfo.date}}</text>
+    </view>
+    <view class="middleview" style='{{payinfo.state==1?"display:flex":"display:none"}}'>
+      <text class='middleviewtext1'>支付时间</text>
+      <text class='middleviewtext2'>{{payinfo.paymenttime}}</text>
+    </view>
+    <view class="middleview">
+      <text class='middleviewtext1'>订单状态</text>
+      <text class='middleviewtext2'>{{payinfo.state==0?"未支付":"已支付"}}</text>
+    </view>
+    <view class="middleview">
+      <text class='middleviewtext1'>订单编号</text>
+      <text class='middleviewtext2' style='font-size:13px;'>{{payinfo.orderid}}</text>
     </view>
   </view>
 
   <view class='bottom'>
-    <view class='buttonview' bindtap='confirmpayment'>
+    <view class='buttonview' bindtap='confirmpayment' style='{{payinfo.state==1?"display:none":"display:flex"}}'>
     确 认 支 付
+    </view>
+    <view style='{{payinfo.state==1?"display:flex":"display:none"}}' bindtap='revieworder' class='buttonview'>
+    查 看 订 单
     </view>
   </view>
 </view>

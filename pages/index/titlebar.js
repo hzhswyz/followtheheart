@@ -28,5 +28,10 @@ Component({
         }
       })
     },
+    clickorderlist: function () {
+      wx.navigateTo({
+        url: '../order/order'
+      })
+    }
   }
 })

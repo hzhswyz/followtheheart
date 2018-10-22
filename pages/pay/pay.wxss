@@ -29,30 +29,34 @@ page{
   flex-direction: column;
   justify-content:center;
   padding-top: 10px;
+  padding-bottom: 10px;
   align-items: center; 
-  border-top:2px solid rgb(240, 240, 240)
+  border-top:2px solid rgb(240, 240, 240);
+  border-bottom:2px solid rgb(240, 240, 240);
 }
 .middleview{
   width: 100%;
-  display: block;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  position:relative;
 }
 .middleviewtext1{
-  margin-left: 20px;
+  position: absolute;
   float: left;
+  left: 20px;
   color: rgb(114, 113, 113);
 }
 .middleviewtext2{
-  float: right;
-  margin-right: 20px;
+  position: absolute;
+  right: 20px;
   color: #df5925;
 }
 .bottom{
-  border-top:2px solid rgb(240, 240, 240);
   display: flex;
   flex-direction: column;
   justify-content:center;
   align-items: center; 
-  margin-top: 10px;
 }
 .buttonview{
   margin-top: 50px;

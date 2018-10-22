@@ -8,10 +8,12 @@ var food_list;
 var is_showorder = false;
 var totalnum = 0;
 var totalamount = 0;
+var refresh = false;
  /**
    * 记录所有商店点购的食物
    */
 var store_food_map = new Map();
+app.store_food_map = store_food_map;
 Page({
 
   /**
@@ -25,6 +27,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log("onlode")
+    refresh = false;
     totalnum = 0;
     totalamount = 0;
     pageobject = this;
@@ -37,6 +41,7 @@ Page({
     wx.setNavigationBarTitle({
       title: storeinfo.name
     })
+    console.log(totalnum + " totalnum0")
     wx.request({
       url: rurl + "/getstorefoods?format=json&storeid=" + storeinfo.id,
       success: function success(res) {
@@ -46,10 +51,14 @@ Page({
           if (store_food_map.has(store_info.id) && store_food_map.get(store_info.id).has(foodlist[i].id)){
           foodlist[i].num = store_food_map.get(store_info.id).get(foodlist[i].id).num;
           totalnum += foodlist[i].num;
+            console.log(totalnum + "totalnum1")
           }
           foodlist[i].imgsrc = rurl +"/static/image/food/food" + foodlist[i].id + ".jpg";
         }
         food_list = foodlist;
+        console.log("refresh")
+        refresh = true;
+        console.log(totalnum +" totalnum2")
         pageobject.setData({
           foodlist: foodlist,
           totalnum: totalnum
@@ -76,7 +85,23 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    console.log("onshow")
+    if (refresh){
+    console.log("返回商店,更新点餐列表");
+    totalnum = 0;
+    for (var i = 0; i < food_list.length; i++) {
+      food_list[i].num = 0;
+      if (store_food_map.has(store_info.id) && store_food_map.get(store_info.id).has(food_list[i].id)) {
+        food_list[i].num = store_food_map.get(store_info.id).get(food_list[i].id).num;
+        totalnum += food_list[i].num;
+      }
+    }
+    pageobject.setData({
+      foodlist: food_list,
+      totalnum: totalnum,
+      foodarray:null
+    })
+    }
   },
 
   /**
@@ -211,20 +236,37 @@ Page({
    * 用户支付账单
    */
   pay: function(){
+    
     wx.login({
       timeout: 3000,
       success: function (res) {
-        console.log("登陆成功")
+        console.log("成功获取usercode")
         wx.request({
-          url: rurl + "/getuserinfo",
-          data: { code: res.code, format: "json" },
+          url: rurl + "/getuserinfo?money="+totalamount+"&store.id="+store_info.id,
+          data: { usercode: res.code, format: "json" },
           success: function (res) {
             console.log(res);
+            app.openid = res.data.pageList.openid;
             var payinfo = {};
-            payinfo.money = totalamount;
-            payinfo.store = store_info.name;
+            payinfo.money = res.data.pageList.money;
+            payinfo.store = res.data.pageList.store.name;
+            payinfo.storeid = res.data.pageList.store.id;
+            payinfo.orderid = res.data.pageList.orderid;
+            payinfo.type = res.data.pageList.type;
+            payinfo.state = res.data.pageList.state;
+            var d = new Date(res.data.pageList.transactiondate);
+            var date = (d.getFullYear()) + "-" +
+              (d.getMonth() + 1) + "-" +
+              (d.getDate()) + " " +
+              (d.getHours()) + ":" +
+              (d.getMinutes()) + ":" +
+              (d.getSeconds());
+            payinfo.date = date;
             let str = JSON.stringify(payinfo);
             console.log(str)
+            pageobject.setData({
+              isshoworder: false
+            });
             wx.navigateTo({
               url: '../pay/pay?payinfo=' + str
             })
