@@ -248,9 +248,16 @@ Page({
       timeout: 3000,
       success: function (res) {
         console.log("成功获取usercode")
+        let foodmap = store_food_map.get(store_info.id);
+        let foodarraylist = new Array();
+        foodmap.forEach(function (value, key, map) {
+          foodarraylist.push({id: key, price: value.price, num: value.num, name: value.name})
+        });
+        let foodarrayliststr = JSON.stringify(foodarraylist);
+        console.log("点餐内容"+foodarrayliststr);
         wx.request({
           url: rurl + "/getuserinfo?money="+totalamount+"&store.id="+store_info.id,
-          data: { usercode: res.code, format: "json" },
+          data: { usercode: res.code, format: "json", content: foodarrayliststr},
           success: function (res) {
             console.log(res);
             var payinfo = {};
@@ -261,6 +268,8 @@ Page({
             payinfo.orderid = res.data.pageList.orderid;
             payinfo.type = res.data.pageList.type;
             payinfo.state = res.data.pageList.state;
+            
+            //payinfo.content = 
             var d = new Date(res.data.pageList.transactiondate);
             var date = (d.getFullYear()) + "-" +
               (d.getMonth() + 1) + "-" +
@@ -274,7 +283,6 @@ Page({
             pageobject.setData({
               isshoworder: false
             });
-            console.log(store_food_map)
             wx.navigateTo({
               url: '../pay/pay?payinfo=' + str
             })

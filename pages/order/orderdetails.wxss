@@ -7,7 +7,7 @@ background: linear-gradient(to right, #f7797d, #FBD786, #C6FFDD); /* W3C, IE 10+
 .container{
   display: flex;
   flex-direction: column;
-  color: rgb(78, 78, 78);
+  color: #4e4e4e;
 }
 .title{
   display: flex;
@@ -34,10 +34,54 @@ background: linear-gradient(to right, #f7797d, #FBD786, #C6FFDD); /* W3C, IE 10+
   justify-content: center;
   font-size: 50px;
   color: red;
-  padding: 20px 0px 20px 0px;
+  padding: 10px 0px 10px 0px;
   background-color: hsla(222, 25%, 92%, 0.5);
 }
-
+.moreview{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: hsla(222, 25%, 92%, 0.5);
+  padding-bottom: 20px;
+  border-bottom:1px solid rgb(151, 151, 151)
+}
+.moreimg{
+  width: 20px;
+  height: 20px;
+}
+.moretext{
+  margin-bottom: 10px;
+}
+.foodlist{
+  width: 80%;
+  height: 150px;
+}
+.foodtable{
+  display: table;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.tabletr{
+display: table-row
+}
+.tabletd1{
+display: table-cell;
+width: 50%;
+}
+.tabletd2{
+display: table-cell;
+width: 20%;
+}
+.tabletd3{
+display: table-cell;
+width: 30%;
+}
+.itemtext{
+  margin: 5px;
+}
 .orderidtext{
 font-size: 12px;
 color: rgb(122, 122, 122);
@@ -82,7 +126,7 @@ word-break:break-all;
 }
 
 .buttonview{
-  margin-top: 50px;
+  margin-top: 30px;
   width: 80%;
   height: 50px;
   background-image: radial-gradient(circle 248px at center, #16d9e3 0%, #30c7ec 47%, #46aef7 100%);

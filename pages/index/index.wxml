@@ -52,7 +52,7 @@
 
   <view class="recommendationview" wx:for="{{Recommendarray}}" wx:key="imgsrc" bindtap='openstore' data-id="{{index}}">
     <view  class="recommendationimgview">
-      <image class="foodimg" mode="aspectFill" src="{{item.imgsrc}}"></image>
+      <image class="foodimg" mode="widthFix" src="{{item.imgsrc}}"></image>
 
       <view class="recommendationtextview">
         <view class='recommendationtextview1'>

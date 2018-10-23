@@ -158,11 +158,10 @@ Page({
             var str = "无法定位";
             str = res.result.address_component.street;
             if (str.length>=6){
-              str = str.substring(0, 4) +"‧‧‧‧";
+              str = str.substring(0, 4) +"‧‧‧";
             }
-            pageobject.setData({
-              position: str
-            });
+            position = str;
+            console.log("经纬度转地址成功：" + str);
             resolve();
           },
           fail: function (res) {
@@ -193,7 +192,8 @@ Page({
       return getstorelistpromise;
       }).then(function () {
         pageobject.setData({
-          Recommendarray: store_list
+          Recommendarray: store_list,
+          position: position
         })
       })
         //通过qqmapsdk.calculateDistance获得用户与商店的距离

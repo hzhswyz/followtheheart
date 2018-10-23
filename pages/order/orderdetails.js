@@ -2,6 +2,7 @@
 const app = getApp();
 var rurl = app.globalData.requestdomainname;
 var pageobject;
+var isshowlist = false;
 Page({
 
   /**
@@ -15,6 +16,7 @@ Page({
     },
     // 此页面 页面内容距最顶部的距离
     height: app.globalData.height * 2 + 20,
+    screenHeight: app.globalData.windowHeight - (app.globalData.height * 2 + 20)
   },
 
   /**
@@ -52,9 +54,12 @@ Page({
         res.data.pageList.transdate = date2;
         res.data.pageList.date = res.data.pageList.transactiondate;
         res.data.pageList.money = res.data.pageList.m;
-        res.data.pageList.store.image = rurl + "/static/image/" + res.data.pageList.store.id + "image.jpg"
+        res.data.pageList.store.image = rurl + "/static/image/" + res.data.pageList.store.id + "image.jpg";
+        let foodlist = JSON.parse(res.data.pageList.content);
+        console.log(foodlist,"商品列表")
         pageobject.setData({
-          payinfo: res.data.pageList
+          payinfo: res.data.pageList,
+          foodlist: foodlist
         })
       }
     })
@@ -115,6 +120,12 @@ Page({
     console.log(str)
     wx.redirectTo({
       url: '../pay/pay?payinfo=' + str
+    })
+  },
+  showlist: function (){
+    isshowlist = !isshowlist;
+    pageobject.setData({
+      isshowlist: isshowlist
     })
   }
 })
