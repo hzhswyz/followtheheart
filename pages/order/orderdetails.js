@@ -59,7 +59,12 @@ Page({
         console.log(foodlist,"商品列表")
         pageobject.setData({
           payinfo: res.data.pageList,
-          foodlist: foodlist
+          foodlist: foodlist,
+          nvabarData: {
+            showCapsule: 1, //是否显示左上角图标
+            title: res.data.pageList.store.name + " 的订单", //导航栏 中间的标题
+            navbackground: "#97d9e1"
+          },
         })
       }
     })
