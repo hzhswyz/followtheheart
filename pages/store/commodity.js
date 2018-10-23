@@ -12,8 +12,7 @@ var refresh = false;
  /**
    * 记录所有商店点购的食物
    */
-var store_food_map = new Map();
-app.store_food_map = store_food_map;
+var store_food_map = app.globalData.store_food_map;
 Page({
 
   /**
@@ -22,6 +21,12 @@ Page({
   data: {
     starssrc:"/pages/static/img/indexpage/stars.png",
     typeindex: foodtypeindex,
+    nvabarData: {
+      showCapsule: 1, //是否显示左上角图标
+      title: '随心菜单', //导航栏 中间的标题
+    },
+    // 此页面 页面内容距最顶部的距离
+    height: app.globalData.height * 2 + 20,
   },
   /**
    * 生命周期函数--监听页面加载
@@ -36,11 +41,17 @@ Page({
     storeinfo.image = rurl +"/static/image/" + storeinfo.id +"image.jpg"
     store_info = storeinfo;
     this.setData({
-      store: storeinfo
+      store: storeinfo,
+      nvabarData: {
+        showCapsule: 1, //是否显示左上角图标
+        title: storeinfo.name, //导航栏 中间的标题
+        navbackground:"#f9d423"
+      }
     })
     wx.setNavigationBarTitle({
       title: storeinfo.name
     })
+    
     console.log(totalnum + " totalnum0")
     wx.request({
       url: rurl + "/getstorefoods?format=json&storeid=" + storeinfo.id,
@@ -66,12 +77,8 @@ Page({
       },
       dataType: "json"
     })
-    wx.getSystemInfo({
-      success: function(res) {
-        pageobject.setData({
-          screenHeight:res.windowHeight-105
-        })
-      }
+    pageobject.setData({
+      screenHeight: app.globalData.windowHeight - 105 - (app.globalData.height * 2 + 20)
     })
   },
   /**
@@ -267,6 +274,7 @@ Page({
             pageobject.setData({
               isshoworder: false
             });
+            console.log(store_food_map)
             wx.navigateTo({
               url: '../pay/pay?payinfo=' + str
             })

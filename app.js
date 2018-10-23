@@ -1,11 +1,17 @@
 //app.js
 App({
-  onLaunch: function () {
-    // 展示本地存储能力
-    var logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
-
+  onLaunch: function (options) {
+    if (options.scene == 1007 || options.scene == 1008) {
+      this.globalData.share = true
+    } else {
+      this.globalData.share = false
+    };
+    wx.getSystemInfo({
+      success: (res) => {
+        this.globalData.height = res.statusBarHeight;
+        this.globalData.windowHeight = res.windowHeight;
+      }
+    });
     // 登录
     wx.login({
       success: res => {
@@ -35,6 +41,10 @@ App({
   },
   globalData: {
     userInfo: null,
-    requestdomainname:"https://hzhb2c.xin"
+    requestdomainname:"https://hzhb2c.xin",
+    share: false,  // 分享默认为false
+    height: 0,
+    store_food_map : new Map(),
+    windowHeight:0
   }
 })

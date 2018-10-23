@@ -2,6 +2,7 @@
 "navigationBarBackgroundColor": "#ffffff",
 "navigationBarTextStyle": "black",
 "usingComponents": {
-  "titlebar": "titlebar"
+  "titlebar": "titlebar",
+  "nav-bar": "../navigation/navigation"
 }
 }

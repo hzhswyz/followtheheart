@@ -1,8 +1,9 @@
 <!--pages/store/commodity.wxml-->
-<view class='storehead'>
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+<view class='storehead' style='margin-top: {{height}}px'>
   <view class='storeinfo'>
     <view class='storeinfoimage'>
-      <image class='storeimage' src='{{store.image}}' mode='aspectFit'></image>
+      <image class='storeimage' src='{{store.image}}' mode='widthFix'></image>
     </view>
     <view class='storeinfotext'>
       <text>月销量：{{store.sales}}单</text>

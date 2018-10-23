@@ -8,6 +8,7 @@
     "pages/order/orderdetails"
   ],
   "window": {
+    "navigationStyle": "custom",
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#3f88bf",
     "navigationBarTitleText": "随心菜单",

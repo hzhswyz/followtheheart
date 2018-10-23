@@ -1,4 +1,7 @@
 {
   "navigationBarBackgroundColor": "#ace0f9",
-  "navigationBarTextStyle": "black"
+  "navigationBarTextStyle": "black",
+  "usingComponents": {
+    "nav-bar": "../navigation/navigation"
+  }
 }

@@ -16,6 +16,14 @@ Page({
     //     isShow: true
     //   }
     // }
+    nvabarData: {
+      showCapsule: 0, //是否显示左上角图标
+      title: '随心菜单', //导航栏 中间的标题
+      navbackground: "white"
+    },
+    // 此页面 页面内容距最顶部的距离
+    height: app.globalData.height * 2 + 20,
+
     searchdisplay: search_display,
     userInfo: {},
     hasUserInfo: false,
@@ -183,42 +191,19 @@ Page({
         });
       });
       return getstorelistpromise;
-      })/*.then(function () {
-        var storeaddressresolution = new Promise(function (resolve, reject) {
-          var count = 0;
-          for (var i = 0; i < store_list.length; i++) {
-            console.log(store_list[i].position);
-            qqmapsdk.geocoder({
-              num:i,
-              address: store_list[i].position,
-              success: function (res) {
-                count++;
-                console.log("store_list[" + this.num + "]" + res.result.location);
-                store_list[this.num].lat = res.result.location.lat;
-                store_list[this.num].lng = res.result.location.lng;
-                if (count == store_list.length) {
-                  resolve();
-                }
-              },
-              fail: function (res) {
-                console.log("商店地址转经纬度失败"+res);
-                reject(new Error("商店地址转经纬度失败"));
-              },
-              complete: function (res) {
-                console.log(res);
-              }
-            });
-          }
+      }).then(function () {
+        pageobject.setData({
+          Recommendarray: store_list
         })
-        return storeaddressresolution;
-      })*/.then(function(){
-      //通过qqmapsdk.calculateDistance获得用户与商店的距离
+      })
+        //通过qqmapsdk.calculateDistance获得用户与商店的距离
+      .then(function(){
       var getdistancetpromise = new Promise(function (resolve, reject) {
+        console.log("获得用户与商店的距离");
         var count = 0;
         for (var i = 0; i < store_list.length; i++) {
           store_list[i].imgsrc = rurl + "/static/image/recommendimg" + store_list[i].id + ".jpg";
           store_list[i].type = store_list[i].type.split(",");
-          //console.log(store_list[i].storeAddress.latitude + "  " + store_list[i].storeAddress.longitude)
           qqmapsdk.calculateDistance({
             //num避免success中store_list[i]产生闭包
             num:i,
@@ -255,139 +240,11 @@ Page({
       console.log(mes)
     })
    
-    /*获取用户位置
-    wx.getSetting({
-      success: function (res){
-        console.log(res);
-        if ("scope.userLocation" in res.authSetting){
-          console.log("已经获取用户位置授权了");
-          wx.getLocation({
-            success: function (res) {
    
-              console.log("经度"+res.latitude);
-              console.log("纬度"+res.longitude);
-              userinfo.latitude = res.latitude;
-              userinfo.longitude = res.longitude;
-             
-              qqmapsdk.reverseGeocoder({
-                location: {
-                  latitude: res.latitude,
-                  longitude: res.longitude},
-                success:function(res){
-                  console.log(res);
-                  pageobject.setData({
-                    position: res.result.address_component.street
-                  })
-                },
-                fail: function (res) {
-                  console.log(res);
-                }
-              });
-
-
-            },
-            fail: function (res) {
-              console.log(res);
-            }
-          });
-        }
-        else{
-            console.log("提前向用户获取位置授权");
-            wx.authorize({
-            scope: "scope.userLocation",
-            success: function () {
-              console.log("获取用户位置授权成功")
-              wx.getLocation({
-                success: function (res) {
-                  userinfo.latitude = res.latitude;
-                  userinfo.longitude = res.longitude;
-                  console.log(res.latitude);
-                  console.log(res.longitude);
-                  console.log(res.accuracy);
-                  console.log(res.verticalAccuracy);
-                  console.log(res.horizontalAccuracy);
-                }
-              });
-            },
-            fail: function () {
-              console.log("获取用户位置授权失败")
-            }
-          });
-        }
-      }
-    });
-    
-
-    //初始化的时候向服务器获取首页精选商户对象数组 “imgsrc”=图片路径
-    wx.request({
-      url: rurl + "/getrecommendationstore?format=json",
-      success: function success(res) {
-        var storelist = res.data.pageList;
-        console.log(storelist);
-        for (var i = 0; i < storelist.length; i++) {
-          storelist[i].imgsrc = rurl + "/static/image/recommendimg" + storelist[i].id + ".jpg";
-          console.log(storelist[i].latitude + "  " + storelist[i].longitude)
-          qqmapsdk.calculateDistance({
-            //num避免success中storelist[i]产生闭包
-            num: i,
-            from: {
-              latitude: 29.972889,
-              longitude: 106.276791
-            },
-            to: [{
-              latitude: storelist[i].latitude,
-              longitude: storelist[i].longitude
-            }],
-            success: function (res) {
-              console.log(res)
-              storelist[this.num].distance = res.result.elements[0].distance;
-            },
-            fail: function (res) {
-              console.log(res);
-            }
-          });
-        }
-        store_list = storelist;
-        pageobject.setData({
-          Recommendarray: storelist
-        })
-      },
-      dataType: "json"
-    });*/
-
-
 
     //初始化的时候渲染wxSearchdata
-    WxSearch.init(pageobject, 50, ['小炒肉', '肉末茄子', '茄子牛肉', '麻辣串串香', '大盘鸡']);
+    WxSearch.init(pageobject, 50 + app.globalData.height * 2 + 20, ['小炒肉', '肉末茄子', '茄子牛肉', '麻辣串串香', '大盘鸡']);
     WxSearch.initMindKeys(['小炒肉', '肉末茄子', '茄子牛肉', '麻辣串串香', '大盘鸡']);
-
-    if (app.globalData.userInfo) {
-      this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
-      })
-    } else if (this.data.canIUse){
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
-      }
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
-        }
-      })
-    }
-
 
   },
 

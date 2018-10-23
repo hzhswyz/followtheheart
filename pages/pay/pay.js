@@ -3,14 +3,20 @@ const app = getApp();
 var pay_info;
 var pageobject;
 var rurl = app.globalData.requestdomainname;
-var store_food_map = app.store_food_map;
+var store_food_map = app.globalData.store_food_map;
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    nvabarData: {
+      showCapsule: 1, //是否显示左上角图标
+      title: '随心菜单', //导航栏 中间的标题
+      navbackground: "white"
+    },
+    // 此页面 页面内容距最顶部的距离
+    height: app.globalData.height * 2 + 20,
   },
 
   /**
@@ -24,7 +30,11 @@ Page({
       title: "向 "  + payinfo.store.name + " 支付"
     })
     this.setData({
-      payinfo: payinfo
+      payinfo: payinfo,
+      nvabarData: {
+        showCapsule: 1, //是否显示左上角图标
+        title: "向 " + payinfo.store.name + " 支付", //导航栏 中间的标题
+      }
     })
   },
 

@@ -1,5 +1,6 @@
 <!--pages/order/orderdetails.wxml-->
-<view class='container'>
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+<view class='container' style='margin-top: {{height}}px'>
 
   <view class='title'>
     <image src='{{payinfo.store.image}}' class='storeimg' mode='widthFix'></image>{{payinfo.store.name}}

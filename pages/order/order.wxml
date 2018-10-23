@@ -1,22 +1,31 @@
 <!--pages/order/order.wxml-->
-<view class='container'>
-<scroll-view scroll-y="true" class='scrollview' style='height:{{screenHeight}}px'>
-<block wx:for="{{orderlist}}" wx:key="{{index}}">
-  <view class='orderitem' data-orderid='{{item.orderid}}' bindtap='vieworderdetails'>
-    <view class='item1'>
-      <view  class='storename'>
-        <image class="storeimg" src='/pages/static/img/indexpage/order_store.png' mode='widthFix'></image>
-        <text >{{item.storename}}</text>
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+<view class='container' style='margin-top: {{height}}px'>
+  <scroll-view scroll-y="true" class='scrollview' style='height:{{screenHeight}}px;'>
+    <block wx:for="{{orderlist}}" wx:key="{{index}}">
+      <view class='orderitem' data-orderid='{{item.orderid}}' bindtap='vieworderdetails'>
+        <view class='item1'>
+          <view  class='storename'>
+            <image class="storeimg" src='/pages/static/img/indexpage/order_store.png' mode='widthFix'></image>
+            <text >{{item.storename}}</text>
+          </view>
+          <view class='money'>
+            <image class="storeimg" src='/pages/static/img/indexpage/order_money.png' mode='widthFix'></image>
+            <text >{{item.money}}元</text>
+          </view>
+        </view>
+        <view class='item2'>
+          <text class='paydate'>{{item.paymenttime==null?"未付款":item.paymenttime}}</text>
+        </view>
       </view>
-      <view class='money'>
-        <image class="storeimg" src='/pages/static/img/indexpage/order_money.png' mode='widthFix'></image>
-        <text >{{item.money}}元</text>
-      </view>
+    </block>
+  </scroll-view>
+  <view class='foot'>
+    <view class='perview' bindtap='perview' style='{{currentpage>0?"color: #363636;":"color:#a5a5a5;"}}'>
+      <text>上一页</text>
     </view>
-    <view class='item2'>
-      <text class='paydate'>{{item.paymenttime==null?"未付款":item.paymenttime}}</text>
+    <view class='next' bindtap='next' style='{{size<10?"color: #a5a5a5;":"color: #363636;"}}'>
+      <text>下一页</text>
     </view>
   </view>
-</block>
-</scroll-view>
 </view>

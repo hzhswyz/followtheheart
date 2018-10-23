@@ -1,6 +1,6 @@
 <!--pages/pay/pay.wxml-->
-<view class="container">
-
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+<view class="container" style='margin-top: {{height}}px'>
   <view class='top'>
     <h1 data-shadow="随心菜单">
     随心菜单

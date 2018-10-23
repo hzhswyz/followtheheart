@@ -1,15 +1,9 @@
 <!--index.wxml-->
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
 <view class="container" >
-  <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-    </block>
-  </view>
 
 <import src="/wxSearch/wxSearch.wxml"/>
-  <view class="wxSearch-section" >
+  <view class="wxSearch-section" style='margin-top: {{height}}px'>
     <view class="wxSearch-pancel">
       <view  class='display:{{searchdisplay?"wxpositionnone":"wxposition"}};'>
         <image src='/pages/static/img/indexpage/address.png' style="width:18px;margin-right:2px;" mode='widthFix'></image>{{position}}

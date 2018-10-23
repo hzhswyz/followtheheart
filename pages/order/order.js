@@ -2,13 +2,20 @@
 const app = getApp();
 var rurl = app.globalData.requestdomainname;
 var pageobject;
+var currentpage = 0;
+var size = 10;
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    nvabarData: {
+      showCapsule: 1, //是否显示左上角图标
+      title: '我的订单', //导航栏 中间的标题
+    },
+    // 此页面 页面内容距最顶部的距离
+    height: app.globalData.height * 2 + 20,
   },
 
   /**
@@ -16,12 +23,8 @@ Page({
    */
   onLoad: function (options) {
     pageobject = this;
-    wx.getSystemInfo({
-      success: function (res) {
-        pageobject.setData({
-          screenHeight: res.windowHeight
-        })
-      }
+    pageobject.setData({
+      screenHeight: app.globalData.windowHeight - (app.globalData.height * 2 + 20)-70
     })
     if(app.openid==undefined){
       console.log("用户未登录,请求登录");
@@ -49,7 +52,7 @@ Page({
   getdata: function(){
     wx.request({
       url: rurl + "/gerorderlist?openid=" + app.openid,
-      data: { format: "json" },
+      data: { currentpage: currentpage ,format: "json" },
       success: function (res) {
         console.log(res.data);
         for (var i = 0; i < res.data.pageList.length; i++) {
@@ -72,8 +75,11 @@ Page({
             res.data.pageList[i].transactiondate = date2;
           }
         }
+        size = res.data.pageList.length;
         pageobject.setData({
-          orderlist: res.data.pageList
+          orderlist: res.data.pageList,
+          size: size,
+          currentpage: currentpage
         });
       }
     })
@@ -132,5 +138,17 @@ Page({
     wx.navigateTo({
       url: 'orderdetails?orderid=' + event.currentTarget.dataset.orderid
     })
+  },
+  perview: function(){
+    if(currentpage>0){
+    currentpage--;
+    pageobject.getdata();
+    }
+  },
+  next: function () {
+    if(size>=10){
+    currentpage++;
+    pageobject.getdata();
+    }
   }
 })
