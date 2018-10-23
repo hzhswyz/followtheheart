@@ -12,11 +12,11 @@ Page({
     nvabarData: {
       showCapsule: 1, //是否显示左上角图标
       title: '我的订单', //导航栏 中间的标题
-      navbackground: "hsla(199, 87%, 83%, 0.502)"
+      navbackground: "#97d9e1"
     },
     // 此页面 页面内容距最顶部的距离
     height: app.globalData.height * 2 + 20,
-    screenHeight: app.globalData.windowHeight - (app.globalData.height * 2 + 20)
+    isshowlist: isshowlist
   },
 
   /**

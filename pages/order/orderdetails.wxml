@@ -1,6 +1,7 @@
 <!--pages/order/orderdetails.wxml-->
 <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
-<scroll-view class='container' scroll-y="true" style='margin-top: {{height}}px;height:{{screenHeight}}px;'>
+
+<view class='container'  style='margin-top:{{height}}px;'>
 
   <view class='title'>
     <image src='{{payinfo.store.image}}' class='storeimg' mode='widthFix'></image>{{payinfo.store.name}}
@@ -14,34 +15,37 @@
     <text class='moretext'>商品详情</text>
     <image wx:if="{{!isshowlist}}" class='moreimg' src='/pages/static/img/indexpage/more.png' mode="widthFix" bindtap='showlist'></image>
     <image wx:else class='moreimg' class='moreimg' src='/pages/static/img/indexpage/retract.png' mode="widthFix" bindtap='showlist'></image>
+
     <scroll-view class='foodlist' scroll-y="true" style='{{isshowlist?"display:block":"display:none"}}'>
-      <view class='foodtable'>
-        <view class='tabletr'>
-            <view class='tabletd'>
-              <text class='itemtext'>名称</text>
-            </view>
-            <view class='tabletd'>
-              <text class='itemtext'>数量</text>
-            </view>
-            <view class='tabletd'>
-              <text class='itemtext'>单价</text>
-            </view>
+      <view class='foodlisttable'>
+        <view class='foodlisttabletr'>
+          <view class='foodlisttabletd1'>
+            <text >名称</text>
           </view>
+          <view class='foodlisttabletd2'>
+            <text >数量</text>
+          </view>
+          <view class='foodlisttabletd3'>
+            <text >单价</text>
+          </view>
+        </view>
         <block wx:for="{{foodlist}}" wx:key="{{index}}">
           <view class='tabletr'>
-            <view class='tabletd1'>
+            <view class='foodlisttabletd1'>
               <text class='itemtext'>{{item.name}}</text>
             </view>
-            <view class='tabletd2'>
+            <view class='foodlisttabletd2'>
               <text class='itemtext'>{{item.num}}份</text>
             </view>
-            <view class='tabletd3'>
+            <view class='foodlisttabletd3'>
               <text class='itemtext'>{{item.price}}元</text>
             </view>
           </view>
         </block>
       </view>
     </scroll-view>
+
+
   </view>
 
   <view class='detailstable'>
@@ -88,4 +92,4 @@
     继续支付
   </view>
 
-</scroll-view>
+</view>

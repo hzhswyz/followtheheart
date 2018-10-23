@@ -15,7 +15,7 @@ Page({
       title: '我的订单', //导航栏 中间的标题
     },
     // 此页面 页面内容距最顶部的距离
-    height: app.globalData.height * 2 + 20,
+    height: app.globalData.height * 2 + 26,
   },
 
   /**
@@ -24,7 +24,7 @@ Page({
   onLoad: function (options) {
     pageobject = this;
     pageobject.setData({
-      screenHeight: app.globalData.windowHeight - (app.globalData.height * 2 + 20)-70
+      screenHeight: app.globalData.windowHeight - (app.globalData.height * 2 + 26)-70
     })
     if(app.openid==undefined){
       console.log("用户未登录,请求登录");
