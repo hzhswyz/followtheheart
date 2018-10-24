@@ -50,10 +50,10 @@
     module.exports.getdistance = getdistance;
   </wxs>
 
-  <view class="recommendationview" wx:for="{{Recommendarray}}" wx:key="imgsrc" bindtap='openstore' data-id="{{index}}">
+  <view class="recommendationview" wx:for="{{Recommendarray}}" wx:key="imgsrc" bindtap='openstore' 
+  data-id="{{index}}" style='width:{{showwidth}}px;height:{{showheight}}px'>
     <view  class="recommendationimgview">
-      <image class="foodimg" mode="widthFix" src="{{item.imgsrc}}"></image>
-
+      <image class="foodimg" mode="scaleToFill" src="{{item.imgsrc}}"></image>
       <view class="recommendationtextview">
         <view class='recommendationtextview1'>
           <view class='recommendationtextview2'>

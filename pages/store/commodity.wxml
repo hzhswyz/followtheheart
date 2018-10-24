@@ -3,7 +3,7 @@
 <view class='storehead' style='margin-top: {{height}}px'>
   <view class='storeinfo'>
     <view class='storeinfoimage'>
-      <image class='storeimage' src='{{store.image}}' mode='widthFix'></image>
+      <image class='storeimage' src='{{store.image}}' mode='aspectFill'></image>
     </view>
     <view class='storeinfotext'>
       <text>月销量：{{store.sales}}单</text>

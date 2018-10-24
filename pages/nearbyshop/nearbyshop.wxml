@@ -1,0 +1,6 @@
+<!--pages/nearbyshop/nearbyshop.wxml-->
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+<view class="t" style='margin-top:{{height}}px'>
+<text class="notice" >功能马上开通</text>
+</view>
+

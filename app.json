@@ -5,7 +5,10 @@
     "pages/store/commodity",
     "pages/pay/pay",
     "pages/order/order",
-    "pages/order/orderdetails"
+    "pages/order/orderdetails",
+    "pages/activity/activity",
+    "pages/reservation/reservation",
+    "pages/nearbyshop/nearbyshop"
   ],
   "window": {
     "navigationStyle": "custom",

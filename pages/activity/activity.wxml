@@ -1,0 +1,5 @@
+<!--pages/activity/activity.wxml-->
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+<view class="t" style='margin-top:{{height}}px'>
+<text class="notice" >暂无活动</text>
+</view>

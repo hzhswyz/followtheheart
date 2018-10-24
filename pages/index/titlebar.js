@@ -28,9 +28,24 @@ Component({
         }
       })
     },
-    clickorderlist: function () {
+    clickorderlist: function (event) {
       wx.navigateTo({
         url: '../order/order'
+      })
+    },
+    clickactivity: function (event) {
+      wx.navigateTo({
+        url: '../activity/activity'
+      })
+    },
+    clickreservation: function (event){
+      wx.navigateTo({
+        url: '../reservation/reservation'
+      })
+    },
+    clicknearbyshop: function (event) {
+      wx.navigateTo({
+        url: '../nearbyshop/nearbyshop'
       })
     }
   }

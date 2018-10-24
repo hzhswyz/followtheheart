@@ -23,7 +23,6 @@ Page({
     },
     // 此页面 页面内容距最顶部的距离
     height: app.globalData.height * 2 + 20,
-
     searchdisplay: search_display,
     userInfo: {},
     hasUserInfo: false,
@@ -35,7 +34,7 @@ Page({
       imgsrc: "/pages/static/img/indexpage/titlecontent0.png",
       titletext: "点餐"
     }, {
-      bindtapfunction: 'clickorder',
+        bindtapfunction: 'clickreservation',
         imgsrc: "/pages/static/img/indexpage/titlecontent1.png",
       titletext: "预定"
     }, {
@@ -43,11 +42,11 @@ Page({
         imgsrc: "/pages/static/img/indexpage/titlecontent2.png",
       titletext: "订单"
     }, {
-      bindtapfunction: 'clickorder',
+        bindtapfunction: 'clicknearbyshop',
         imgsrc: "/pages/static/img/indexpage/titlecontent3.png",
       titletext: "商店"
     }, {
-      bindtapfunction: 'clickorder',
+      bindtapfunction: 'clickactivity',
         imgsrc: "/pages/static/img/indexpage/titlecontent4.png",
       titletext: "活动"
     }],
@@ -79,12 +78,23 @@ Page({
       swipercurrentindex: event.detail.current
     })
   },
-
-
   onLoad: function () {
 
     //pageobject为page对象
     var pageobject = this;
+
+    wx.getSystemInfo({
+      success: (res) => {
+        var showwidth = res.windowWidth*0.97;
+        var showheight = showwidth/1.6;
+        console.log("宽度：",showwidth,"高度：",showheight);
+        pageobject.setData({
+          showwidth: showwidth,
+          showheight: showheight
+        })
+      }
+    });
+    
     //获取腾讯地图API
     qqmapsdk = new QQMapWX({
       key: 'OKWBZ-H3RRF-D76JH-JE5BA-U5FQ5-NXBTH'
