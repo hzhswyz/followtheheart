@@ -5,7 +5,7 @@ var rurl = app.globalData.requestdomainname;
 var QQMapWX = require('../lib/map/qqmap-wx-jssdk.js');
 var qqmapsdk;
 var WxSearch = require('../../wxSearch/wxSearch.js');
-var position = "";
+var position = "定位中";
 var store_list;
 var userinfo = {};
 var search_display= false;
@@ -16,6 +16,8 @@ Page({
     //     isShow: true
     //   }
     // }
+    positioncomplete:false,
+    position:position,
     nvabarData: {
       showCapsule: 0, //是否显示左上角图标
       title: '随心菜单', //导航栏 中间的标题
@@ -172,6 +174,10 @@ Page({
             }
             position = str;
             console.log("经纬度转地址成功：" + str);
+            pageobject.setData({
+              positioncomplete: true,
+              position: position
+            });
             resolve();
           },
           fail: function (res) {
