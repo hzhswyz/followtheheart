@@ -43,9 +43,9 @@
     var getdistance = function(distance){
     var result;
     if(distance>1000)
-      result = (distance/1000).toFixed(1) +" 千米";
+      result = (distance/1000).toFixed(1) +" Km";
     else
-      result = distance+" 米";
+      result = distance+" m";
     return result;
     }
     module.exports.getdistance = getdistance;

@@ -201,7 +201,7 @@ align-items: center;
   width: 80%;
   height: 68%;
   left: 10%;
-  top: 80px;
+  top: 15%;
   border-radius: 20px;
   background: linear-gradient(to right, #d6ae7b, #eacda3);
 }
