@@ -4,6 +4,7 @@ var rurl = app.globalData.requestdomainname;
 var pageobject;
 var currentpage = 0;
 var size = 10;
+var userloginJs = require('../../userlogin.js');
 Page({
 
   /**
@@ -26,57 +27,10 @@ Page({
     pageobject.setData({
       screenHeight: app.globalData.windowHeight - (app.globalData.height * 2 + 26)-70
     })
-
-    var userislogin = new Promise(function (resolve, reject) {
-      wx.checkSession({
-        success() {
-          //session_key 未过期，并且在本生命周期一直有效
-          if (app.globalData.session != null){
-            console.log("用户已经登录");
-            resolve();
-          }
-          else
-            reject(new Error("sessionid 已经失效，需要重新执行登录流程"))
-        },
-        fail() {
-          reject(new Error("session_key 已经失效，需要重新执行登录流程"));
-        }
-      })
-    });
-    userislogin.catch(function () {
-      //通过userlogin获取usercode进行登录
-      var getusercodeAndlogin = new Promise(function (resolve, reject) {
-        wx.login({
-          timeout: 3000,
-          success: function (res) {
-            console.log("成功获取usercode:")
-            wx.request({
-              url: rurl + '/wxuserlogin',
-              data: { usercode: res.code, format: "json" },
-              success: function (res) {
-                if (res.data.pageList) {
-                  console.log("用户登录成功，JSESSIONID：", res.header["Set-Cookie"].split(";")[0].split("=")[1]);
-                  app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
-                  resolve();
-                }
-              },
-              fail: function () {
-                console.log("用户登录失败");
-              }
-            })
-          },
-          fail: function () {
-            reject(new Error("获取usercode失败"));
-          }
-        });
-      });
-      return getusercodeAndlogin;
-    }).then(function(){
+    userloginJs.userloginprocess().then(function(){
       pageobject.getdata();
-    })
-    
+    });
   },
-
   getdata: function(){
     wx.request({
       url: rurl + "/gerorderlist",
@@ -86,6 +40,9 @@ Page({
         if (res.data.pageList.responsecode == 0) {
           if (res.data.pageList.reason == "SESSIONIDInvalid") {
             console.log("sessionid失效")
+            userloginJs.userloginprocess().then(function () {
+              pageobject.getdata();
+            });
           }
         }
         else {

@@ -1,3 +1,5 @@
+
+
 // pages/store/commodity.js
 const app = getApp();
 var rurl = app.globalData.requestdomainname;
@@ -9,6 +11,7 @@ var is_showorder = false;
 var totalnum = 0;
 var totalamount = 0;
 var refresh = false;
+var userloginJs = require('../../userlogin.js');
  /**
    * 记录所有商店点购的食物
    */
@@ -252,50 +255,7 @@ Page({
    * 用户账单生成
    */
   pay: function(){
-
-    var userislogin = new Promise(function (resolve, reject) {
-      wx.checkSession({
-        success() {
-          //session_key 未过期，并且在本生命周期一直有效
-          if (app.globalData.session!=null)
-            resolve();
-          else
-              reject(new Error("sessionid 已经失效，需要重新执行登录流程"))
-        },
-        fail() {
-          reject(new Error("session_key 已经失效，需要重新执行登录流程"));
-        }
-      })
-    });
-    userislogin.catch(function () {
-      //通过userlogin获取usercode进行登录
-      var getusercodeAndlogin = new Promise(function (resolve, reject) {
-        wx.login({
-          timeout: 3000,
-          success: function (res) {
-            console.log("成功获取usercode:")
-            wx.request({
-              url: rurl + '/wxuserlogin',
-              data: { usercode: res.code, format: "json" },
-              success: function (res) {
-                if (res.data.pageList) {
-                  console.log("用户登录成功，JSESSIONID：", res.header["Set-Cookie"].split(";")[0].split("=")[1]);
-                  app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
-                  resolve();
-                }
-              },
-              fail: function () {
-                console.log("用户登录失败");
-              }
-            })
-          },
-          fail: function () {
-            reject(new Error("获取usercode失败"));
-          }
-        });
-      });
-      return getusercodeAndlogin;
-    }).then(function () {
+    userloginJs.userloginprocess().then(function () {
         //支付订单
         let foodmap = store_food_map.get(store_info.id);
         let foodarraylist = new Array();
@@ -313,6 +273,8 @@ Page({
               if(res.data.pageList.responsecode==0){
                 if (res.data.pageList.reason == "SESSIONIDInvalid"){
                   console.log("sessionid失效")
+                  reject(new Error("sessionid失效"))
+                  pageobject.pay();
                 }
               }
               else{
