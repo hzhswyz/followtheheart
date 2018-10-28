@@ -40,11 +40,12 @@ App({
     })
   },
   globalData: {
-    userInfo: null,
+    userInfo: {},
     requestdomainname:"https://hzhb2c.xin",
     share: false,  // 分享默认为false
     height: 0,
     store_food_map : new Map(),
-    windowHeight:0
+    windowHeight:0,
+    session:null
   }
 })

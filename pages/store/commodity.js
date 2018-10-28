@@ -14,7 +14,6 @@ var refresh = false;
    */
 var store_food_map = app.globalData.store_food_map;
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -37,6 +36,16 @@ Page({
     totalnum = 0;
     totalamount = 0;
     pageobject = this;
+    wx.getSystemInfo({
+      success: (res) => {
+        var showwidth = res.windowWidth/2;
+        var showheight = showwidth * 0.6;
+        console.log("宽度：", showwidth, "高度：", showheight);
+        pageobject.setData({
+          showheight: showheight
+        })
+      }
+    });
     let storeinfo = JSON.parse(options.storeinfo);
     storeinfo.image = rurl +"/static/image/" + storeinfo.id +"image.jpg"
     store_info = storeinfo;
@@ -240,59 +249,112 @@ Page({
     }
   },
   /**
-   * 用户支付账单
+   * 用户账单生成
    */
   pay: function(){
-    
-    wx.login({
-      timeout: 3000,
-      success: function (res) {
-        console.log("成功获取usercode")
+
+    var userislogin = new Promise(function (resolve, reject) {
+      wx.checkSession({
+        success() {
+          //session_key 未过期，并且在本生命周期一直有效
+          if (app.globalData.session!=null)
+            resolve();
+          else
+              reject(new Error("sessionid 已经失效，需要重新执行登录流程"))
+        },
+        fail() {
+          reject(new Error("session_key 已经失效，需要重新执行登录流程"));
+        }
+      })
+    });
+    userislogin.catch(function () {
+      //通过userlogin获取usercode进行登录
+      var getusercodeAndlogin = new Promise(function (resolve, reject) {
+        wx.login({
+          timeout: 3000,
+          success: function (res) {
+            console.log("成功获取usercode:")
+            wx.request({
+              url: rurl + '/wxuserlogin',
+              data: { usercode: res.code, format: "json" },
+              success: function (res) {
+                if (res.data.pageList) {
+                  console.log("用户登录成功，JSESSIONID：", res.header["Set-Cookie"].split(";")[0].split("=")[1]);
+                  app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
+                  resolve();
+                }
+              },
+              fail: function () {
+                console.log("用户登录失败");
+              }
+            })
+          },
+          fail: function () {
+            reject(new Error("获取usercode失败"));
+          }
+        });
+      });
+      return getusercodeAndlogin;
+    }).then(function () {
+        //支付订单
         let foodmap = store_food_map.get(store_info.id);
         let foodarraylist = new Array();
         foodmap.forEach(function (value, key, map) {
-          foodarraylist.push({id: key, price: value.price, num: value.num, name: value.name})
+          foodarraylist.push({ id: key, price: value.price, num: value.num, name: value.name });
         });
         let foodarrayliststr = JSON.stringify(foodarraylist);
-        console.log("点餐内容"+foodarrayliststr);
-        wx.request({
-          url: rurl + "/getuserinfo?money="+totalamount+"&store.id="+store_info.id,
-          data: { usercode: res.code, format: "json", content: foodarrayliststr},
-          success: function (res) {
-            console.log(res);
-            var payinfo = {};
-            payinfo.money = res.data.pageList.money;
-            payinfo.store = {};
-            payinfo.store.name = res.data.pageList.store.name;
-            payinfo.store.id = res.data.pageList.store.id;
-            payinfo.orderid = res.data.pageList.orderid;
-            payinfo.type = res.data.pageList.type;
-            payinfo.state = res.data.pageList.state;
-            
-            //payinfo.content = 
-            var d = new Date(res.data.pageList.transactiondate);
-            var date = (d.getFullYear()) + "-" +
-              (d.getMonth() + 1) + "-" +
-              (d.getDate()) + " " +
-              (d.getHours()) + ":" +
-              (d.getMinutes()) + ":" +
-              (d.getSeconds());
-            payinfo.date = date;
-            let str = JSON.stringify(payinfo);
-            console.log(str)
-            pageobject.setData({
-              isshoworder: false
-            });
-            wx.navigateTo({
-              url: '../pay/pay?payinfo=' + str
-            })
-          }
+        console.log("点餐内容" + foodarrayliststr);
+        var payorder = new Promise(function (resolve, reject) {
+          wx.request({
+            url: rurl + "/createorder?money=" + totalamount + "&store.id=" + store_info.id,
+            data: { format: "json", content: foodarrayliststr},
+            header: { Cookie: "JSESSIONID=" + app.globalData.session},
+            success: function (res) {
+              if(res.data.pageList.responsecode==0){
+                if (res.data.pageList.reason == "SESSIONIDInvalid"){
+                  console.log("sessionid失效")
+                }
+              }
+              else{
+              resolve(res);
+              }
+            },
+            fail:function(){
+              reject(new Error("支付失败"));
+            }
+          });
+        });
+        return payorder;
+      }).then(function(res){
+        console.log("生成订单：",res);
+        var payinfo = {};
+        payinfo.money = res.data.pageList.money;
+        payinfo.store = {};
+        payinfo.store.name = res.data.pageList.store.name;
+        payinfo.store.id = res.data.pageList.store.id;
+        payinfo.orderid = res.data.pageList.orderid;
+        payinfo.type = res.data.pageList.type;
+        payinfo.state = res.data.pageList.state;
+        //payinfo.content = 
+        var d = new Date(res.data.pageList.transactiondate);
+        var date = (d.getFullYear()) + "-" +
+          (d.getMonth() + 1) + "-" +
+          (d.getDate()) + " " +
+          (d.getHours()) + ":" +
+          (d.getMinutes()) + ":" +
+          (d.getSeconds());
+        payinfo.date = date;
+        let str = JSON.stringify(payinfo);
+        console.log(str)
+        pageobject.setData({
+          isshoworder: false
+        });
+        wx.navigateTo({
+          url: '../pay/pay?payinfo=' + str
         })
-      },
-      fail: function () {
-        console.log("登陆失败")
-      }
-    })
-    
+      }).catch(function (error) {
+        console.log(error);
+      })
+
   }
 })

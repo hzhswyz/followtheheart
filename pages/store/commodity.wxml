@@ -3,7 +3,7 @@
 <view class='storehead' style='margin-top: {{height}}px'>
   <view class='storeinfo'>
     <view class='storeinfoimage'>
-      <image class='storeimage' src='{{store.image}}' mode='aspectFill'></image>
+      <image class='storeimage' src='{{store.image}}' mode='widthFix'></image>
     </view>
     <view class='storeinfotext'>
       <text>月销量：{{store.sales}}单</text>
@@ -30,9 +30,9 @@
   </view>
 </view>
 <scroll-view class='scrollview' scroll-y="true" style='height:{{screenHeight}}px'>
-  <block wx:for="{{foodlist}}" wx:if="{{item.type==typeindex}}" wx:key="{{index}}">
+  <block wx:for="{{foodlist}}" wx:if="{{item.type==typeindex}}" wx:key="{{index}}" >
     <view class='foodview'>
-      <image src='{{item.imgsrc}}' mode='scaleToFill' class='foodimage'></image>
+      <image src='{{item.imgsrc}}' mode='scaleToFill' class='foodimage' style="height:{{showheight}}px;"></image>
       <view class='foodnameview'>
         <text>{{item.name}}</text>
         <text class='foodnumtext'  wx:if="{{item.num>0}}" >{{item.num}}份</text>

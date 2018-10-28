@@ -26,61 +26,97 @@ Page({
     pageobject.setData({
       screenHeight: app.globalData.windowHeight - (app.globalData.height * 2 + 26)-70
     })
-    if(app.openid==undefined){
-      console.log("用户未登录,请求登录");
-      wx.login({
-        timeout: 3000,
-        success: function (res) {
-          console.log("成功获取usercode");
-          wx.request({
-            url: rurl + "/wxuserlogin",
-            data: { usercode: res.code, format: "json" },
-            success: function (res) {
-              console.log(res)
-              app.openid = res.data.pageList;
-              pageobject.getdata();
-            }
-          });
+
+    var userislogin = new Promise(function (resolve, reject) {
+      wx.checkSession({
+        success() {
+          //session_key 未过期，并且在本生命周期一直有效
+          if (app.globalData.session != null){
+            console.log("用户已经登录");
+            resolve();
+          }
+          else
+            reject(new Error("sessionid 已经失效，需要重新执行登录流程"))
+        },
+        fail() {
+          reject(new Error("session_key 已经失效，需要重新执行登录流程"));
         }
+      })
+    });
+    userislogin.catch(function () {
+      //通过userlogin获取usercode进行登录
+      var getusercodeAndlogin = new Promise(function (resolve, reject) {
+        wx.login({
+          timeout: 3000,
+          success: function (res) {
+            console.log("成功获取usercode:")
+            wx.request({
+              url: rurl + '/wxuserlogin',
+              data: { usercode: res.code, format: "json" },
+              success: function (res) {
+                if (res.data.pageList) {
+                  console.log("用户登录成功，JSESSIONID：", res.header["Set-Cookie"].split(";")[0].split("=")[1]);
+                  app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
+                  resolve();
+                }
+              },
+              fail: function () {
+                console.log("用户登录失败");
+              }
+            })
+          },
+          fail: function () {
+            reject(new Error("获取usercode失败"));
+          }
+        });
       });
-    }
-    else{
+      return getusercodeAndlogin;
+    }).then(function(){
       pageobject.getdata();
-    }
+    })
+    
   },
 
   getdata: function(){
     wx.request({
-      url: rurl + "/gerorderlist?openid=" + app.openid,
-      data: { currentpage: currentpage ,format: "json" },
+      url: rurl + "/gerorderlist",
+      data: { currentpage: currentpage ,format: "json"},
+      header: { Cookie: "JSESSIONID=" + app.globalData.session },
       success: function (res) {
-        console.log(res.data);
-        for (var i = 0; i < res.data.pageList.length; i++) {
-          if (res.data.pageList[i].paydate != null) {
-            var d = new Date(res.data.pageList[i].paydate);
-            var date = (d.getFullYear()) + "-" +
-              (d.getMonth() + 1) + "-" +
-              (d.getDate()) + " " +
-              (d.getHours()) + ":" +
-              (d.getMinutes()) + ":" +
-              (d.getSeconds());
-            res.data.pageList[i].paymenttime = date;
-            var d2 = new Date(res.data.pageList[i].trandate);
-            var date2 = (d2.getFullYear()) + "-" +
-              (d2.getMonth() + 1) + "-" +
-              (d2.getDate()) + " " +
-              (d2.getHours()) + ":" +
-              (d2.getMinutes()) + ":" +
-              (d2.getSeconds());
-            res.data.pageList[i].transactiondate = date2;
+        if (res.data.pageList.responsecode == 0) {
+          if (res.data.pageList.reason == "SESSIONIDInvalid") {
+            console.log("sessionid失效")
           }
         }
-        size = res.data.pageList.length;
-        pageobject.setData({
-          orderlist: res.data.pageList,
-          size: size,
-          currentpage: currentpage
-        });
+        else {
+          console.log(res.data);
+          for (var i = 0; i < res.data.pageList.length; i++) {
+            if (res.data.pageList[i].paydate != null) {
+              var d = new Date(res.data.pageList[i].paydate);
+              var date = (d.getFullYear()) + "-" +
+                (d.getMonth() + 1) + "-" +
+                (d.getDate()) + " " +
+                (d.getHours()) + ":" +
+                (d.getMinutes()) + ":" +
+                (d.getSeconds());
+              res.data.pageList[i].paymenttime = date;
+              var d2 = new Date(res.data.pageList[i].trandate);
+              var date2 = (d2.getFullYear()) + "-" +
+                (d2.getMonth() + 1) + "-" +
+                (d2.getDate()) + " " +
+                (d2.getHours()) + ":" +
+                (d2.getMinutes()) + ":" +
+                (d2.getSeconds());
+              res.data.pageList[i].transactiondate = date2;
+            }
+          }
+          size = res.data.pageList.length;
+          pageobject.setData({
+            orderlist: res.data.pageList,
+            size: size,
+            currentpage: currentpage
+          });
+        }
       }
     })
   },

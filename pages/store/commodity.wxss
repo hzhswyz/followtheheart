@@ -22,7 +22,7 @@
 }
 
 .storeimage{
-  width: 80%;
+  width: 60px;
   max-height: 60px;
   border-radius: 10px;
 }
@@ -90,7 +90,6 @@ align-items: center;
 
 .foodview{
   width: 50%;
-  height: 165px;
   display: inline-block;
   font-size: 15px;
   margin-bottom: 10px;
