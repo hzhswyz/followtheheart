@@ -16,8 +16,8 @@ function userloginprocess () {
           resolve();
         }
         else{
-          console.log("sessionid 已经失效，需要重新执行登录流程");
-          reject(new Error("sessionid 已经失效，需要重新执行登录流程"))
+          console.log("sessionid 为null，需要重新执行登录流程");
+          reject(new Error("sessionid 为null，需要重新执行登录流程"))
         }
       },
       fail() {

@@ -274,6 +274,7 @@ Page({
                 if (res.data.pageList.reason == "SESSIONIDInvalid"){
                   console.log("sessionid失效")
                   reject(new Error("sessionid失效"))
+                  app.globalData.session = null;
                   pageobject.pay();
                 }
               }
@@ -315,7 +316,7 @@ Page({
           url: '../pay/pay?payinfo=' + str
         })
       }).catch(function (error) {
-        console.log(error);
+        console.log("error:"+error.message);
       })
 
   }

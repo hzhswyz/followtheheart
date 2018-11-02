@@ -38,8 +38,10 @@ Page({
       header: { Cookie: "JSESSIONID=" + app.globalData.session },
       success: function (res) {
         if (res.data.pageList.responsecode == 0) {
+          console.log(res)
           if (res.data.pageList.reason == "SESSIONIDInvalid") {
-            console.log("sessionid失效")
+            console.log("sessionid过期失效，置为空");
+            app.globalData.session = null;
             userloginJs.userloginprocess().then(function () {
               pageobject.getdata();
             });
