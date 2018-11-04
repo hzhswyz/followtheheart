@@ -1,5 +1,4 @@
 
-
 // pages/store/commodity.js
 const app = getApp();
 var rurl = app.globalData.requestdomainname;

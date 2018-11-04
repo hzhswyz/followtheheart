@@ -93,6 +93,10 @@ Page({
       header: { Cookie: "JSESSIONID=" + app.globalData.session },
       data: { format: "json" },
       success: function (res) {
+        if ('Set-Cookie' in res.header) {
+          console.log("用户JSESSIONID：", res.header["Set-Cookie"].split(";")[0].split("=")[1]);
+          app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
+        }
         console.log(res.data.pageList)
         if (res.data.pageList.code==1){
           console.log("支付成功")
