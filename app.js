@@ -42,6 +42,7 @@ App({
   globalData: {
     userInfo: {},
     requestdomainname:"https://hzhb2c.xin",
+    dynamicrequest:"https://hzhb2c.xin/order",
     share: false,  // 分享默认为false
     height: 0,
     store_food_map : new Map(),

@@ -2,6 +2,7 @@
 //获取应用实例
 const app = getApp();
 var rurl = app.globalData.requestdomainname;
+var durl = app.globalData.dynamicrequest;
 var QQMapWX = require('../lib/map/qqmap-wx-jssdk.js');
 var qqmapsdk;
 var WxSearch = require('../../wxSearch/wxSearch.js');
@@ -191,7 +192,7 @@ Page({
       //通过request请求得到附件精选商户列表
       var getstorelistpromise = new Promise(function (resolve, reject) {
         wx.request({
-          url: rurl + "/getrecommendationstore?format=json",
+          url: durl + "/MainController/getrecommendationstore?format=json",
           success: function success(res) {
             var storelist = res.data.pageList;
             console.log("商店列表：");

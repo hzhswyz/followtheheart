@@ -3,6 +3,7 @@
 // pages/store/commodity.js
 const app = getApp();
 var rurl = app.globalData.requestdomainname;
+var durl = app.globalData.dynamicrequest;
 var store_info;
 var pageobject;
 var foodtypeindex = 0;
@@ -66,7 +67,7 @@ Page({
     
     console.log(totalnum + " totalnum0")
     wx.request({
-      url: rurl + "/getstorefoods?format=json&storeid=" + storeinfo.id,
+      url: durl + "/MainController/getstorefoods?format=json&storeid=" + storeinfo.id,
       success: function success(res) {
         var foodlist = res.data.pageList;
         console.log(foodlist); 
@@ -266,7 +267,7 @@ Page({
         console.log("点餐内容" + foodarrayliststr);
         var payorder = new Promise(function (resolve, reject) {
           wx.request({
-            url: rurl + "/createorder?money=" + totalamount + "&store.id=" + store_info.id,
+            url: durl + "/MainController/createorder?money=" + totalamount + "&store.id=" + store_info.id,
             data: { format: "json", content: foodarrayliststr},
             header: { Cookie: "JSESSIONID=" + app.globalData.session},
             success: function (res) {

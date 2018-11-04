@@ -1,5 +1,6 @@
 const app = getApp();
 var rurl = app.globalData.requestdomainname;
+var durl = app.globalData.dynamicrequest;
 function userloginprocess () {
   var userisloginresolve;
   var userisloginreject;
@@ -34,7 +35,7 @@ function userloginprocess () {
         success: function (res) {
           console.log("成功获取usercode:")
           wx.request({
-            url: rurl + '/wxuserlogin',
+            url: durl + '/MainController/wxuserlogin',
             data: { usercode: res.code, format: "json" },
             success: function (res) {
               if (res.data.pageList) {

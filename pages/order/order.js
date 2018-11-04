@@ -1,6 +1,7 @@
 // pages/order/order.js
 const app = getApp();
 var rurl = app.globalData.requestdomainname;
+var durl = app.globalData.dynamicrequest;
 var pageobject;
 var currentpage = 0;
 var size = 10;
@@ -33,7 +34,7 @@ Page({
   },
   getdata: function(){
     wx.request({
-      url: rurl + "/gerorderlist",
+      url: durl + "/MainController/gerorderlist",
       data: { currentpage: currentpage ,format: "json"},
       header: { Cookie: "JSESSIONID=" + app.globalData.session },
       success: function (res) {

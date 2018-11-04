@@ -1,6 +1,7 @@
 // pages/order/orderdetails.js
 const app = getApp();
 var rurl = app.globalData.requestdomainname;
+var durl = app.globalData.dynamicrequest;
 var pageobject;
 var isshowlist = false;
 Page({
@@ -26,7 +27,7 @@ Page({
     pageobject = this;
     let orderid = options.orderid;
     wx.request({
-      url: rurl + "/getorderdetails?orderid=" + orderid,
+      url: durl + "/MainController/getorderdetails?orderid=" + orderid,
       data: { format: "json" },
       success: function (res) {
         console.log(res.data)

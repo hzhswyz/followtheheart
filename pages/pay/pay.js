@@ -3,6 +3,7 @@ const app = getApp();
 var pay_info;
 var pageobject;
 var rurl = app.globalData.requestdomainname;
+var durl = app.globalData.dynamicrequest;
 var store_food_map = app.globalData.store_food_map;
 Page({
 
@@ -88,7 +89,7 @@ Page({
   },
   confirmpayment: function () {
     wx.request({
-      url: rurl + "/paymentorder?orderid=" + pay_info.orderid,
+      url: durl + "/MainController/paymentorder?orderid=" + pay_info.orderid,
       data: { format: "json" },
       success: function (res) {
         console.log(res.data.pageList)
