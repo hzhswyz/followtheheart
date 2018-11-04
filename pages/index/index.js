@@ -193,7 +193,13 @@ Page({
       var getstorelistpromise = new Promise(function (resolve, reject) {
         wx.request({
           url: durl + "/MainController/getrecommendationstore?format=json",
+          header: { Cookie: "JSESSIONID=" + app.globalData.session },
           success: function success(res) {
+            if ('Set-Cookie' in res.header) {
+              console.log("用户JSESSIONID：", res.header["Set-Cookie"].split(";")[0].split("=")[1]);
+              app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
+            }
+            console.log("回复",res)
             var storelist = res.data.pageList;
             console.log("商店列表：");
             console.log(storelist);

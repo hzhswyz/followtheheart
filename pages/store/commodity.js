@@ -68,7 +68,12 @@ Page({
     console.log(totalnum + " totalnum0")
     wx.request({
       url: durl + "/MainController/getstorefoods?format=json&storeid=" + storeinfo.id,
+      header: { Cookie: "JSESSIONID=" + app.globalData.session },
       success: function success(res) {
+        if ('Set-Cookie' in res.header) {
+          console.log("用户JSESSIONID：", res.header["Set-Cookie"].split(";")[0].split("=")[1]);
+          app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
+        }
         var foodlist = res.data.pageList;
         console.log(foodlist); 
         for (var i = 0; i < foodlist.length; i++){
@@ -273,9 +278,12 @@ Page({
             success: function (res) {
               if(res.data.pageList.responsecode==0){
                 if (res.data.pageList.reason == "SESSIONIDInvalid"){
-                  console.log("sessionid失效")
-                  reject(new Error("sessionid失效"))
-                  app.globalData.session = null;
+                  console.log("sessionid失效，重置sessionid")
+                  if ('Set-Cookie' in res.header) {
+                    console.log("用户JSESSIONID：", res.header["Set-Cookie"].split(";")[0].split("=")[1]);
+                    app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
+                  }
+                  reject(new Error("sessionid失效，重置sessionid"))
                   pageobject.pay();
                 }
               }

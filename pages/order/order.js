@@ -41,8 +41,11 @@ Page({
         if (res.data.pageList.responsecode == 0) {
           console.log(res)
           if (res.data.pageList.reason == "SESSIONIDInvalid") {
-            console.log("sessionid过期失效，置为空");
-            app.globalData.session = null;
+            console.log("sessionid过期失效，重置sessionid");
+            if ('Set-Cookie' in res.header) {
+              console.log("用户JSESSIONID：", res.header["Set-Cookie"].split(";")[0].split("=")[1]);
+              app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
+            }
             userloginJs.userloginprocess().then(function () {
               pageobject.getdata();
             });

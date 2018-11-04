@@ -90,6 +90,7 @@ Page({
   confirmpayment: function () {
     wx.request({
       url: durl + "/MainController/paymentorder?orderid=" + pay_info.orderid,
+      header: { Cookie: "JSESSIONID=" + app.globalData.session },
       data: { format: "json" },
       success: function (res) {
         console.log(res.data.pageList)

@@ -1,6 +1,7 @@
 const app = getApp();
 var rurl = app.globalData.requestdomainname;
 var durl = app.globalData.dynamicrequest;
+
 function userloginprocess () {
   var userisloginresolve;
   var userisloginreject;
@@ -8,26 +9,6 @@ function userloginprocess () {
     userisloginresolve = resolve;
     userisloginreject = reject;
   });
-  var userislogin = new Promise(function (resolve, reject) {
-    wx.checkSession({
-      success() {
-        //session_key 未过期，并且在本生命周期一直有效
-        if (app.globalData.session != null) {
-          console.log("用户已经登录");
-          resolve();
-        }
-        else{
-          console.log("sessionid 为null，需要重新执行登录流程");
-          reject(new Error("sessionid 为null，需要重新执行登录流程"))
-        }
-      },
-      fail() {
-        console.log("session_key 已经失效，需要重新执行登录流程");
-        reject(new Error("session_key 已经失效，需要重新执行登录流程"));
-      }
-    })
-  });
-  userislogin.catch(function () {
     //通过userlogin获取usercode进行登录
     var getusercodeAndlogin = new Promise(function (resolve, reject) {
       wx.login({
@@ -37,10 +18,13 @@ function userloginprocess () {
           wx.request({
             url: durl + '/MainController/wxuserlogin',
             data: { usercode: res.code, format: "json" },
+            header: { Cookie: "JSESSIONID=" + app.globalData.session },
             success: function (res) {
               if (res.data.pageList) {
+                if ('Set-Cookie' in res.header){
                 console.log("用户登录成功，JSESSIONID：", res.header["Set-Cookie"].split(";")[0].split("=")[1]);
                 app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
+                }
                 resolve();
               }
             },
@@ -53,9 +37,8 @@ function userloginprocess () {
           reject(new Error("获取usercode失败"));
         }
       });
-    });
-    return getusercodeAndlogin;
-  }).then(function () {
+  });
+  getusercodeAndlogin.then(function () {
     console.log("用户登录流程完成");
     userisloginresolve();
   }).catch(function (error) {

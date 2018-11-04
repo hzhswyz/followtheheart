@@ -29,7 +29,12 @@ Page({
     wx.request({
       url: durl + "/MainController/getorderdetails?orderid=" + orderid,
       data: { format: "json" },
+      header: { Cookie: "JSESSIONID=" + app.globalData.session },
       success: function (res) {
+        if ('Set-Cookie' in res.header) {
+          console.log("用户JSESSIONID：", res.header["Set-Cookie"].split(";")[0].split("=")[1]);
+          app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
+        }
         console.log(res.data)
         wx.setNavigationBarTitle({
           title: res.data.pageList.store.name + " 的订单"
