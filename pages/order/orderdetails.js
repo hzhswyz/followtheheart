@@ -1,9 +1,9 @@
 // pages/order/orderdetails.js
 const app = getApp();
-var rurl = app.globalData.requestdomainname;
 var durl = app.globalData.dynamicrequest;
 var pageobject;
 var isshowlist = false;
+var userloginJs = require('../../userlogin.js');
 Page({
 
   /**
@@ -26,55 +26,54 @@ Page({
   onLoad: function (options) {
     pageobject = this;
     let orderid = options.orderid;
-    wx.request({
-      url: durl + "/MainController/getorderdetails?orderid=" + orderid,
-      data: { format: "json" },
-      header: { Cookie: "JSESSIONID=" + app.globalData.session },
-      success: function (res) {
-        if ('Set-Cookie' in res.header) {
-          console.log("用户JSESSIONID：", res.header["Set-Cookie"].split(";")[0].split("=")[1]);
-          app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
-        }
-        console.log(res.data)
-        wx.setNavigationBarTitle({
-          title: res.data.pageList.store.name + " 的订单"
-        })
-        
-        if (res.data.pageList.paymenttime != null) {
-            var d = new Date(res.data.pageList.paymenttime);
+    console.log(orderid)
+    userloginJs.userloginprocess().then(function () {
+      
+      wx.request({
+        url: durl + "/order/getorderdetails?orderid=" + orderid,
+        header: { Cookie: "JSESSIONID=" + app.globalData.session },
+        success: function (res) {
+          console.log(res.data)
+          wx.setNavigationBarTitle({
+            title: res.data.data.store.name + " 的订单"
+          })
+
+          if (res.data.data.paymenttime != null) {
+            var d = new Date(res.data.data.paymenttime);
             var date = (d.getFullYear()) + "-" +
               (d.getMonth() + 1) + "-" +
               (d.getDate()) + " " +
               (d.getHours()) + ":" +
               (d.getMinutes()) + ":" +
               (d.getSeconds());
-            res.data.pageList.paytime = date;
+            res.data.data.paytime = date;
           }
-          var d2 = new Date(res.data.pageList.transactiondate);
+          var d2 = new Date(res.data.data.transactiondate);
           var date2 = (d2.getFullYear()) + "-" +
             (d2.getMonth() + 1) + "-" +
             (d2.getDate()) + " " +
             (d2.getHours()) + ":" +
             (d2.getMinutes()) + ":" +
             (d2.getSeconds());
-        res.data.pageList.transdate = date2;
-        res.data.pageList.date = res.data.pageList.transactiondate;
-        res.data.pageList.money = res.data.pageList.m;
-        res.data.pageList.store.image = rurl + "/static/image/" + res.data.pageList.store.id + "image.jpg";
-        let foodlist = JSON.parse(res.data.pageList.content);
-        console.log(foodlist,"商品列表")
-        pageobject.setData({
-          payinfo: res.data.pageList,
-          foodlist: foodlist,
-          nvabarData: {
-            showCapsule: 1, //是否显示左上角图标
-            title: res.data.pageList.store.name + " 的订单", //导航栏 中间的标题
-            navbackground: "#97d9e1"
-          },
-        })
-      }
-    })
-   
+          res.data.data.transdate = date2;
+          res.data.data.date = res.data.data.transactiondate;
+          res.data.data.store.image = durl + "/static/image/" + res.data.data.store.id + "image.jpg";
+          let foodlist = JSON.parse(res.data.data.content);
+          console.log(foodlist, "商品列表")
+          pageobject.setData({
+            payinfo: res.data.data,
+            foodlist: foodlist,
+            nvabarData: {
+              showCapsule: 1, //是否显示左上角图标
+              title: res.data.data.store.name + " 的订单", //导航栏 中间的标题
+              navbackground: "#97d9e1"
+            },
+          })
+        }
+      })
+
+    });
+
 
   },
 

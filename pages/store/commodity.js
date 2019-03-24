@@ -1,7 +1,5 @@
-
 // pages/store/commodity.js
 const app = getApp();
-var rurl = app.globalData.requestdomainname;
 var durl = app.globalData.dynamicrequest;
 var store_info;
 var pageobject;
@@ -50,7 +48,7 @@ Page({
       }
     });
     let storeinfo = JSON.parse(options.storeinfo);
-    storeinfo.image = rurl +"/static/image/" + storeinfo.id +"image.jpg"
+    storeinfo.image = durl +"/static/image/" + storeinfo.id +"image.jpg"
     store_info = storeinfo;
     this.setData({
       store: storeinfo,
@@ -65,15 +63,17 @@ Page({
     })
     
     console.log(totalnum + " totalnum0")
+    console.log("用户JSESSIONID： " + app.globalData.session);
     wx.request({
-      url: durl + "/MainController/getstorefoods?format=json&storeid=" + storeinfo.id,
+      url: durl + "/store/getstorefoods?storeid=" + storeinfo.id,
       header: { Cookie: "JSESSIONID=" + app.globalData.session },
       success: function success(res) {
         if ('Set-Cookie' in res.header) {
           console.log("用户JSESSIONID：", res.header["Set-Cookie"].split(";")[0].split("=")[1]);
           app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
         }
-        var foodlist = res.data.pageList;
+        var foodlist = res.data.data;
+        console.log("foodlist:"); 
         console.log(foodlist); 
         for (var i = 0; i < foodlist.length; i++){
           if (store_food_map.has(store_info.id) && store_food_map.get(store_info.id).has(foodlist[i].id)){
@@ -81,10 +81,11 @@ Page({
           totalnum += foodlist[i].num;
             console.log(totalnum + "totalnum1")
           }
-          foodlist[i].imgsrc = rurl +"/static/image/food/food" + foodlist[i].id + ".jpg";
+          foodlist[i].imgsrc = durl +"/static/image/food/food" + foodlist[i].id + ".jpg";
         }
         food_list = foodlist;
         console.log("refresh")
+        //refresh为true 则onShow时需要刷新
         refresh = true;
         console.log(totalnum +" totalnum2")
         pageobject.setData({
@@ -147,8 +148,14 @@ Page({
    */
   onPullDownRefresh: function () {
 
-  },
+    // 用户触发了下拉刷新操作
 
+    // 拉取新数据重新渲染界面
+
+    // wx.stopPullDownRefresh() // 可以停止当前页面的下拉刷新。
+    console.log("下拉刷新")
+
+  },
   /**
    * 页面上拉触底事件的处理函数
    */
@@ -257,75 +264,109 @@ Page({
     }
   },
   /**
+   * 什么也不做
+   */
+  donothing: function(){
+
+  },
+  /**
    * 用户账单生成
    */
   pay: function(){
-    userloginJs.userloginprocess().then(function () {
-        //支付订单
-        let foodmap = store_food_map.get(store_info.id);
-        let foodarraylist = new Array();
-        foodmap.forEach(function (value, key, map) {
-          foodarraylist.push({ id: key, price: value.price, num: value.num, name: value.name });
-        });
-        let foodarrayliststr = JSON.stringify(foodarraylist);
-        console.log("点餐内容" + foodarrayliststr);
-        var payorder = new Promise(function (resolve, reject) {
-          wx.request({
-            url: durl + "/MainController/createorder?money=" + totalamount + "&store.id=" + store_info.id,
-            data: { format: "json", content: foodarrayliststr},
-            header: { Cookie: "JSESSIONID=" + app.globalData.session},
-            success: function (res) {
-              if(res.data.pageList.responsecode==0){
-                if (res.data.pageList.reason == "SESSIONIDInvalid"){
-                  console.log("sessionid失效，重置sessionid")
-                  if ('Set-Cookie' in res.header) {
-                    console.log("用户JSESSIONID：", res.header["Set-Cookie"].split(";")[0].split("=")[1]);
-                    app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
-                  }
-                  reject(new Error("sessionid失效，重置sessionid"))
-                  pageobject.pay();
-                }
-              }
-              else{
-              resolve(res);
-              }
-            },
-            fail:function(){
-              reject(new Error("支付失败"));
-            }
-          });
-        });
-        return payorder;
-      }).then(function(res){
-        console.log("生成订单：",res);
-        var payinfo = {};
-        payinfo.money = res.data.pageList.money;
-        payinfo.store = {};
-        payinfo.store.name = res.data.pageList.store.name;
-        payinfo.store.id = res.data.pageList.store.id;
-        payinfo.orderid = res.data.pageList.orderid;
-        payinfo.type = res.data.pageList.type;
-        payinfo.state = res.data.pageList.state;
-        //payinfo.content = 
-        var d = new Date(res.data.pageList.transactiondate);
-        var date = (d.getFullYear()) + "-" +
-          (d.getMonth() + 1) + "-" +
-          (d.getDate()) + " " +
-          (d.getHours()) + ":" +
-          (d.getMinutes()) + ":" +
-          (d.getSeconds());
-        payinfo.date = date;
-        let str = JSON.stringify(payinfo);
-        console.log(str)
-        pageobject.setData({
-          isshoworder: false
-        });
-        wx.navigateTo({
-          url: '../pay/pay?payinfo=' + str
-        })
-      }).catch(function (error) {
-        console.log("error:"+error.message);
-      })
 
+    wx.showModal({
+
+      title: '确认订单',
+
+      content: '请核对订单，确认后进入付款界面',
+
+      confirmText: '确认',
+
+      cancelText: '取消',
+
+      success: function (res) {
+
+        if (res.confirm) {
+
+          console.log('支付订单')
+          //等待加载界面
+          wx.showLoading({
+            title: '正在支付',
+            mask:true
+          })
+          userloginJs.userloginprocess().then(function () {
+            //支付订单
+            let foodmap = store_food_map.get(store_info.id);
+            let foodarraylist = new Array();
+            foodmap.forEach(function (value, key, map) {
+              foodarraylist.push({ id: key, price: value.price, num: value.num, name: value.name });
+            });
+            let foodarrayliststr = JSON.stringify(foodarraylist);
+            console.log("点餐内容" + foodarrayliststr);
+            var payorder = new Promise(function (resolve, reject) {
+              wx.request({
+                url: durl + "/order/createorder?money=" + totalamount + "&store.id=" + store_info.id,
+                data: { content: foodarrayliststr },
+                header: { Cookie: "JSESSIONID=" + app.globalData.session },
+                success: function (res) {
+                  console.log(res)
+                  if (res.data.status == 200)
+                    resolve(res);
+                  else
+                    reject(new Error("支付失败"));
+                },
+                fail: function () {
+                  reject(new Error("支付失败"));
+                }
+              });
+            });
+            return payorder;
+          }).then(function (res) {
+            console.log("生成订单：", res);
+            var payinfo = {};
+            payinfo.money = res.data.data.money;
+            payinfo.store = {};
+            payinfo.store.name = res.data.data.store.name;
+            payinfo.store.id = res.data.data.store.id;
+            payinfo.orderid = res.data.data.orderid;
+            payinfo.type = res.data.data.type;
+            payinfo.state = res.data.data.state;
+            //payinfo.content = 
+            var d = new Date(res.data.data.transactiondate);
+            var date = (d.getFullYear()) + "-" +
+              (d.getMonth() + 1) + "-" +
+              (d.getDate()) + " " +
+              (d.getHours()) + ":" +
+              (d.getMinutes()) + ":" +
+              (d.getSeconds());
+            payinfo.date = date;
+            let str = JSON.stringify(payinfo);
+            console.log(str)
+            pageobject.setData({
+              isshoworder: false
+            });
+            wx.hideLoading()
+            wx.navigateTo({
+              url: '../pay/pay?payinfo=' + str
+            })
+          }).catch(function (error) {
+            wx.hideLoading()
+            wx.showToast({ title: '系统错误，请重新买单' })
+            console.log("error:" + error.message);
+          })
+
+
+
+        } else if (res.cancel) {
+
+          console.log('取消')
+
+        }
+
+      }
+
+    })
+
+    
   }
 })

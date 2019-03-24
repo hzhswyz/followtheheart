@@ -50,8 +50,8 @@
   <image class="shoppingcartimag" src='/pages/static/img/indexpage/shoppingcart.png' mode='scaleToFill'></image>
   <view wx:if="{{totalnum>0}}" class="shoppingnumview">{{totalnum}}</view>
 </view>
-<view class='orderoutview' wx:if="{{isshoworder}}">
-  <view class='orderview'>
+<view class='orderoutview' wx:if="{{isshoworder}}" bindtap='showorder' >
+  <view class='orderview' catchtap='donothing'>
     <image class="clip" src='/pages/static/img/indexpage/clip.png' mode='widthFix'></image>
     <view class='ordertitleview'>
       <image src='/pages/static/img/indexpage/pencil.png' style='width:20px;height:20px;margin-right:20px;' mode='widthFix'></image>
@@ -79,7 +79,7 @@
       <text class='totalamounttext1'>总计金额：</text>
       <text class='totalamounttext2'>{{totalamount}}￥</text>
     </view>
-    <view class='pay' bindtap='pay'>买 单</view>
+    <view class='pay'  hover-class="hover"  bindtap='pay'>买 单</view>
     </view>
   </view>
 </view>

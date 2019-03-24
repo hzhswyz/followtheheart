@@ -2,8 +2,8 @@
 const app = getApp();
 var pay_info;
 var pageobject;
-var rurl = app.globalData.requestdomainname;
 var durl = app.globalData.dynamicrequest;
+var userloginJs = require('../../userlogin.js');
 var store_food_map = app.globalData.store_food_map;
 Page({
 
@@ -88,40 +88,44 @@ Page({
 
   },
   confirmpayment: function () {
-    wx.request({
-      url: durl + "/MainController/paymentorder?orderid=" + pay_info.orderid,
-      header: { Cookie: "JSESSIONID=" + app.globalData.session },
-      data: { format: "json" },
-      success: function (res) {
-        if ('Set-Cookie' in res.header) {
-          console.log("用户JSESSIONID：", res.header["Set-Cookie"].split(";")[0].split("=")[1]);
-          app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
-        }
-        console.log(res.data.pageList)
-        if (res.data.pageList.code==1){
-          console.log("支付成功")
-          pay_info.state = res.data.pageList.state;
-          var d = new Date(res.data.pageList.paymenttime);
-          var date = (d.getFullYear()) + "-" +
-            (d.getMonth() + 1) + "-" +
-            (d.getDate()) + " " +
-            (d.getHours()) + ":" +
-            (d.getMinutes()) + ":" +
-            (d.getSeconds());
-          pay_info.paymenttime = date;
-          pageobject.setData({
-            payinfo: pay_info
-          })
-          console.log("将餐馆" + pay_info.store.id +"内的点餐列表删除");
-          store_food_map.delete(pay_info.store.id);
-        }
-        else{
+    userloginJs.userloginprocess().then(function () {
+
+      wx.request({
+        url: durl + "/order/paymentorder?orderid=" + pay_info.orderid,
+        header: { Cookie: "JSESSIONID=" + app.globalData.session },
+        data: { format: "json" },
+        success: function (res) {
+          if ('Set-Cookie' in res.header) {
+            console.log("用户JSESSIONID：", res.header["Set-Cookie"].split(";")[0].split("=")[1]);
+            app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
+          }
+          console.log(res.data.data)
+          if (res.data.data.code == 1) {
+            console.log("支付成功")
+            pay_info.state = res.data.data.state;
+            var d = new Date(res.data.data.paymenttime);
+            var date = (d.getFullYear()) + "-" +
+              (d.getMonth() + 1) + "-" +
+              (d.getDate()) + " " +
+              (d.getHours()) + ":" +
+              (d.getMinutes()) + ":" +
+              (d.getSeconds());
+            pay_info.paymenttime = date;
+            pageobject.setData({
+              payinfo: pay_info
+            })
+            console.log("将餐馆" + pay_info.store.id + "内的点餐列表删除");
+            store_food_map.delete(pay_info.store.id);
+          }
+          else {
+            console.log("支付失败")
+          }
+        },
+        fail: function () {
           console.log("支付失败")
         }
-      },
-      fail: function () {
-        console.log("支付失败")
-      }
+      })
+
     })
   },
   revieworder: function(){

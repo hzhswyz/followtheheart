@@ -41,8 +41,8 @@ App({
   },
   globalData: {
     userInfo: {},
-    requestdomainname:"https://hzhb2c.xin",
-    dynamicrequest:"https://hzhb2c.xin/order",
+    requestdomainname:"http://localhost:8080",
+    dynamicrequest:"http://localhost:8080/IntelligentMenus",
     share: false,  // 分享默认为false
     height: 0,
     store_food_map : new Map(),

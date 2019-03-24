@@ -8,7 +8,7 @@
   </view>
 
   <view class='money'>
-    <text>{{payinfo.m}}￥</text>
+    <text>{{payinfo.money}}￥</text>
   </view>
   
   <view class='moreview'>
@@ -73,7 +73,7 @@
         <text>订单编号：</text>
       </view>
       <view class="tabletd2">
-        <text class='orderidtext'>{{payinfo.orderid}}</text>
+        <text class='orderidtext'>{{payinfo.id}}</text>
       </view>
     </view>
 
@@ -82,7 +82,7 @@
         <text >商店地址：</text>
       </view>
       <view class="tabletd2">
-        <text class='addresstext'>{{payinfo.store.storeAddress.address}}</text>
+        <text class='addresstext'>{{payinfo.store.storeaddress.address}}</text>
       </view>
     </view>
     

@@ -339,6 +339,12 @@ align-items: center;
   color: rgb(240, 240, 240);
 }
 
+.hover{
+
+  background-color: #b88155;
+
+}
+
 
 ::-webkit-scrollbar-track
 {

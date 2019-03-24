@@ -1,7 +1,6 @@
 //index.js
 //获取应用实例
 const app = getApp();
-var rurl = app.globalData.requestdomainname;
 var durl = app.globalData.dynamicrequest;
 var QQMapWX = require('../lib/map/qqmap-wx-jssdk.js');
 var qqmapsdk;
@@ -55,11 +54,11 @@ Page({
     }],
     //图片滑动窗口对象数组 “imgsrc”=图片路径
     swiperarray: [{
-      imgsrc: rurl+"/static/image/shareswiper1.png"
+      imgsrc: durl+"/static/image/shareswiper1.png"
     }, {
-        imgsrc: rurl +"/static/image/shareswiper2.png"
+        imgsrc: durl +"/static/image/shareswiper2.png"
     }, {
-        imgsrc: rurl +"/static/image/shareswiper3.png"
+        imgsrc: durl +"/static/image/shareswiper3.png"
     }],
     recommendationiconshop:"/pages/static/img/indexpage/shop.png",
     recommendationiconposition:"/pages/static/img/indexpage/position.png",
@@ -123,6 +122,7 @@ Page({
         }
       });
     });
+    //捕获获取位置失败时发生的异常
     userpositionpromise.catch(function (){
       //通过wx.authorize获取用户位置权限
       var authorizepromise = new Promise(function (resolve, reject) {
@@ -191,8 +191,9 @@ Page({
     }).then(function(){
       //通过request请求得到附件精选商户列表
       var getstorelistpromise = new Promise(function (resolve, reject) {
+        console.log("用户JSESSIONID: " + app.globalData.session)
         wx.request({
-          url: durl + "/MainController/getrecommendationstore?format=json",
+          url: durl + "/store/getrecommendationstore",
           header: { Cookie: "JSESSIONID=" + app.globalData.session },
           success: function success(res) {
             if ('Set-Cookie' in res.header) {
@@ -200,7 +201,7 @@ Page({
               app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
             }
             console.log("回复",res)
-            var storelist = res.data.pageList;
+            var storelist = res.data.data;
             console.log("商店列表：");
             console.log(storelist);
             store_list = storelist;
@@ -225,7 +226,7 @@ Page({
         console.log("获得用户与商店的距离");
         var count = 0;
         for (var i = 0; i < store_list.length; i++) {
-          store_list[i].imgsrc = rurl + "/static/image/recommendimg" + store_list[i].id + ".jpg";
+          store_list[i].imgsrc = durl + "/static/image/recommendimg" + store_list[i].id + ".jpg";
           store_list[i].type = store_list[i].type.split(",");
           qqmapsdk.calculateDistance({
             //num避免success中store_list[i]产生闭包
@@ -235,8 +236,8 @@ Page({
               longitude: userinfo.longitude
             },
             to: [{
-              latitude: store_list[i].storeAddress.latitude,
-              longitude: store_list[i].storeAddress.longitude
+              latitude: store_list[i].storeaddress.latitude,
+              longitude: store_list[i].storeaddress.longitude
             }],
             success: function (res) {
               console.log(res);

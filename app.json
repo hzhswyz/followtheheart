@@ -10,6 +10,11 @@
     "pages/reservation/reservation",
     "pages/nearbyshop/nearbyshop"
   ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "通过位置信息，获取附近商家"
+    }
+  },
   "window": {
     "navigationStyle": "custom",
     "backgroundTextStyle": "light",

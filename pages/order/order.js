@@ -1,13 +1,12 @@
 // pages/order/order.js
 const app = getApp();
-var rurl = app.globalData.requestdomainname;
 var durl = app.globalData.dynamicrequest;
 var pageobject;
-var currentpage = 0;
+var currentpage = 1;
 var size = 10;
 var userloginJs = require('../../userlogin.js');
 Page({
-
+  first:true,
   /**
    * 页面的初始数据
    */
@@ -25,7 +24,7 @@ Page({
    */
   onLoad: function (options) {
     pageobject = this;
-    pageobject.setData({
+    this.setData({
       screenHeight: app.globalData.windowHeight - (app.globalData.height * 2 + 26)-70
     })
     userloginJs.userloginprocess().then(function(){
@@ -34,48 +33,39 @@ Page({
   },
   getdata: function(){
     wx.request({
-      url: durl + "/MainController/gerorderlist",
+      url: durl + "/order/gerorderlist",
       data: { currentpage: currentpage ,format: "json"},
       header: { Cookie: "JSESSIONID=" + app.globalData.session },
       success: function (res) {
-        if (res.data.pageList.responsecode == 0) {
-          console.log(res)
-          if (res.data.pageList.reason == "SESSIONIDInvalid") {
-            console.log("sessionid过期失效，重置sessionid");
-            if ('Set-Cookie' in res.header) {
-              console.log("用户JSESSIONID：", res.header["Set-Cookie"].split(";")[0].split("=")[1]);
-              app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
-            }
-            userloginJs.userloginprocess().then(function () {
-              pageobject.getdata();
-            });
-          }
+        if (res.data.status == 500) {
+          console.log(res.data.reason)
         }
         else {
+          wx.hideLoading();
           console.log(res.data);
-          for (var i = 0; i < res.data.pageList.length; i++) {
-            if (res.data.pageList[i].paydate != null) {
-              var d = new Date(res.data.pageList[i].paydate);
+          for (var i = 0; i < res.data.data.length; i++) {
+            if (res.data.data[i].paymenttime != null) {
+              var d = new Date(res.data.data[i].paymenttime);
               var date = (d.getFullYear()) + "-" +
                 (d.getMonth() + 1) + "-" +
                 (d.getDate()) + " " +
                 (d.getHours()) + ":" +
                 (d.getMinutes()) + ":" +
                 (d.getSeconds());
-              res.data.pageList[i].paymenttime = date;
-              var d2 = new Date(res.data.pageList[i].trandate);
+              res.data.data[i].paymenttime = date;
+              var d2 = new Date(res.data.data[i].transactiondate);
               var date2 = (d2.getFullYear()) + "-" +
                 (d2.getMonth() + 1) + "-" +
                 (d2.getDate()) + " " +
                 (d2.getHours()) + ":" +
                 (d2.getMinutes()) + ":" +
                 (d2.getSeconds());
-              res.data.pageList[i].transactiondate = date2;
+              res.data.data[i].transactiondate = date2;
             }
           }
-          size = res.data.pageList.length;
+          size = res.data.data.length;
           pageobject.setData({
-            orderlist: res.data.pageList,
+            orderlist: res.data.data,
             size: size,
             currentpage: currentpage
           });
@@ -88,14 +78,21 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    wx.showLoading({
+      title: '正在加载',
+      mask: true
+    })
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    if (this.first){
+      this.first = false
+    }else{
+      this.getdata()
+    }
   },
 
   /**
@@ -139,7 +136,7 @@ Page({
     })
   },
   perview: function(){
-    if(currentpage>0){
+    if(currentpage>1){
     currentpage--;
     pageobject.getdata();
     }
