@@ -91,7 +91,7 @@ Page({
     userloginJs.userloginprocess().then(function () {
 
       wx.request({
-        url: durl + "/order/paymentorder?orderid=" + pay_info.orderid,
+        url: durl + "/order/paymentorder?orderid=" + pay_info.id,
         header: { Cookie: "JSESSIONID=" + app.globalData.session },
         data: { format: "json" },
         success: function (res) {
@@ -130,7 +130,7 @@ Page({
   },
   revieworder: function(){
     wx.redirectTo({
-      url: "../order/orderdetails?orderid=" + pay_info.orderid
+      url: "../order/orderdetails?orderid=" + pay_info.id
     })
   }
 })

@@ -328,7 +328,7 @@ Page({
             payinfo.store = {};
             payinfo.store.name = res.data.data.store.name;
             payinfo.store.id = res.data.data.store.id;
-            payinfo.orderid = res.data.data.orderid;
+            payinfo.id = res.data.data.orderid;
             payinfo.type = res.data.data.type;
             payinfo.state = res.data.data.state;
             //payinfo.content = 
@@ -339,7 +339,7 @@ Page({
               (d.getHours()) + ":" +
               (d.getMinutes()) + ":" +
               (d.getSeconds());
-            payinfo.date = date;
+            payinfo.transdate = date;
             let str = JSON.stringify(payinfo);
             console.log(str)
             pageobject.setData({

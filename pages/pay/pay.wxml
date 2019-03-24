@@ -24,7 +24,7 @@
     </view>
     <view class="middleview">
       <text class='middleviewtext1'>下单时间</text>
-      <text class='middleviewtext2'>{{payinfo.date}}</text>
+      <text class='middleviewtext2'>{{payinfo.transdate}}</text>
     </view>
     <view class="middleview" style='{{payinfo.state==1?"display:flex":"display:none"}}'>
       <text class='middleviewtext1'>支付时间</text>
@@ -36,7 +36,7 @@
     </view>
     <view class="middleview">
       <text class='middleviewtext1'>订单编号</text>
-      <text class='middleviewtext2' style='font-size:13px;'>{{payinfo.orderid}}</text>
+      <text class='middleviewtext2' style='font-size:13px;'>{{payinfo.id}}</text>
     </view>
   </view>
 
