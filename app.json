@@ -10,6 +10,18 @@
     "pages/reservation/reservation",
     "pages/nearbyshop/nearbyshop"
   ],
+  "tabBar": {
+    "list": [
+      {
+        "text": "首页",
+        "pagePath": "pages/index/index"
+      },
+      {
+        "text": "订单",
+        "pagePath": "pages/order/order"
+      }
+    ]
+  },
   "permission": {
     "scope.userLocation": {
       "desc": "通过位置信息，获取附近商家"

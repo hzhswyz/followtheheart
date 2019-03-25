@@ -41,6 +41,7 @@ Page({
       success: (res) => {
         var showwidth = res.windowWidth/2;
         var showheight = showwidth * 0.6;
+        app.globalData.windowHeight = res.windowHeight;
         console.log("宽度：", showwidth, "高度：", showheight);
         pageobject.setData({
           showheight: showheight
@@ -305,8 +306,8 @@ Page({
             console.log("点餐内容" + foodarrayliststr);
             var payorder = new Promise(function (resolve, reject) {
               wx.request({
-                url: durl + "/order/createorder?money=" + totalamount + "&store.id=" + store_info.id,
-                data: { content: foodarrayliststr },
+                url: durl + "/order/createorder",
+                data: { content: foodarrayliststr, money: totalamount, 'store.id': store_info.id, 'store.name': store_info.name },
                 header: { Cookie: "JSESSIONID=" + app.globalData.session },
                 success: function (res) {
                   console.log(res)

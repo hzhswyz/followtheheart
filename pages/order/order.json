@@ -4,5 +4,6 @@
   "navigationBarTextStyle": "black",
   "usingComponents": {
     "nav-bar": "../navigation/navigation"
-  }
+  },
+  "onReachBottomDistance": 100
 }

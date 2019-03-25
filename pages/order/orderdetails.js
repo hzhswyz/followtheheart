@@ -33,7 +33,7 @@ Page({
         url: durl + "/order/getorderdetails?orderid=" + orderid,
         header: { Cookie: "JSESSIONID=" + app.globalData.session },
         success: function (res) {
-          console.log(res.data)
+          console.log("res.data", res.data)
           wx.setNavigationBarTitle({
             title: res.data.data.store.name + " 的订单"
           })
@@ -56,7 +56,6 @@ Page({
             (d2.getMinutes()) + ":" +
             (d2.getSeconds());
           res.data.data.transdate = date2;
-          res.data.data.date = res.data.data.transactiondate;
           res.data.data.store.image = durl + "/static/image/" + res.data.data.store.id + "image.jpg";
           let foodlist = JSON.parse(res.data.data.content);
           console.log(foodlist, "商品列表")

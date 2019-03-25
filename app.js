@@ -9,7 +9,6 @@ App({
     wx.getSystemInfo({
       success: (res) => {
         this.globalData.height = res.statusBarHeight;
-        this.globalData.windowHeight = res.windowHeight;
       }
     });
     // 登录
@@ -39,10 +38,10 @@ App({
       }
     })
   },
-  globalData: {
+  globalData: {//120.79.16.31 localhost
     userInfo: {},
-    requestdomainname:"http://localhost:8080",
-    dynamicrequest:"http://localhost:8080/IntelligentMenus",
+    requestdomainname:"http://120.79.16.31:8080",
+    dynamicrequest:"http://120.79.16.31:8080/IntelligentMenus",
     share: false,  // 分享默认为false
     height: 0,
     store_food_map : new Map(),

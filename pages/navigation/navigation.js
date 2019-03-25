@@ -33,12 +33,12 @@ Component({
     //返回到首页
     _backhome() {
       //wx.navigateBack(100);
-      wx.redirectTo({
-        url: '/pages/index/index',
-      })/*
-      wx.switchTab({
+      /*wx.redirectTo({
         url: '/pages/index/index',
       })*/
+      wx.switchTab({
+        url: '/pages/index/index',
+      })
     }
   }
 

@@ -118,7 +118,8 @@ Page({
             store_food_map.delete(pay_info.store.id);
           }
           else {
-            console.log("支付失败")
+            if (res.data.data.code == 0)
+                console.log("订单已经支付过")
           }
         },
         fail: function () {
