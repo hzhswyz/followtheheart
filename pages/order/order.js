@@ -2,11 +2,20 @@
 const app = getApp();
 var durl = app.globalData.dynamicrequest;
 var pageobject;
+
+//已加载订单数量，用于赋值订单的sequenceid
+var listsize = 0;
+//当前加载的页数
 var currentpage = 1;
+//用于判断是否是点击查看详情页面后放回订单界面
+var isviewdetails = false;
+//点击详情的序列id
+var touchsequenceid = 0;
+//订单数组
 var orderlistarray = [];
+
 var userloginJs = require('../../userlogin.js');
 Page({
-  first:true,
   /**
    * 页面的初始数据
    */
@@ -23,8 +32,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    orderlistarray = [];
-    currentpage = 1;
     pageobject = this;
     wx.getSystemInfo({ 
       success: (res) => {
@@ -35,16 +42,15 @@ Page({
     this.setData({
       screenHeight: app.globalData.windowHeight - (app.globalData.height * 2 + 26)
     })
-    this.getdata();
   },
 
 
-  getdata: function(){
+  getdata: function (){
     userloginJs.userloginprocess().then(function () {
 
       wx.request({
         url: durl + "/order/gerorderlist",
-        data: { currentpage: currentpage, format: "json" },
+        data: { currentpage: currentpage },
         header: { Cookie: "JSESSIONID=" + app.globalData.session },
         success: function (res) {
           if (res.data.status == 500) {
@@ -57,6 +63,9 @@ Page({
             console.log(res.data);
             //更改时间显示格式
             for (var i = 0; i < res.data.data.length; i++) {
+              //序列id
+              res.data.data[i].sequenceid = listsize++;
+              //商店头像
               res.data.data[i].store.image = durl + "/static/image/" + res.data.data[i].store.id + "image.jpg";
               if (res.data.data[i].paymenttime != null) {
                 var d = new Date(res.data.data[i].paymenttime);
@@ -77,18 +86,80 @@ Page({
                 res.data.data[i].transactiondate = date2;
               }
             }
-
+            //将加载后的数据添加到原数组
             orderlistarray = orderlistarray.concat(res.data.data);
+
             pageobject.setData({
-              orderlist: orderlistarray,
-              currentpage: currentpage
+              orderlist: orderlistarray
             });
           }
         }
       })
 
+    }, function (err){
+      wx.showToast({
+        title: err.message,
+        image:'/pages/static/img/indexpage/loginfail.png'
+      })
     });
     
+  },
+
+
+  getdatabyorderid: function () {
+
+    userloginJs.userloginprocess().then(function () {
+
+      
+      wx.request({
+        url: durl + "/order/getorderandstore",
+        data: { orderid: orderlistarray[touchsequenceid].id },
+        header: { Cookie: "JSESSIONID=" + app.globalData.session },
+        success: function (res) {
+          if (res.data.status == 500) {
+            wx.showToast({
+              title: res.data.reason
+            })
+          }
+          else {
+            wx.hideLoading();
+            console.log(res.data);
+            //更改时间显示格式
+            res.data.data.store.image = durl + "/static/image/" + res.data.data.store.id + "image.jpg";
+            if (res.data.data.paymenttime != null) {
+              var d = new Date(res.data.data.paymenttime);
+              var date = (d.getFullYear()) + "-" +
+                (d.getMonth() + 1) + "-" +
+                (d.getDate()) + " " +
+                (d.getHours()) + ":" +
+                (d.getMinutes()) + ":" +
+                (d.getSeconds());
+              res.data.data.paymenttime = date;
+              var d2 = new Date(res.data.data.transactiondate);
+              var date2 = (d2.getFullYear()) + "-" +
+                (d2.getMonth() + 1) + "-" +
+                (d2.getDate()) + " " +
+                (d2.getHours()) + ":" +
+                (d2.getMinutes()) + ":" +
+                (d2.getSeconds());
+              res.data.data.transactiondate = date2;
+            }
+          }
+          res.data.data.sequenceid = touchsequenceid;
+          //更新查看的详情后的订单
+          orderlistarray[touchsequenceid] = res.data.data;
+
+          pageobject.setData({
+            orderlist: orderlistarray,
+          });
+
+        }
+      });
+
+
+
+    });
+
   },
 
   // 当距离scroll-view底部距离小于50像素时触发回调
@@ -109,17 +180,35 @@ Page({
       title: '正在加载',
       mask: true
     })
+
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    if (this.first){
-      this.first = false
-    }else{
+    //点击tabbar进入的，需要置顶
+    if(!isviewdetails){
+     
+     //scrollview置顶
+      pageobject.setData({
+        scrollTop : 0
+      });
+
+      //初始化参数
+      orderlistarray = [];
+      currentpage = 1;
+      listsize = 0;
+      touchsequenceid = 0;
       this.getdata()
+      
+    }else{
+      //恢复标志
+      isviewdetails = false;
+
+      this.getdatabyorderid();
     }
+   
   },
 
   /**
@@ -157,21 +246,12 @@ Page({
 
   },
   vieworderdetails:function (event){
+    touchsequenceid = event.currentTarget.dataset.sequenceid;
+    isviewdetails = true;
     console.log(event,"查看订单详情")
     wx.navigateTo({
       url: 'orderdetails?orderid=' + event.currentTarget.dataset.orderid
     })
   },
-  /*perview: function(){
-    if(currentpage>1){
-    currentpage--;
-    pageobject.getdata();
-    }
-  },
-  next: function () {
-    if(size>=10){
-    currentpage++;
-    pageobject.getdata();
-    }
-  }*/
+
 })

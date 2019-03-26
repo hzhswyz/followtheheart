@@ -108,7 +108,7 @@ Page({
       wx.getSetting({
         success: function (res) {
           console.log(res);
-          if ("scope.userLocation" in res.authSetting) {
+          if ("scope.userLocation" in res.authSetting && res.authSetting['scope.userLocation'] == true) {
             console.log("已经获取用户位置授权了");
             resolve();
           }
@@ -123,8 +123,10 @@ Page({
         }
       });
     });
+    
     //捕获获取位置失败时发生的异常
-    userpositionpromise.catch(function (){
+    userpositionpromise.catch(function (res){
+      console.log(res.message)
       //通过wx.authorize获取用户位置权限
       var authorizepromise = new Promise(function (resolve, reject) {
         wx.authorize({
@@ -141,7 +143,7 @@ Page({
       });
       return authorizepromise;
     }).then(function(){
-      //通过wx.getLocation获取用户位置权限
+      //通过wx.getLocation获取用户位置
       var getLocationpromise = new Promise(function (resolve, reject) {
         wx.getLocation({
           success: function (res) {
@@ -153,7 +155,7 @@ Page({
           },
           fail: function (res) {
             console.log(res);
-            reject(new Error("wx.getLocation获取用户位置权限失败"));
+            reject(new Error("wx.getLocation获取用户位置失败"));
           }
         });    
       });

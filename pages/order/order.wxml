@@ -1,9 +1,9 @@
 <!--pages/order/order.wxml-->
 <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
 <view class='container' style='margin-top: {{height}}px'>
-  <scroll-view scroll-y="true" class='scrollview' style='height:{{screenHeight}}px;' bindscrolltolower='scrolltolower'>
+  <scroll-view scroll-y="true" class='scrollview' style='height:{{screenHeight}}px;' enable-back-to-top='true' bindscrolltolower='scrolltolower' scroll-top="{{scrollTop}}">
     <block wx:for="{{orderlist}}" wx:key="{{index}}">
-      <view class='orderitem' data-orderid='{{item.id}}' bindtap='vieworderdetails'>
+      <view class='orderitem' data-orderid='{{item.id}}' data-sequenceid='{{item.sequenceid}}' bindtap='vieworderdetails'>
         <view class='item1'>
           <view  class='storename'>
             <image class="storeimg" src='{{item.store.image}}' mode='widthFix'></image>

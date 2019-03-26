@@ -14,11 +14,15 @@
     "list": [
       {
         "text": "首页",
-        "pagePath": "pages/index/index"
+        "pagePath": "pages/index/index",
+        "iconPath": "pages/static/img/indexpage/tabbar_home.png",
+        "selectedIconPath": "pages/static/img/indexpage/tabbar_home2.png"
       },
       {
         "text": "订单",
-        "pagePath": "pages/order/order"
+        "pagePath": "pages/order/order",
+        "iconPath": "pages/static/img/indexpage/tabbar_order.png",
+        "selectedIconPath": "pages/static/img/indexpage/tabbar_order2.png"
       }
     ]
   },
