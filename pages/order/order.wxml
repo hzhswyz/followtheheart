@@ -1,5 +1,14 @@
 <!--pages/order/order.wxml-->
 <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+<wxs module="sumup">
+    var foodsnum = function(ary){
+    var result = 0;
+    for(var i = 0;i < ary.length;i++)
+      result += ary[i].num;
+    return result;
+    }
+    module.exports.foodsnum = foodsnum;
+  </wxs>
 <view class='container' style='margin-top: {{height}}px'>
   <scroll-view scroll-y="true" class='scrollview' style='height:{{screenHeight}}px;' enable-back-to-top='true' bindscrolltolower='scrolltolower' scroll-top="{{scrollTop}}">
     <block wx:for="{{orderlist}}" wx:key="{{index}}">
@@ -9,12 +18,26 @@
             <image class="storeimg" src='{{item.store.image}}' mode='widthFix'></image>
             <text >{{item.store.name}}</text>
           </view>
+          <view class='foodnum'>
+            
+          </view>
           <view class='money'>
-            <image class="storeimg" src='/pages/static/img/indexpage/order_money.png' mode='widthFix'></image>
+            <!--image class="storeimg" src='/pages/static/img/indexpage/order_money.png' mode='widthFix'></image-->
             <text >{{item.money}}元</text>
           </view>
         </view>
         <view class='item2'>
+          <block wx:for='{{item.content}}' wx:key="{{item.content.id}}" wx:for-item="food" wx:for-index="idx">
+            <view class='numandname' wx:if='{{idx < 3}}'>
+              <text  class='foodname'>{{food.name}}</text>
+              <text  class='foodnum'>{{food.num}}份</text>
+            </view>
+          </block>
+        </view>
+        <view class='item3'>
+          <text class='paydate'>一共{{sumup.foodsnum(item.content)}}件商品</text>
+        </view>
+        <view class='item4'>
           <text class='paydate'>{{item.paymenttime==null?"未付款":item.paymenttime}}</text>
         </view>
       </view>

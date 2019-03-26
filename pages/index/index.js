@@ -103,31 +103,33 @@ Page({
       key: 'OKWBZ-H3RRF-D76JH-JE5BA-U5FQ5-NXBTH'
     });
 
-    var userpositionpromise = new Promise(function (resolve, reject) {
-      //获取用户位置
-      wx.getSetting({
-        success: function (res) {
-          console.log(res);
-          if ("scope.userLocation" in res.authSetting && res.authSetting['scope.userLocation'] == true) {
-            console.log("已经获取用户位置授权了");
-            resolve();
+    //检查用户是否授予定位权限
+    function positionpromise(){
+      var userpositionpromise = new Promise(function (resolve, reject) {
+        //获取用户位置
+        wx.getSetting({
+          success: function (res) {
+            console.log(res);
+            if (res.authSetting['scope.userLocation']) {
+              console.log("userpositionpromise 已经获取用户位置授权了");
+              resolve();
+            }
+            else {
+              reject(new Error("没有获取位置授权，将通过wx.authorize获取用户位置获取"));
+            }
+          },
+          fail: function (res) {
+            console.log("调用wx.getSetting（）失败，将通过wx.authorize获取用户位置获取");
+            reject(new Error("调用wx.getSetting（）失败"));
           }
-          else{
-            reject(new Error("error:没有获取位置授权，将通过wx.authorize获取用户位置获取"));
-          }
-        },
-        fail: function (res) {
-          console.log("调用wx.getSetting（）失败，将通过wx.authorize获取用户位置获取");
-          console.log(res);
-          reject(new Error("调用wx.getSetting（）失败，将通过wx.authorize获取用户位置获取"));
-        }
+        });
       });
-    });
-    
-    //捕获获取位置失败时发生的异常
-    userpositionpromise.catch(function (res){
-      console.log(res.message)
-      //通过wx.authorize获取用户位置权限
+      return userpositionpromise;
+    }
+
+    //向用户获取位置权限
+    function getlocaltionauthorizepromise(){
+
       var authorizepromise = new Promise(function (resolve, reject) {
         wx.authorize({
           scope: "scope.userLocation",
@@ -142,9 +144,12 @@ Page({
         });
       });
       return authorizepromise;
-    }).then(function(){
-      //通过wx.getLocation获取用户位置
-      var getLocationpromise = new Promise(function (resolve, reject) {
+    }
+
+    //获取用户位置信息（经纬度信息）
+    function getlocationpromise(){
+
+      var longitudeandlatitude = new Promise(function (resolve, reject) {
         wx.getLocation({
           success: function (res) {
             console.log("经度" + res.latitude);
@@ -154,14 +159,17 @@ Page({
             resolve();
           },
           fail: function (res) {
-            console.log(res);
+            console.log("getLocationpromise", res);
             reject(new Error("wx.getLocation获取用户位置失败"));
           }
-        });    
+        });
       });
-      return getLocationpromise;
-    }).then(function (){
-      //通过qqmapsdk.reverseGeocoder将经纬度转换为普通地址，精确到街道
+      return longitudeandlatitude;
+    }
+
+    //进行经纬度转街道地址
+    function addresstranslationpromise(){
+
       var getuseraddresspromise = new Promise(function (resolve, reject) {
         qqmapsdk.reverseGeocoder({
           location: {
@@ -169,15 +177,14 @@ Page({
             longitude: userinfo.longitude
           },
           success: function (res) {
-            console.log("经纬度转地址");
-            console.log( res);
+            console.log("经纬度转地址: ",res);
             var str = "无法定位";
             str = res.result.address_component.street;
-            if (str.length>=6){
-              str = str.substring(0, 4) +"‧‧‧";
+            if (str.length >= 6) {
+              str = str.substring(0, 4) + "‧‧‧";
             }
             position = str;
-            console.log("经纬度转地址成功：" + str);
+            console.log("经纬度转街道地址成功：" + str);
             pageobject.setData({
               positioncomplete: true,
               position: position
@@ -185,46 +192,43 @@ Page({
             resolve();
           },
           fail: function (res) {
-            console.log(res);
+            console.log("getuseraddresspromise", res);
             reject(new Error("经纬度转换失败"));
           }
         });
       });
       return getuseraddresspromise;
-    }).then(function(){
-      //通过request请求得到附件精选商户列表
+    }
+
+    //获取推荐商店
+    function getstorespromise(){
+
       var getstorelistpromise = new Promise(function (resolve, reject) {
-        console.log("用户JSESSIONID: " + app.globalData.session)
+        console.log("向服务器发送JSESSIONID：" + app.globalData.session)
         wx.request({
           url: durl + "/store/getrecommendationstore",
           header: { Cookie: "JSESSIONID=" + app.globalData.session },
           success: function success(res) {
             if ('Set-Cookie' in res.header) {
-              console.log("用户JSESSIONID：", res.header["Set-Cookie"].split(";")[0].split("=")[1]);
+              console.log("服务器返回的JSESSIONID：", res.header["Set-Cookie"].split(";")[0].split("=")[1]);
               app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
             }
-            console.log("回复",res)
             var storelist = res.data.data;
-            console.log("商店列表：");
-            console.log(storelist);
+            console.log("商店列表：",storelist);
             store_list = storelist;
             resolve();
           },
-          dataType: "json",
           fail: function (res) {
             reject(new Error("获取附件精选商户列表失败"));
           }
         });
       });
       return getstorelistpromise;
-      }).then(function () {
-        pageobject.setData({
-          Recommendarray: store_list,
-          position: position
-        })
-      })
-        //通过qqmapsdk.calculateDistance获得用户与商店的距离
-      .then(function(){
+    }
+
+    //利用商店经纬度信息与用户经纬度信息计算双方距离
+    function getstoredistancetpromise(){
+
       var getdistancetpromise = new Promise(function (resolve, reject) {
         console.log("获得用户与商店的距离");
         var count = 0;
@@ -233,7 +237,7 @@ Page({
           store_list[i].type = store_list[i].type.split(",");
           qqmapsdk.calculateDistance({
             //num避免success中store_list[i]产生闭包
-            num:i,
+            num: i,
             from: {
               latitude: userinfo.latitude,
               longitude: userinfo.longitude
@@ -243,13 +247,12 @@ Page({
               longitude: store_list[i].storeaddress.longitude
             }],
             success: function (res) {
-              console.log(res);
               count++;
-              console.log("store_list[" + this.num + "] 距离我：" + res.result.elements[0].distance+"m")
+              console.log("store_list[" + this.num + "] 距离我：" + res.result.elements[0].distance + "m")
               store_list[this.num].distance = res.result.elements[0].distance;
-              if (count == store_list.length){
+              if (count == store_list.length) {
                 resolve();
-              } 
+              }
             },
             fail: function (res) {
               console.log(res);
@@ -259,15 +262,44 @@ Page({
         }
       });
       return getdistancetpromise;
-    }).then(function(){
-      pageobject.setData({
-        Recommendarray: store_list
+    }
+
+    //检查用户是否授予定位权限
+    positionpromise()
+      .catch(function (res) {
+        //向用户获取位置权限
+        return getlocaltionauthorizepromise();
       })
-    }).catch(function(mes){
-      console.log(mes)
-    })
-   
-   
+      .then(function (res) {
+        //获取用户位置信息（经纬度信息）
+        return getlocationpromise();
+      })
+      .then(function (res) {
+        //进行经纬度转街道地址
+        return addresstranslationpromise();
+      })
+      .then(function (res) {
+        //获取推荐商店
+        return getstorespromise();
+      })
+      .then(function () {
+        pageobject.setData({
+          Recommendarray: store_list,
+          position: position
+        })
+      })
+      .then(function (res) {
+        //利用商店经纬度信息与用户经纬度信息计算双方距离
+        return getstoredistancetpromise();
+      })
+      .then(function () {
+        pageobject.setData({
+          Recommendarray: store_list
+        })
+      }).catch(function (mes) {
+        console.log(mes)
+      })
+
 
     //初始化的时候渲染wxSearchdata
     WxSearch.init(pageobject, 50 + app.globalData.height * 2 + 20, ['小炒肉', '肉末茄子', '茄子牛肉', '麻辣串串香', '大盘鸡']);

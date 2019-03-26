@@ -64,6 +64,7 @@ Page({
             //更改时间显示格式
             for (var i = 0; i < res.data.data.length; i++) {
               //序列id
+              res.data.data[i].content = JSON.parse(res.data.data[i].content);
               res.data.data[i].sequenceid = listsize++;
               //商店头像
               res.data.data[i].store.image = durl + "/static/image/" + res.data.data[i].store.id + "image.jpg";
@@ -146,6 +147,7 @@ Page({
             }
           }
           res.data.data.sequenceid = touchsequenceid;
+          res.data.data.content = JSON.parse(res.data.data.content);
           //更新查看的详情后的订单
           orderlistarray[touchsequenceid] = res.data.data;
 

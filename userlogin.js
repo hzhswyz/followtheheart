@@ -7,7 +7,7 @@ function userloginprocess () {
   function userislogin(){
 
     var islogin = new Promise(function (resolve, reject) {
-      console.log("向服务器发送JSESSIONID： " + app.globalData.session);
+      console.log("判断是否已经登陆 向服务器发送JSESSIONID： " + app.globalData.session);
       wx.request({
         url: durl + '/wxuser/islogin',
         header: { Cookie: "JSESSIONID=" + app.globalData.session },
