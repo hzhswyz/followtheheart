@@ -2,12 +2,6 @@
 page{
   background-image: linear-gradient(to top, #ebbba7 0%, #cfc7f8 100%);
 }
-.container{
-
-}
-.scrollview{
-
-}
 .orderitem{
 display: flex;
 flex-direction: column;
@@ -43,14 +37,13 @@ width: 30%;
 .item3{
 border-top:solid #b6b6b6;
 border-top-width:1px;
-margin-top:5px;
-padding-top: 3px;
-display: block;
+margin-top:10px;
+padding-top: 8px;
+display: flex;
+flex-direction: row;
+justify-content:flex-start;
+align-items: center;
 margin-left: 45px;
-}
-.item4{
-margin-top:5px;
-display: block;
 }
 .storename{
 width: 50%;
@@ -65,26 +58,31 @@ height: 35px;
 margin-right: 10px;
 border-radius: 3px;
 }
-.foodnum{
-display: flex;
-flex-direction: row;
-align-items: center;
-width: 30%;
-font-size: 15px;
-color: rgb(122, 122, 122);
-}
 .money{
-width: 20%;
+width: 50%;
 display: flex;
 flex-direction: row;
 justify-content:flex-end;
 align-items: center;
 color: #1296db;
 }
+.foodnum{
+width: 50%;
+display: flex;
+flex-direction: row;
+align-items: center;
+font-size: 15px;
+color: rgb(122, 122, 122);
+justify-content:flex-start;
+}
 .paydate{
-float: right;
+width: 50%;
 font-size: 15px;
 color: #363636;
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content:flex-end;
 }
 .foot{
 width: 100%;

@@ -8,11 +8,12 @@ Page({
   data: {
     nvabarData: {
       showCapsule: 1, //是否显示左上角图标
-      title: '附件商店', //导航栏 中间的标题
+      title: '附近商店', //导航栏 中间的标题
       navbackground: "white"
     },
     // 此页面 页面内容距最顶部的距离
     height: app.globalData.height * 2 + 20,
+    filterindex: 0,
   },
 
   /**
@@ -22,6 +23,12 @@ Page({
 
   },
 
+  changefilter: function (event){
+    var index = event.target.dataset.index;
+    this.setData({
+      filterindex: index
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

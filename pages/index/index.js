@@ -90,7 +90,7 @@ Page({
       success: (res) => {
         var showwidth = res.windowWidth*0.97;
         var showheight = showwidth/1.6;
-        console.log("宽度：",showwidth,"高度：",showheight);
+        //console.log("宽度：",showwidth,"高度：",showheight);
         pageobject.setData({
           showwidth: showwidth,
           showheight: showheight
@@ -297,6 +297,10 @@ Page({
           Recommendarray: store_list
         })
       }).catch(function (mes) {
+        wx.showToast({
+          title: mes.message,
+          image: '/pages/static/img/indexpage/indexfail.png'
+        })
         console.log(mes)
       })
 

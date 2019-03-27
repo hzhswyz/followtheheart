@@ -42,7 +42,8 @@ Page({
         var showwidth = res.windowWidth/2;
         var showheight = showwidth * 0.6;
         app.globalData.windowHeight = res.windowHeight;
-        console.log("宽度：", showwidth, "高度：", showheight);
+        console.log("conmmodity windowheight", res.windowHeight)
+        //console.log("宽度：", showwidth, "高度：", showheight);
         pageobject.setData({
           showheight: showheight
         })

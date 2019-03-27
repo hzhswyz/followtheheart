@@ -1,6 +1,14 @@
 <!--pages/nearbyshop/nearbyshop.wxml-->
 <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
-<view class="t" style='margin-top:{{height}}px'>
-<text class="notice" >功能马上开通</text>
+<view class="filter" style='margin-top:{{height}}px' >
+  <text class="{{0 != filterindex ? 'filteritem':'filteritemclick'}}" data-index='0' bindtap='changefilter'>距离最近</text>
+  <text class="{{1 != filterindex ? 'filteritem':'filteritemclick'}}" data-index='1' bindtap='changefilter'>销量最多</text>
+  <text class="{{2 != filterindex ? 'filteritem':'filteritemclick'}}" data-index='2' bindtap='changefilter'>人均最低</text>
 </view>
+<view class='container'>
+  <block>
+    <view style='height:{{itemheight}},background:red'>
 
+    </view>
+  </block>
+</view>

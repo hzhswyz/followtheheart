@@ -11,12 +11,6 @@ App({
         this.globalData.height = res.statusBarHeight;
       }
     });
-    // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-      }
-    })
     // 获取用户信息
     wx.getSetting({
       success: res => {
@@ -46,6 +40,7 @@ App({
     height: 0,
     store_food_map : new Map(),
     windowHeight:0,
+    windowHeightminusttabbar:0,
     session:null
   }
 })

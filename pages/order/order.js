@@ -35,12 +35,12 @@ Page({
     pageobject = this;
     wx.getSystemInfo({ 
       success: (res) => {
-        //在app()构造函数里获取高度少一个tabbar高度
-        app.globalData.windowHeight = res.windowHeight
+        app.globalData.windowHeightminusttabbar = res.windowHeight
+        console.log("order windowHeightminusttabbar", res.windowHeight)
       }
     })
     this.setData({
-      screenHeight: app.globalData.windowHeight - (app.globalData.height * 2 + 26)
+      screenHeight: app.globalData.windowHeightminusttabbar - (app.globalData.height * 2 + 26)
     })
   },
 
