@@ -25,7 +25,7 @@ Page({
     numberArray: [1, 2, 3, 4]
   },
   switch: function (e) {
-    const length = this.data.objectArray.length
+    /*const length = this.data.objectArray.length
     for (let i = 0; i < length; ++i) {
       const x = Math.floor(Math.random() * length)
       const y = Math.floor(Math.random() * length)
@@ -36,9 +36,13 @@ Page({
     }
     for (let i = 0; i < length; ++i) {
       console.log(this.data.objectArray[i].id)
-    }
-    //this.data.objectArray[0].unique = "unique_1"
-    //this.data.objectArray[1].unique = "unique_0"
+    }*/
+    this.data.objectArray[5].unique = "unique_1"
+    this.data.objectArray[4].unique = "unique_0"
+
+    //const temp = this.data.objectArray[4]
+    //this.data.objectArray[4] = this.data.objectArray[5]
+    //this.data.objectArray[5] = temp
     this.setData({
       objectArray: this.data.objectArray
     })

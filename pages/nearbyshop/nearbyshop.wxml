@@ -7,8 +7,38 @@
 </view>
 <view class='container'>
   <block>
-    <view style='height:{{itemheight}},background:red'>
-
+    <view class="item">
+      <view class='imgarea'>
+        <image class='storeimg' src='{{store.imgsrc}}' mode='aspectFill'/>
+      </view>
+      <view class='information'>
+        <view class="storename">
+          <text class='nametext'>{{store.name}}</text>
+        </view>
+        <view class="starandsaleanddistance">
+          <view class='star'>
+            <text decode='true'>评分&nbsp;</text>
+            <block wx:for="{{store.stars}}" wx:key="{{index}}">
+              <image src='{{starssrc}}' class='starsimg' mode='aspectFit'></image>
+            </block>
+          </view>
+          <view class='sale'>
+            <text>月销量 {{store.sales}}</text>
+          </view>
+          <view class='distance'>
+            <text>距离 {{store.distance}}</text>
+          </view>
+        </view>
+        <view class="storetypeandpre">
+          <view class='storetype'>
+            <image class="storetypeimg" src='/pages/static/img/indexpage/shopm.png'></image>
+            <text>{{store.tp}}</text>
+          </view>
+          <view class='per'>
+            <text>人均消费 {{store.consume}}</text>
+          </view>
+        </view>
+      </view>
     </view>
   </block>
 </view>
