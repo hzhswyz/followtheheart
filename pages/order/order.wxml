@@ -32,7 +32,7 @@
           </block>
         </view>
         <view class='item3'>
-          <text class='foodnum'>一共{{sumup.foodsnum(item.content)}}件商品</text>
+          <text class='commoditynum'>一共{{sumup.foodsnum(item.content)}}件商品</text>
           <text class='paydate'>{{item.paymenttime==null?"未付款":item.paymenttime}}</text>
         </view>
       </view>
