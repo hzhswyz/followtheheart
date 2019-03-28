@@ -6,36 +6,47 @@
   <text class="{{2 != filterindex ? 'filteritem':'filteritemclick'}}" data-index='2' bindtap='changefilter'>人均最低</text>
 </view>
 <view class='container'>
-  <block>
+  <block wx:for="{{store}}">
     <view class="item">
       <view class='imgarea'>
-        <image class='storeimg' src='{{store.imgsrc}}' mode='aspectFill'/>
+        <image class='storeimg' src='{{item.imgsrc}}' mode='aspectFill'/>
       </view>
       <view class='information'>
         <view class="storename">
-          <text class='nametext'>{{store.name}}</text>
+          <text class='nametext'>{{item.name}}</text>
         </view>
         <view class="starandsaleanddistance">
           <view class='star'>
             <text decode='true'>评分&nbsp;</text>
-            <block wx:for="{{store.stars}}" wx:key="{{index}}">
+            <block wx:for="{{item.stars}}" wx:key="{{index}}">
               <image src='{{starssrc}}' class='starsimg' mode='aspectFit'></image>
             </block>
           </view>
           <view class='sale'>
-            <text>月销量 {{store.sales}}</text>
+            <text>月销量 {{item.sales}}</text>
           </view>
+          <wxs module="calculatedistance">
+            var getdistance = function(distance){
+            var result;
+            if(distance>1000)
+              result = (distance/1000).toFixed(1) +" Km";
+            else
+              result = distance+" m";
+            return result;
+            }
+            module.exports.getdistance = getdistance;
+          </wxs>
           <view class='distance'>
-            <text>距离 {{store.distance}}</text>
+            <text>距离 {{calculatedistance.getdistance(item.distance)}}</text>
           </view>
         </view>
         <view class="storetypeandpre">
           <view class='storetype'>
             <image class="storetypeimg" src='/pages/static/img/indexpage/shopm.png'></image>
-            <text>{{store.tp}}</text>
+            <text>{{item.typename}}</text>
           </view>
           <view class='per'>
-            <text>人均消费 {{store.consume}}</text>
+            <text>人均消费 {{item.consume}}</text>
           </view>
         </view>
       </view>
