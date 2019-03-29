@@ -75,13 +75,13 @@ Page({
           app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
         }
         var foodlist = res.data.data;
-        console.log("foodlist:"); 
-        console.log(foodlist); 
+        console.log("foodlist:",foodlist); 
+        //遍历商店的所有商品,与store_food_map中的商品对比,已查看商店内已经加入购物车的商品
         for (var i = 0; i < foodlist.length; i++){
           if (store_food_map.has(store_info.id) && store_food_map.get(store_info.id).has(foodlist[i].id)){
           foodlist[i].num = store_food_map.get(store_info.id).get(foodlist[i].id).num;
           totalnum += foodlist[i].num;
-            console.log(totalnum + "totalnum1")
+            console.log("totalnum1:"+totalnum)
           }
           foodlist[i].imgsrc = durl +"/static/image/food/food" + foodlist[i].id + ".jpg";
         }
@@ -89,7 +89,7 @@ Page({
         console.log("refresh")
         //refresh为true 则onShow时需要刷新
         refresh = true;
-        console.log(totalnum +" totalnum2")
+        console.log("totalnum2: "+totalnum )
         pageobject.setData({
           foodlist: foodlist,
           totalnum: totalnum
@@ -223,7 +223,12 @@ Page({
     for (var i = 0; i < food_list.length; i++) {
       if (food_list[i].id == foodid) {
         food_list[i].num--;
-        (store_food_map.get(store_info.id).get(foodid).num)--;
+        if (food_list[i].num == 0){
+          store_food_map.get(store_info.id).delete(foodid); 
+        }
+        else{
+          (store_food_map.get(store_info.id).get(foodid).num)--;
+        }
       }
     }
     totalnum--;

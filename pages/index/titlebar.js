@@ -28,9 +28,9 @@ Component({
         }
       })
     },
-    clickorderlist: function (event) {
+    clickmanage: function (event) {
       wx.navigateTo({
-        url: '../order/order'
+        url: '../manage/manage'
       })
     },
     clickactivity: function (event) {

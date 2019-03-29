@@ -16,7 +16,6 @@ Page({
     },
     // 此页面 页面内容距最顶部的距离
     height: app.globalData.height * 2 + 20,
-    filterindex: 0,
     starssrc: "/pages/static/img/indexpage/stars.png"
   },
 

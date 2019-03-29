@@ -6,7 +6,7 @@
   <text class="{{2 != filterindex ? 'filteritem':'filteritemclick'}}" data-index='2' bindtap='changefilter'>人均最低</text>
 </view>
 <view class='container'>
-  <block wx:for="{{store}}">
+  <block wx:for="{{store}}" wx:key="id">
     <view class="item">
       <view class='imgarea'>
         <image class='storeimg' src='{{item.imgsrc}}' mode='aspectFill'/>

@@ -5,11 +5,15 @@ var durl = app.globalData.dynamicrequest;
 var QQMapWX = require('../lib/map/qqmap-wx-jssdk.js');
 var qqmapsdk;
 var WxSearch = require('../../wxSearch/wxSearch.js');
+var userloginJs = require('../../userlogin.js');
 var position = "定位中";
 var store_list;
 var userinfo = {};
 var search_display= false;
 var tabbarishide = false;
+//pageobject为page对象
+var pageobject;
+var titlearray;
 Page({
   data: {
     // wxSearchData:{
@@ -31,35 +35,13 @@ Page({
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     swipercurrentindex: 0,
-    //顶端图标对象数组 “bindtapfunction:”=点击回调函数“ “titletext”=图标对应的名称 imgsrc”=图片路径
-    titlearray: [{
-      bindtapfunction: 'clickorder',
-      imgsrc: "/pages/static/img/indexpage/titlecontent0.png",
-      titletext: "点餐"
-    }, {
-        bindtapfunction: 'clickreservation',
-        imgsrc: "/pages/static/img/indexpage/titlecontent1.png",
-      titletext: "预定"
-    }, {
-        bindtapfunction: 'clickorderlist',
-        imgsrc: "/pages/static/img/indexpage/titlecontent2.png",
-      titletext: "订单"
-    }, {
-        bindtapfunction: 'clicknearbyshop',
-        imgsrc: "/pages/static/img/indexpage/titlecontent3.png",
-      titletext: "商店"
-    }, {
-      bindtapfunction: 'clickactivity',
-        imgsrc: "/pages/static/img/indexpage/titlecontent4.png",
-      titletext: "活动"
-    }],
     //图片滑动窗口对象数组 “imgsrc”=图片路径
     swiperarray: [{
-      imgsrc: durl+"/static/image/shareswiper1.png"
+      imgsrc: durl + "/static/image/shareswiper1.png"
     }, {
-        imgsrc: durl +"/static/image/shareswiper2.png"
+      imgsrc: durl + "/static/image/shareswiper2.png"
     }, {
-        imgsrc: durl +"/static/image/shareswiper3.png"
+      imgsrc: durl + "/static/image/shareswiper3.png"
     }],
     recommendationiconshop:"/pages/static/img/indexpage/shop.png",
     recommendationiconposition:"/pages/static/img/indexpage/position.png",
@@ -81,11 +63,9 @@ Page({
       swipercurrentindex: event.detail.current
     })
   },
+
   onLoad: function () {
-
-    //pageobject为page对象
-    var pageobject = this;
-
+    pageobject = this;
     wx.getSystemInfo({
       success: (res) => {
         var showwidth = res.windowWidth*0.97;
@@ -97,19 +77,157 @@ Page({
         })
       }
     });
-    
+    //初始化的时候渲染wxSearchdata
+    WxSearch.init(pageobject, 50 + app.globalData.height * 2 + 20, ['小炒肉', '肉末茄子', '茄子牛肉', '麻辣串串香', '大盘鸡']);
+    WxSearch.initMindKeys(['小炒肉', '肉末茄子', '茄子牛肉', '麻辣串串香', '大盘鸡']);
+
+    //顶端图标对象数组 “bindtapfunction:”=点击回调函数“ “titletext”=图标对应的名称 imgsrc”=图片路径
+    titlearray = [{
+      bindtapfunction: 'clickorder',
+      imgsrc: "/pages/static/img/indexpage/titlecontent0.png",
+      titletext: "点餐"
+    }, {
+      bindtapfunction: 'clickreservation',
+      imgsrc: "/pages/static/img/indexpage/titlecontent1.png",
+      titletext: "预定"
+    }, {
+      bindtapfunction: 'clicknearbyshop',
+      imgsrc: "/pages/static/img/indexpage/titlecontent3.png",
+      titletext: "商店"
+    }, {
+      bindtapfunction: 'clickactivity',
+      imgsrc: "/pages/static/img/indexpage/titlecontent4.png",
+      titletext: "活动"
+    }];
+
+    pageobject.setData({
+      titlearray: titlearray
+    });
+
+    //确定是商户后显示商户管理图标
+    userloginJs.userloginprocess().then(function () {
+      if (app.globalData.userInfo.IsBusiness){
+        titlearray[4] = {
+          bindtapfunction: 'clickmanage',
+          imgsrc: "/pages/static/img/indexpage/titlecontent2.png",
+          titletext: "管理"
+        };
+      }
+      pageobject.setData({
+        titlearray: titlearray
+      })
+    });
+
+  },
+
+  onShareAppMessage(Object){
+    var url = "/pages/index/share.png";
+    return {
+      title: '随心菜单',
+      path: '/pages/index/index',
+      imageUrl:url
+    }
+  },
+
+  getUserInfo: function(e) {
+    console.log(e)
+    app.globalData.userInfo = e.detail.userInfo
+    this.setData({
+      userInfo: e.detail.userInfo,
+      hasUserInfo: true
+    })
+  },
+
+  handleTap3: function (event) {
+    console.log(event)
+  },
+
+  handleTap2: function (event) {
+    console.log(event)
+  },
+
+  handleTap1: function (event) {
+    console.log(event)
+  },
+
+   wxSearchFn: function (e) {
+    console.log("wxSearchFn");
+    var that = this
+    WxSearch.wxSearchAddHisKey(that);
+  },
+
+  wxSearchInput: function (e) {
+    console.log("wxSearchInput");
+    var that = this
+    WxSearch.wxSearchInput(e, that);
+  },
+
+  wxSearchFocus: function (e) {
+    console.log("wxSearchFocus");
+    this.setData({
+      searchdisplay: true
+    });
+    var that = this
+    WxSearch.wxSearchFocus(e, that);
+  },
+
+  wxSearchBlur: function (e) {
+    console.log("wxSearchBlur");
+    var that = this
+    WxSearch.wxSearchBlur(e, that);
+  },
+
+  wxSearchKeyTap: function (e) {
+    console.log("wxSearchKeyTap");
+    var that = this
+    WxSearch.wxSearchKeyTap(e, that);
+  },
+
+  wxSearchDeleteKey: function (e) {
+    console.log("wxSearchDeleteKey");
+    var that = this
+    WxSearch.wxSearchDeleteKey(e, that);
+  },
+
+  wxSearchDeleteAll: function (e) {
+    console.log("wxSearchDeleteAll");
+    var that = this
+    WxSearch.wxSearchDeleteAll(that);
+  },
+
+  wxSearchTap: function (e) {
+    console.log("wxSearchTap");
+    this.setData({
+      searchdisplay: false
+    })
+    var that = this
+    WxSearch.wxSearchHiddenPancel(that);
+  },
+
+  openstore: function (event){
+    console.log("点击第"+event.currentTarget.dataset.id)
+    let str = JSON.stringify(store_list[event.currentTarget.dataset.id]);
+    console.log(str)
+    wx.navigateTo({
+      url: '../store/commodity?storeinfo='+str
+    })
+  },
+
+  //加载精选商户
+  onReady: function(){
+
     //获取腾讯地图API
     qqmapsdk = new QQMapWX({
       key: 'OKWBZ-H3RRF-D76JH-JE5BA-U5FQ5-NXBTH'
     });
 
     //检查用户是否授予定位权限
-    function positionpromise(){
+    function positionpromise() {
       var userpositionpromise = new Promise(function (resolve, reject) {
         //获取用户位置
         wx.getSetting({
           success: function (res) {
-            console.log(res);
+            console.log("权限信息",res);
             if (res.authSetting['scope.userLocation']) {
               console.log("userpositionpromise 已经获取用户位置授权了");
               resolve();
@@ -128,7 +246,7 @@ Page({
     }
 
     //向用户获取位置权限
-    function getlocaltionauthorizepromise(){
+    function getlocaltionauthorizepromise() {
 
       var authorizepromise = new Promise(function (resolve, reject) {
         wx.authorize({
@@ -147,7 +265,7 @@ Page({
     }
 
     //获取用户位置信息（经纬度信息）
-    function getlocationpromise(){
+    function getlocationpromise() {
 
       var longitudeandlatitude = new Promise(function (resolve, reject) {
         wx.getLocation({
@@ -168,7 +286,7 @@ Page({
     }
 
     //进行经纬度转街道地址
-    function addresstranslationpromise(){
+    function addresstranslationpromise() {
 
       var getuseraddresspromise = new Promise(function (resolve, reject) {
         qqmapsdk.reverseGeocoder({
@@ -177,7 +295,7 @@ Page({
             longitude: userinfo.longitude
           },
           success: function (res) {
-            console.log("经纬度转地址: ",res);
+            console.log("经纬度转地址: ", res);
             var str = "无法定位";
             str = res.result.address_component.street;
             if (str.length >= 6) {
@@ -201,7 +319,7 @@ Page({
     }
 
     //获取推荐商店
-    function getstorespromise(){
+    function getstorespromise() {
 
       var getstorelistpromise = new Promise(function (resolve, reject) {
         console.log("向服务器发送JSESSIONID：" + app.globalData.session)
@@ -214,7 +332,7 @@ Page({
               app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
             }
             var storelist = res.data.data;
-            console.log("商店列表：",storelist);
+            console.log("商店列表：", storelist);
             store_list = storelist;
             resolve();
           },
@@ -227,10 +345,10 @@ Page({
     }
 
     //利用商店经纬度信息与用户经纬度信息计算双方距离
-    function getstoredistancetpromise(){
+    function getstoredistancetpromise() {
 
       var getdistancetpromise = new Promise(function (resolve, reject) {
-        console.log("获得用户与商店的距离");
+        console.log("用户与商店的距离:");
         var count = 0;
         for (var i = 0; i < store_list.length; i++) {
           store_list[i].imgsrc = durl + "/static/image/recommendimg" + store_list[i].id + ".jpg";
@@ -304,94 +422,7 @@ Page({
         console.log(mes)
       })
 
-
-    //初始化的时候渲染wxSearchdata
-    WxSearch.init(pageobject, 50 + app.globalData.height * 2 + 20, ['小炒肉', '肉末茄子', '茄子牛肉', '麻辣串串香', '大盘鸡']);
-    WxSearch.initMindKeys(['小炒肉', '肉末茄子', '茄子牛肉', '麻辣串串香', '大盘鸡']);
-
-  },
-
-
-  
-  onShareAppMessage(Object){
-    var url = "/pages/index/share.png";
-    return {
-      title: '随心菜单',
-      path: '/pages/index/index',
-      imageUrl:url
-    }
-  },
-  getUserInfo: function(e) {
-    console.log(e)
-    app.globalData.userInfo = e.detail.userInfo
-    this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
-    })
-  },
-  handleTap3: function (event) {
-    console.log(event)
-  },
-  handleTap2: function (event) {
-    console.log(event)
-  },
-  handleTap1: function (event) {
-    console.log(event)
-  },
-   wxSearchFn: function (e) {
-    console.log("wxSearchFn");
-    var that = this
-    WxSearch.wxSearchAddHisKey(that);
-  },
-  wxSearchInput: function (e) {
-    console.log("wxSearchInput");
-    var that = this
-    WxSearch.wxSearchInput(e, that);
-  },
-  wxSearchFocus: function (e) {
-    console.log("wxSearchFocus");
-    this.setData({
-      searchdisplay: true
-    });
-    var that = this
-    WxSearch.wxSearchFocus(e, that);
-  },
-  wxSearchBlur: function (e) {
-    console.log("wxSearchBlur");
-    var that = this
-    WxSearch.wxSearchBlur(e, that);
-  },
-  wxSearchKeyTap: function (e) {
-    console.log("wxSearchKeyTap");
-    var that = this
-    WxSearch.wxSearchKeyTap(e, that);
-  },
-  wxSearchDeleteKey: function (e) {
-    console.log("wxSearchDeleteKey");
-    var that = this
-    WxSearch.wxSearchDeleteKey(e, that);
-  },
-  wxSearchDeleteAll: function (e) {
-    console.log("wxSearchDeleteAll");
-    var that = this
-    WxSearch.wxSearchDeleteAll(that);
-  },
-  wxSearchTap: function (e) {
-    console.log("wxSearchTap");
-    this.setData({
-      searchdisplay: false
-    })
-    var that = this
-    WxSearch.wxSearchHiddenPancel(that);
-  },
-  openstore: function (event){
-    console.log("点击第"+event.currentTarget.dataset.id)
-    let str = JSON.stringify(store_list[event.currentTarget.dataset.id]);
-    console.log(str)
-    wx.navigateTo({
-      url: '../store/commodity?storeinfo='+str
-    })
-  },
+  }
   /*onPageScroll: function (ev) {
     var _this = this;
     //当滚动的top值最大或者最小时，为什么要做这一步是由于在手机实测小程序的时候会发生滚动条回弹，所以为了解决回弹，设置默认最大最小值   

@@ -97,9 +97,10 @@ function userloginprocess () {
         data: { username: codeAndcsrf[1], password: "wx", _csrf: codeAndcsrf[0] },
         header: { Cookie: "JSESSIONID=" + app.globalData.session, 'content-type': "application/x-www-form-urlencoded" },
         success: function (res) {
-          console.log(res.data)
+          console.log("登陆信息",res.data)
           var responsedata = res.data;
           if ("loginCode" in responsedata && responsedata.loginCode == 1) {
+            app.globalData.userInfo = responsedata;
             console.log("登陆成功，服务器返回的JSESSIONID：" + responsedata.sessionId)
             app.globalData.session = responsedata.sessionId
             resolve();
@@ -147,6 +148,7 @@ function userloginprocess () {
       userisloginreject(error);
     }
   })
+
   return flag;
 }
 

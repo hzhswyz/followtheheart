@@ -35,13 +35,13 @@ App({
   globalData: {//120.79.16.31 localhost
     userInfo: {},
     requestdomainname:"http://120.79.16.31:8080",
-    dynamicrequest:"http://120.79.16.31:8080/IntelligentMenus",
+    dynamicrequest:"http://localhost:8080/IntelligentMenus",
     share: false,  // 分享默认为false
     height: 0,
     store_food_map : new Map(),
     windowHeight:0,
     windowHeightminusttabbar:0,
-    session:null
+    session:null,
   }
 })
 
