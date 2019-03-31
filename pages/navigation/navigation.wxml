@@ -1,13 +1,13 @@
-<!--pages/navigation/navigation.wxml-->
-<view class='nav-wrap' style='height:{{height*2+20}}px; background:{{navbarData.navbackground}};'>
-   <!-- // 导航栏 中间的标题-->
+<!--pages/navigation/navigation.wxml
+<view class='nav-wrap' style='height:{{height*2+20}}px; background:{{navbarData.navbackground}};'>-->
+   <!-- // 导航栏 中间的标题
   <view class="navbar" style='margin-top:{{height}}px;height:{{height+24}}px;'>
     <view class='nav-title' >{{navbarData.title}}</view>
-    <view  class="back_home" wx:if='{{navbarData.showCapsule}}'>
+    <view  class="back_home" wx:if='{{navbarData.showCapsule}}'>-->
       <!-- // 导航栏  左上角的返回按钮 和home按钮
         //  其中wx:if='{{navbarData.showCapsule}}' 是控制左上角按钮的显示隐藏，首页不显示-->
         <!--//左上角的返回按钮，wx:if='{{!share}}'空制返回按钮显示
-        //从分享进入小程序时 返回上一级按钮不应该存在-->
+        //从分享进入小程序时 返回上一级按钮不应该存在
         <view bindtap='_navback' wx:if='{{!share}}'><image src='../static/img/indexpage/back.png' 
         mode='aspectFill' class='back-pre'></image></view>
         <view class='navbar-v-line' wx:if='{{!share}}'></view>
@@ -15,4 +15,22 @@
         class='back-home'></image></view>
     </view>
   </view>
-</view>
+</view>-->
+
+<cover-view class='nav-wrap' style='height:{{height*2+20}}px; background:{{navbarData.navbackground}};'>
+   <!-- // 导航栏 中间的标题-->
+  <cover-view class="navbar" style='margin-top:{{height}}px;height:{{height+24}}px;'>
+    <cover-view class='nav-title' >{{navbarData.title}}</cover-view>
+    <cover-view  class="back_home" wx:if='{{navbarData.showCapsule}}'>
+      <!-- // 导航栏  左上角的返回按钮 和home按钮
+        //  其中wx:if='{{navbarData.showCapsule}}' 是控制左上角按钮的显示隐藏，首页不显示-->
+        <!--//左上角的返回按钮，wx:if='{{!share}}'空制返回按钮显示
+        //从分享进入小程序时 返回上一级按钮不应该存在-->
+        <cover-view bindtap='_navback' wx:if='{{!share}}'><cover-image src='../static/img/indexpage/back.png' 
+        mode='aspectFill' class='back-pre'></cover-image></cover-view>
+        <cover-view class='navbar-v-line' wx:if='{{!share}}'></cover-view>
+        <cover-view bindtap='_backhome'><cover-image src='../static/img/indexpage/home.png' mode='aspectFill' 
+        class='back-home'></cover-image></cover-view>
+    </cover-view>
+  </cover-view>
+</cover-view>

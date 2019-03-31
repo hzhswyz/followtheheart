@@ -26,55 +26,48 @@
   width:  100%;
   height: 100%;
   border-radius: 10px;
+  filter: blur(6px);
 }
 
-.recommendationtextview{
+.showdata{
   width: 100%;
-  padding-top: 14px;
-  padding-right: 30px;
-  padding-bottom: 22px;
+  height: 100%;
   position: absolute;
-  bottom: -15px;
-  left: -15px;
-  flex-direction:column;
-  color: rgb(61, 61, 61);
-  border-radius: 0px 0px 10px 10px;
-  z-index: 1;
-}
-
-.recommendationtextview:after{
-  position: absolute;
-  content: '';
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 0px 0px 10px 10px;
-  background-color: rgba(255, 255, 255, 0.85);
-  z-index: -1;
-  filter: blur(5px);
-}
-
-
-.recommendationtextview1{
-  width:100%;
-  display:flex;
-  flex-direction: row;
-  position: relative;
-  margin-left: 15px;
-}
-
-.recommendationtextview2{
-  width:50%;
-  height:20px;
-  font-size: 14px;
+  top: 0px;
+  left: 0px;
+  justify-content: center;
+  flex-direction:row;
   display: flex;
-  align-items: center;
-  margin-left: 20px;
 }
 
-.recommendationicon{
-  width: 14px;
-  height: 14px;
-  margin-right: 5px;
+.showdatacontainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  -webkit-text-size-adjust:none;
+  -webkit-user-select: none;
+  font-size: 35rpx;
+  color: rgb(255, 255, 255);
+  font-family: Helvetica,Arial,"Helvetica Neue","Droid Sans","Microsoft YaHei",sans-serif;
+}
+
+.showdatatitle {
+  height: 10%;
+	text-align: center;
+	position: relative;
+	margin-top: 2%;
+	margin-bottom: 2%;
+}
+
+.showdataback-btn {
+	position: absolute;
+	left: 20rpx;
+	top: 0;
+}
+
+.showdatacanvas {
+  height:86%;
+  width:100%;
 }

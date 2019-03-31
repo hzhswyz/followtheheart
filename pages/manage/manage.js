@@ -4,15 +4,20 @@ var durl = app.globalData.dynamicrequest;
 var userloginJs = require('../../userlogin.js');
 var storelist;
 var pageobject;
+var showwidth;
+var showheight;
+var wxCharts = require('../lib/wx-charts-master/dist/wxcharts.js');
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    isMainChartDisplay: true,
     nvabarData: {
     showCapsule: 1, //是否显示左上角图标
     title: '我的商店', //导航栏 中间的标题
+    navbackground: "white"
     },
     // 此页面 页面内容距最顶部的距离
     height: app.globalData.height * 2 + 26
@@ -24,8 +29,8 @@ Page({
     pageobject = this;
     wx.getSystemInfo({
       success: (res) => {
-        var showwidth = res.windowWidth * 0.97;
-        var showheight = showwidth / 1.6;
+        showwidth = res.windowWidth * 0.97;
+        showheight = showwidth / 1.6;
         //console.log("宽度：",showwidth,"高度：",showheight);
         pageobject.setData({
           showwidth: showwidth,
@@ -41,9 +46,53 @@ Page({
         success: function (res) {
           console.log("我的商店:", res.data.data)
           storelist = res.data.data;
+          var wc = 0;
           for (var i = 0; i < storelist.length; i++) {
-            storelist[i].imgsrc = durl + "/static/image/recommendimg" + storelist[i].id + ".jpg";
-            storelist[i].type = storelist[i].type.split(",");
+
+            storelist[i].storeInfomation.imgsrc = durl + "/static/image/recommendimg" + storelist[i].storeInfomation.id + ".jpg";
+            storelist[i].storeInfomation.type = storelist[i].storeInfomation.type.split(",");
+
+            let chart = new wxCharts({
+              background: 'rgba(255, 255, 255, 0)',
+              canvasId: 'columnCanvas' + i,
+              type: 'column',
+              categories: storelist[i].thePastSixMonthsSaleAndCost.date,
+              series: [{
+                name: '成本',
+                data: storelist[i].thePastSixMonthsSaleAndCost.costlist,
+                color: '#ff6600',
+              }, {
+                name: '销售额',
+                  data: storelist[i].thePastSixMonthsSaleAndCost.salelist
+              }],
+              xAxis: {
+                gridColor: '#ffffff',
+                fontColor: '#ffffff',
+                disableGrid: true
+              },
+              yAxis: {
+                gridColor: '#ffffff',
+                fontColor: '#ffffff',
+                titleFontColor: '#ffffff',
+                format: function (val) {
+                  return val + '元';
+                }
+              },
+              extra: {
+                legendTextColor: 'white'
+              },
+              width: showwidth,
+              height: showheight * 0.86
+            });
+            chart.addEventListener('renderComplete', () => {
+              // your code here
+              wc += 1;
+              if (wc == storelist.length){
+                pageobject.setData({
+                  ifshowcoverview: true
+                })
+              }
+            });
           }
           pageobject.setData({
             storelist: storelist
@@ -52,14 +101,60 @@ Page({
       });
     })
 
-
-    
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
+  
+    /*let chart = new wxCharts({
+      canvasId: 'columnCanvas1',
+      background: 'rebeccapurple',
+      type: 'column',
+      categories: ['2012', '2013', '2014', '2015', '2016', '2017'],
+      series: [{
+        name: '成交量1',
+        data: [15, 20, 45, 37, 4, 80]
+      }, {
+        name: '成交量2',
+        data: [70, 40, 65, 100, 34, 18]
+      }],
+      yAxis: {
+        format: function (val) {
+          return val + '万';
+        }
+      },
+      width: 320,
+      height: 180
+    });
+    chart.addEventListener('renderComplete', () => {
+      // your code here
+      pageobject.setData({
+        ifshowcoverview: true
+      })
+    });
+
+    new wxCharts({
+      canvasId: 'columnCanvas2',
+      type: 'column',
+      categories: ['2012', '2013', '2014', '2015', '2016', '2017'],
+      series: [{
+        name: '成交量1',
+        data: [15, 20, 45, 37, 4, 80]
+      }, {
+        name: '成交量2',
+        data: [70, 40, 65, 100, 34, 18]
+      }],
+      yAxis: {
+        format: function (val) {
+          return val + '万';
+        }
+      },
+      width: 320,
+      height: 200
+    });*/
+
 
   },
 

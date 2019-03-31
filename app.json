@@ -42,5 +42,6 @@
     "backgroundColorTop": "#943e3e",
     "backgroundColorBottom": "#943e3e"
   },
-  "resizable": true
+  "resizable": true,
+  "sitemapLocation": "sitemap.json"
 }
