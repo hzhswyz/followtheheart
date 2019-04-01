@@ -80,7 +80,8 @@ Page({
     let str = event.currentTarget.dataset.foodid;
     console.log("商品ID",str)
     pageobject.setData({
-      isshoweditfood: true
+      isshoweditfood: true,
+      foodid:str
     })
   },
 
@@ -93,6 +94,35 @@ Page({
   donothing:function(){
 
   },
+
+  formsubmit:function(event){
+    console.log(event.detail.value);
+
+    userloginJs.userloginprocess().then(function () {
+      wx.request({
+        url: durl + "/rest/food/editnameandprice",
+        data: { id: event.detail.value.foodid, name: event.detail.value.name, price: event.detail.value.price},
+        method:'POST',
+        header: { Cookie: "JSESSIONID=" + app.globalData.session },
+        success: function (res) {
+          if (res.data.status == 500) {
+            wx.showToast({
+              title: res.data.reason
+            })
+          }
+          else {
+            wx.hideLoading();
+            console.log(res.data);
+          }
+        }
+      })
+    })
+  },
+
+  formreset:function(){
+
+  },
+
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

@@ -183,6 +183,7 @@ align-items: center;
 
 .input{
   border-bottom:1px solid #3a3a3a;
+  width: 70%;
 }
 
 .confirmandcancel{

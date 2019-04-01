@@ -47,18 +47,18 @@
 </scroll-view>
 
 <view class='editnameandpriceout' bind:tap='isshowout' wx:if="{{isshoweditfood}}">
-  <view class='editnameandprice' capture-catch:tap='donothing'>
-    <form class='editnameandpriceform'>
+  <view class='editnameandprice' catch:tap='donothing'>
+    <form class='editnameandpriceform' bindsubmit="formsubmit" bindreset='formreset'>
       <view class='namearea'>
-        <input class ='input' value="{{name}}" placeholder="请输入名称" maxlength="15" focus='true'></input>
+        <input class ='input' value="{{name}}" placeholder="请输入名称" name="name" maxlength="15" focus='true'></input>
       </view>
       <view class='pricearea'>
-        <input class ='input' value="{{price}}" placeholder="请输入价格" maxlength='8' type='digit'></input>
+        <input class ='input' value="{{price}}" placeholder="请输入价格" name="price" maxlength='8' type='digit'></input>
       </view>
       <input name = 'foodid' value="{{foodid}}" hidden="true"></input>
       <view class='confirmandcancel'>
-        <button class="weui-btn" type="primary" plain="true" size="mini">确认</button>
-        <button class="weui-btn" type="warn" plain="true" size="mini">取消</button>
+        <button  type="primary" plain="true" size="mini" form-type='submit'>确认</button>
+        <button  type="warn" plain="true" size="mini" form-type="reset" bindtap='isshowout'>取消</button>
       </view>
     </form>
   </view>
