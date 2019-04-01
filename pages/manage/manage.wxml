@@ -1,8 +1,7 @@
 <!--pages/manage/manage.wxml-->
 <nav-bar navbar-data='{{nvabarData}}' wx:if="{{ifshowcoverview}}"></nav-bar>
 <view class='container' style='margin-top: {{height}}px'>
-  <view class="recommendationview" wx:for="{{storelist}}" wx:key="id" bindtap='openstore' 
-    data-id="{{index}}" style='width:{{showwidth}}px;height:{{showheight}}px'>
+  <view class="recommendationview" wx:for="{{storelist}}" wx:key="id" style='width:{{showwidth}}px;height:{{showheight}}px'>
       <view  class="recommendationimgview">
         <image class="foodimg" mode="scaleToFill" src="{{item.storeInfomation.imgsrc}}"></image>
         <view class='showdata'>
@@ -11,8 +10,7 @@
 		          <view wx:if="{{!isMainChartDisplay}}" class="showdataback-btn" bindtap="backToMainChart">
                 返回
               </view>
-              {{item.storeInfomation.name}}
-		          {{chartTitle}}
+              <view bindtap='openstore' data-id='{{index}}'>{{item.storeInfomation.name}}</view>
           	</view>
             <canvas canvas-id="{{'columnCanvas'+index}}"  class='showdatacanvas' ></canvas>
           </view>

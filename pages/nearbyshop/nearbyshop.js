@@ -3,6 +3,7 @@ const app = getApp();
 var pageobject;
 var filter_index = 0;
 var durl = app.globalData.dynamicrequest;
+var storelist;
 Page({
 
   /**
@@ -115,8 +116,9 @@ Page({
             app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
           }
           console.log("res.data.data", res.data.data)
-          var storelist = res.data.data;
+          storelist = res.data.data;
           for (var i = 0; i < storelist.length; i++) {
+            storelist[i].type = storelist[i].type.split(",");
             storelist[i].imgsrc = durl + "/static/image/recommendimg" + storelist[i].id + ".jpg";
           }
           pageobject.setData({
@@ -148,6 +150,15 @@ Page({
     change();
     
 
+  },
+
+  openstore: function (event) {
+    console.log("点击第" + event.currentTarget.dataset.id)
+    let str = JSON.stringify(storelist[event.currentTarget.dataset.id]);
+    console.log(str)
+    wx.navigateTo({
+      url: '../store/commodity?storeinfo=' + str
+    })
   },
 
   changefilter: function (event){

@@ -103,59 +103,20 @@ Page({
 
   },
 
+  openstore: function (event) {
+    console.log("点击第" + event.currentTarget.dataset.id)
+    let str = JSON.stringify(storelist[event.currentTarget.dataset.id].storeInfomation);
+    console.log(str)
+    wx.navigateTo({
+      url: 'modifycommodity/modifycommodity?storeinfo=' + str
+    })
+  },
+
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
   
-    /*let chart = new wxCharts({
-      canvasId: 'columnCanvas1',
-      background: 'rebeccapurple',
-      type: 'column',
-      categories: ['2012', '2013', '2014', '2015', '2016', '2017'],
-      series: [{
-        name: '成交量1',
-        data: [15, 20, 45, 37, 4, 80]
-      }, {
-        name: '成交量2',
-        data: [70, 40, 65, 100, 34, 18]
-      }],
-      yAxis: {
-        format: function (val) {
-          return val + '万';
-        }
-      },
-      width: 320,
-      height: 180
-    });
-    chart.addEventListener('renderComplete', () => {
-      // your code here
-      pageobject.setData({
-        ifshowcoverview: true
-      })
-    });
-
-    new wxCharts({
-      canvasId: 'columnCanvas2',
-      type: 'column',
-      categories: ['2012', '2013', '2014', '2015', '2016', '2017'],
-      series: [{
-        name: '成交量1',
-        data: [15, 20, 45, 37, 4, 80]
-      }, {
-        name: '成交量2',
-        data: [70, 40, 65, 100, 34, 18]
-      }],
-      yAxis: {
-        format: function (val) {
-          return val + '万';
-        }
-      },
-      width: 320,
-      height: 200
-    });*/
-
-
   },
 
   /**

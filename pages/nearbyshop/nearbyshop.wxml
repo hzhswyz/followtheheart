@@ -7,7 +7,7 @@
 </view>
 <view class='container'>
   <block wx:for="{{store}}" wx:key="id">
-    <view class="item">
+    <view class="item" bindtap='openstore' data-id='{{index}}'>
       <view class='imgarea'>
         <image class='storeimg' src='{{item.imgsrc}}' mode='aspectFill'/>
       </view>

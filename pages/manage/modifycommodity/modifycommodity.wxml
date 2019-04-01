@@ -1,0 +1,65 @@
+<!--pages/manage/modifycommodity/modifycommodity.wxml-->
+<!--pages/store/commodity.wxml-->
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+<view class='storehead' style='margin-top: {{height}}px'>
+  <view class='storeinfo'>
+    <view class='storeinfoimage'>
+      <image class='storeimage' src='{{store.image}}' mode='widthFix'></image>
+    </view>
+    <view class='storeinfotext'>
+      <text>月销量：{{store.sales}}单</text>
+      <text>人均：{{store.consume}}元</text>
+      <view class='starsview'>
+        <text>星级：</text> 
+        <block wx:for="{{store.stars}}" wx:key="{{index}}">
+        <image src='{{starssrc}}' class='starsimg' mode='aspectFit'></image>
+        </block>
+      </view>
+    </view>
+    <view class='noticeview'>
+      <text style='align-self: center;font-weight: bold;'>店铺公告</text>
+      <text>{{store.notice ? store.notice : "暂无公告！"}}</text>
+    </view>
+  </view>
+  <view class='choiceview'>
+    <block wx:for="{{store.type}}" wx:key="{{index}}">
+      <view class='choiceitem' data-index='{{index}}' bindtap='changefoodtype' 
+      style="{{index==typeindex ? 'color:white;font-weight:bold;':''}}">
+      {{item}}</view>
+      <view class='divisionview'></view>
+    </block>
+  </view>
+</view>
+<scroll-view class='scrollview' scroll-y="true" style='height:{{screenHeight}}px'>
+  <block wx:for="{{foodlist}}" wx:if="{{item.type==typeindex}}" wx:key="{{index}}" >
+    <view class='foodview'>
+      <image src='{{item.imgsrc}}' mode='scaleToFill' class='foodimage' style="height:{{showheight}}px;"></image>
+      <view class='foodnameview'>
+        <text>{{item.name}}</text>
+        <text class='foodnumtext'  wx:if="{{item.num>0}}" >{{item.num}}份</text>
+      </view>
+      <view class='foodpriceview'>
+        <text>￥ {{item.price}}</text>
+        <image class='addbutton' src='/pages/static/img/indexpage/edit.png' data-foodid='{{item.id}}' bindtap='editfood'></image>
+      </view>
+    </view>
+  </block>
+</scroll-view>
+
+<view class='editnameandpriceout' bind:tap='isshowout' wx:if="{{isshoweditfood}}">
+  <view class='editnameandprice' capture-catch:tap='donothing'>
+    <form class='editnameandpriceform'>
+      <view class='namearea'>
+        <input class ='input' value="{{name}}" placeholder="请输入名称" maxlength="15" focus='true'></input>
+      </view>
+      <view class='pricearea'>
+        <input class ='input' value="{{price}}" placeholder="请输入价格" maxlength='8' type='digit'></input>
+      </view>
+      <input name = 'foodid' value="{{foodid}}" hidden="true"></input>
+      <view class='confirmandcancel'>
+        <button class="weui-btn" type="primary" plain="true" size="mini">确认</button>
+        <button class="weui-btn" type="warn" plain="true" size="mini">取消</button>
+      </view>
+    </form>
+  </view>
+</view>

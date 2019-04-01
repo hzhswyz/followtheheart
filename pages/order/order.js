@@ -127,7 +127,7 @@ Page({
             console.log(res.data);
             //更改时间显示格式
             res.data.data.store.image = durl + "/static/image/" + res.data.data.store.id + "image.jpg";
-            if (res.data.data.paymenttime != null) {
+           /* if (res.data.data.paymenttime != null) {
               var d = new Date(res.data.data.paymenttime);
               var date = (d.getFullYear()) + "-" +
                 (d.getMonth() + 1) + "-" +
@@ -144,7 +144,7 @@ Page({
                 (d2.getMinutes()) + ":" +
                 (d2.getSeconds());
               res.data.data.transactiondate = date2;
-            }
+            }*/
           }
           res.data.data.sequenceid = touchsequenceid;
           res.data.data.content = JSON.parse(res.data.data.content);

@@ -101,6 +101,10 @@ Page({
       screenHeight: app.globalData.windowHeight - 105 - (app.globalData.height * 2 + 20)
     })
   },
+
+  editfood:function(){
+    
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

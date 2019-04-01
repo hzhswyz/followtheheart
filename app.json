@@ -9,7 +9,8 @@
     "pages/activity/activity",
     "pages/reservation/reservation",
     "pages/nearbyshop/nearbyshop",
-    "pages/manage/manage"
+    "pages/manage/manage",
+    "pages/manage/modifycommodity/modifycommodity"
   ],
   "tabBar": {
     "list": [

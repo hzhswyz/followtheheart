@@ -811,7 +811,7 @@ function drawPointText(points, series, config, context) {
 
     context.beginPath();
     context.setFontSize(config.fontSize);
-    context.setFillStyle('#666666');
+    context.setFillStyle('white');
     points.forEach(function (item, index) {
         if (item !== null) {
             var formatVal = series.format ? series.format(data[index]) : data[index];
