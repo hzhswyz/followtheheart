@@ -239,8 +239,7 @@ Page({
     }
 
 
-    userloginJs.userloginprocess()
-    .then(function () {
+    userloginJs.userloginprocess().then(function () {
       return sendfoodinfo()})
     .then(function () {
         return sendimg()})
