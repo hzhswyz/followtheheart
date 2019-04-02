@@ -40,22 +40,62 @@
       </view>
       <view class='foodpriceview'>
         <text>￥ {{item.price}}</text>
-        <image class='addbutton' src='/pages/static/img/indexpage/edit.png' data-foodid='{{item.id}}' bindtap='editfood'></image>
+        <image class='addbutton' src='/pages/static/img/indexpage/edit.png' data-indexid='{{index}}' bindtap='editfood'></image>
       </view>
     </view>
   </block>
 </scroll-view>
 
-<view class='editnameandpriceout' bind:tap='isshowout' wx:if="{{isshoweditfood}}">
-  <view class='editnameandprice' catch:tap='donothing'>
-    <form class='editnameandpriceform' bindsubmit="formsubmit" bindreset='formreset'>
+<view class='editnameandpriceandimgout' bind:tap='isshowout' wx:if="{{isshoweditfood}}">
+  <view class='editnameandpriceandimg' catch:tap='donothing'>
+    <form class='editnameandpriceandimgform' bindsubmit="formsubmit" bindreset='formreset'>
+      <view class='foodimgare'>
+        <image class='editfoodimg' bindtap='choseimg' mode='aspectFit' src='{{tempimgsrc}}'></image>
+      </view>
       <view class='namearea'>
-        <input class ='input' value="{{name}}" placeholder="请输入名称" name="name" maxlength="15" focus='true'></input>
+        名称:<input class ='input' value="{{editfood.name}}" placeholder="请输入名称" name="name" maxlength="15"></input>
+      </view>
+      <view class='namearea'>
+        食材:<input class ='input' value="{{editfood.material}}" placeholder="请输入食材" name="material" maxlength='50'></input>
       </view>
       <view class='pricearea'>
-        <input class ='input' value="{{price}}" placeholder="请输入价格" name="price" maxlength='8' type='digit'></input>
+        <view class='priceview'>
+          <text>价格:</text>
+          <input class ='priceinput' value="{{editfood.price}}" placeholder="价格" name="price" maxlength='8' type='digit'></input>
+        </view>
+        <view class='priceview'>
+          <text>成本:</text>
+          <input class ='priceinput' value="{{editfood.cost}}" placeholder="成本" name="cost"  maxlength='8'type='digit'></input>
+        </view>
       </view>
-      <input name = 'foodid' value="{{foodid}}" hidden="true"></input>
+      <wxs module="judgesalestatus">
+        var judge = function(salestatus){
+        var result;
+        if(salestatus==0)
+          result = '禁售';
+        else
+          result = '在售';
+        return result;
+        }
+        module.exports.judge = judge;
+      </wxs>
+
+      <wxs module="judgetype">
+        var judge = function(type,storetype){
+        return storetype[type];
+        }
+        module.exports.judge = judge;
+      </wxs>
+      <view class='pricearea'>
+        <picker name = 'issale' value='{{editfood.issale}}' range="{{issalearray}}" bindchange="issalepickerbindchange">
+          <button type="default" size="mini">状态: {{judgesalestatus.judge(editfood.issale)}}</button>
+        </picker>
+        <picker  name = 'type' value='{{editfood.type}}' range="{{store.type}}" 
+        style="margin-left:20px;" bindchange="typepickerbindchange">
+          <button type="default" size="mini">分类: {{judgetype.judge(editfood.type,store.type)}}</button>
+        </picker>
+      </view>
+      <input name = 'foodid' value="{{editfood.id}}" hidden="true"></input>
       <view class='confirmandcancel'>
         <button  type="primary" plain="true" size="mini" form-type='submit'>确认</button>
         <button  type="warn" plain="true" size="mini" form-type="reset" bindtap='isshowout'>取消</button>

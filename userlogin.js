@@ -130,9 +130,7 @@ function userloginprocess () {
   //判断用户是否已经登陆
   userislogin()
   //获取usercode与csrf
-  .then(function () {
-    return getusercodeandcsrf()
-  })
+  .then(getusercodeandcsrf)
   //使用usercode与csrf进行认证
   .then(function (codeAndcsrf){
     return loginbyusercode(codeAndcsrf);

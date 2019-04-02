@@ -140,7 +140,7 @@ align-items: center;
   bottom: 1px;
 }
 
-.editnameandpriceout{
+.editnameandpriceandimgout{
   position: fixed;
   top:0;
   left: 0;
@@ -149,10 +149,10 @@ align-items: center;
   background-color: rgba(41, 41, 41, 0.8)
 }
 
-.editnameandprice{
+.editnameandpriceandimg{
   border-radius: 10px;
   position: fixed;
-  top:40%;
+  top:20%;
   left: 10%;
   width: 80%;
   display: flex;
@@ -161,28 +161,52 @@ align-items: center;
   background-color: white;
 }
 
-.editnameandpriceform{
+.editnameandpriceandimgform{
   width: 100%;
-  padding:20px 10px 20px 10px;
+  padding:20px;
   display: flex;
   flex-direction: column;
+}
+
+.foodimgare{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.editfoodimg{
+width: 120px;
+height: 72px;
 }
 
 .namearea{
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  margin: 0px 0px 20px 0px;
 }
 
 .pricearea{
-  margin: 10px 0px 20px 0px;
+  margin: 0px 0px 20px 0px;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+}
+
+.priceview{
+  display: flex;
+  flex-direction: row;
+}
+
+.priceinput{
+  border-bottom:1px solid #3a3a3a;
+  min-width: 50%;
+  max-width: 50%;
+  padding-left: 10px;
 }
 
 .input{
   border-bottom:1px solid #3a3a3a;
+  padding-left: 10px;
   width: 70%;
 }
 

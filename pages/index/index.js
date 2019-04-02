@@ -384,32 +384,32 @@ Page({
 
     //检查用户是否授予定位权限
     positionpromise()
-      .catch(function (res) {
+      .catch(
         //向用户获取位置权限
-        return getlocaltionauthorizepromise();
-      })
-      .then(function (res) {
+        getlocaltionauthorizepromise
+      )
+      .then(
         //获取用户位置信息（经纬度信息）
-        return getlocationpromise();
-      })
-      .then(function (res) {
+        getlocationpromise
+      )
+      .then(
         //进行经纬度转街道地址
-        return addresstranslationpromise();
-      })
-      .then(function (res) {
+        addresstranslationpromise
+      )
+      .then(
         //获取推荐商店
-        return getstorespromise();
-      })
+        getstorespromise
+      )
       .then(function () {
         pageobject.setData({
           Recommendarray: store_list,
           position: position
         })
       })
-      .then(function (res) {
+      .then(
         //利用商店经纬度信息与用户经纬度信息计算双方距离
-        return getstoredistancetpromise();
-      })
+        getstoredistancetpromise
+      )
       .then(function () {
         pageobject.setData({
           Recommendarray: store_list

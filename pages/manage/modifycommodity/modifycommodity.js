@@ -7,6 +7,8 @@ var pageobject;
 var food_list;
 var userloginJs = require('../../../userlogin.js');
 var isshoweditfood = false;
+var editfood;
+var tempimgsrc;
 Page({
 
   /**
@@ -45,6 +47,7 @@ Page({
     store_info = storeinfo;
     this.setData({
       store: storeinfo,
+      issalearray: ['禁售',"在售"],
       nvabarData: {
         showCapsule: 1, //是否显示左上角图标
         title: storeinfo.name, //导航栏 中间的标题
@@ -74,14 +77,17 @@ Page({
     pageobject.setData({
       screenHeight: app.globalData.windowHeight - 105 - (app.globalData.height * 2 + 20)
     })
+
   },
 
   editfood: function (event) {
-    let str = event.currentTarget.dataset.foodid;
-    console.log("商品ID",str)
+    let index = event.currentTarget.dataset.indexid;
+    editfood = food_list[index];
+    console.log("商品ID", editfood.id)
     pageobject.setData({
       isshoweditfood: true,
-      foodid:str
+      editfood: editfood,
+      tempimgsrc: editfood.imgsrc
     })
   },
 
@@ -95,15 +101,73 @@ Page({
 
   },
 
+  issalepickerbindchange: function (event){
+    editfood.issale = parseInt(event.detail.value);
+    pageobject.setData({
+      editfood: editfood
+    })
+  },
+
+  typepickerbindchange: function (event){
+    editfood.type = parseInt(event.detail.value);
+    pageobject.setData({
+      editfood: editfood
+    })
+  },
+
+
+  
+
+  choseimg:function(){
+
+    function getcameraauth() {
+      var cameraauth = new Promise(function (resolve, reject) {
+        wx.authorize({
+          scope: "scope.camera",
+          success() {
+            resolve();
+          },
+          fail(){
+            resolve();
+          }
+        });
+      })
+      return cameraauth;
+    };
+
+    function getimg(){
+      var getimg = new Promise(function (resolve, reject) {
+        wx.chooseImage({
+          count: 1,
+          sizeType: ['compressed'],
+          success: function (res) {
+            tempimgsrc = res.tempFilePaths;
+            pageobject.setData({
+            tempimgsrc: tempimgsrc
+            })
+          },
+          fail: function () {
+
+          }
+        });
+      })
+      return getimg;
+    }
+
+    getcameraauth().then(function () {
+      return getimg();
+    })
+
+  },
+
   formsubmit:function(event){
     console.log(event.detail.value);
-
-    userloginJs.userloginprocess().then(function () {
+   /* userloginJs.userloginprocess().then(function () {
       wx.request({
         url: durl + "/rest/food/editnameandprice",
         data: { id: event.detail.value.foodid, name: event.detail.value.name, price: event.detail.value.price},
         method:'POST',
-        header: { Cookie: "JSESSIONID=" + app.globalData.session },
+        header: { Cookie: "JSESSIONID=" + app.globalData.session, 'content-type': "application/x-www-form-urlencoded" },
         success: function (res) {
           if (res.data.status == 500) {
             wx.showToast({
@@ -111,16 +175,27 @@ Page({
             })
           }
           else {
-            wx.hideLoading();
+            wx.showToast({
+              title:"修改成功"
+            })
+            food_list[event.detail.value].name = event.detail.value.name;
+            food_list[event.detail.value].price = event.detail.value.price;
+            food_list[event.detail.value].cost = event.detail.value.cost;
+            food_list[event.detail.value].issale = event.detail.value.issale;
+            food_list[event.detail.value].type = event.detail.value.type;
+            food_list[event.detail.value].material = event.detail.value.material;
+            pageobject.setData({
+              isshoweditfood: false
+            })
             console.log(res.data);
           }
         }
       })
-    })
+    })*/
   },
 
   formreset:function(){
-
+    tempimgsrc = null;
   },
 
   /**
