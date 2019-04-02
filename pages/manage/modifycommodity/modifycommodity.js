@@ -70,7 +70,7 @@ Page({
         }
         food_list = foodlist;
         pageobject.setData({
-          foodlist: foodlist
+          foodlist: food_list
         })
       }
     })
@@ -120,6 +120,8 @@ Page({
 
   choseimg:function(){
 
+    tempimgsrc = null;
+
     function getcameraauth() {
       var cameraauth = new Promise(function (resolve, reject) {
         wx.authorize({
@@ -145,53 +147,110 @@ Page({
             pageobject.setData({
             tempimgsrc: tempimgsrc
             })
+            resolve();
           },
           fail: function () {
-
+            reject(new Error("选取照片错误"));
           }
         });
       })
       return getimg;
     }
 
-    getcameraauth().then(function () {
+    getcameraauth()
+    .then(function () {
       return getimg();
+    })
+    .catch(function(error){
+      wx.showToast({
+        title: error.message,
+      });
+      console.log(error.message);
     })
 
   },
 
   formsubmit:function(event){
     console.log(event.detail.value);
-   /* userloginJs.userloginprocess().then(function () {
-      wx.request({
-        url: durl + "/rest/food/editnameandprice",
-        data: { id: event.detail.value.foodid, name: event.detail.value.name, price: event.detail.value.price},
-        method:'POST',
-        header: { Cookie: "JSESSIONID=" + app.globalData.session, 'content-type': "application/x-www-form-urlencoded" },
-        success: function (res) {
-          if (res.data.status == 500) {
-            wx.showToast({
-              title: res.data.reason
-            })
+
+    function sendfoodinfo(){
+      var foodinfo = new Promise(function (resolve, reject) {
+        wx.request({
+          url: durl + "/rest/food/editnameandprice",
+          data: { id: event.detail.value.foodid, name: event.detail.value.name, price: event.detail.value.price },
+          method: 'POST',
+          header: { Cookie: "JSESSIONID=" + app.globalData.session, 'content-type': "application/x-www-form-urlencoded" },
+          success: function (res) {
+            if (res.data.status == 500) {
+              wx.showToast({
+                title: res.data.reason
+              })
+              reject(new Error("修改失败"));
+            }
+            else {
+              food_list[event.detail.value].name = event.detail.value.name;
+              food_list[event.detail.value].price = event.detail.value.price;
+              food_list[event.detail.value].cost = event.detail.value.cost;
+              food_list[event.detail.value].issale = event.detail.value.issale;
+              food_list[event.detail.value].type = event.detail.value.type;
+              food_list[event.detail.value].material = event.detail.value.material;
+              pageobject.setData({
+                isshoweditfood: false,
+                foodlist: food_list
+              })
+              console.log(res.data);
+              resolve();
+            }
           }
-          else {
-            wx.showToast({
-              title:"修改成功"
-            })
-            food_list[event.detail.value].name = event.detail.value.name;
-            food_list[event.detail.value].price = event.detail.value.price;
-            food_list[event.detail.value].cost = event.detail.value.cost;
-            food_list[event.detail.value].issale = event.detail.value.issale;
-            food_list[event.detail.value].type = event.detail.value.type;
-            food_list[event.detail.value].material = event.detail.value.material;
-            pageobject.setData({
-              isshoweditfood: false
-            })
-            console.log(res.data);
+        })
+      });
+      return foodinfo;
+    }
+
+    function sendimg() {
+      var getimg = new Promise(function (resolve, reject) {
+        wx.uploadFile({
+          url: durl + '/rest/food/uploadfoodimg', // 仅为示例，非真实的接口地址
+          filePath: tempimgsrc[0],
+          name: 'foodimg',
+          header: { Cookie: "JSESSIONID=" + app.globalData.session },
+          formData: {
+            foodid: editfood.id
+          },
+          success(res) {
+            if (res.data.status == 200) {
+              const data = res.data
+              console.log(data);
+              wx.showToast({
+                title: "修改成功"
+              });
+              resolve();
+            }
+            else{
+              reject(new Error("修改图片失败"));
+            }
+          },
+          fail(res){
+            reject(new Error("修改图片失败"));
           }
-        }
+        })
       })
-    })*/
+      return getimg;
+    }
+
+
+    userloginJs.userloginprocess()
+    .then(function () {
+      return sendfoodinfo()})
+    .then(function () {
+        return sendimg()})
+    .cath(function (error) {
+      wx.showToast({
+        title: error.message,
+      })
+      console.log(error.message)
+      });
+
   },
 
   formreset:function(){
