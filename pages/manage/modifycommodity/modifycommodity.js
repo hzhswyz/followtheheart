@@ -6,9 +6,15 @@ var store_info;
 var pageobject;
 var food_list;
 var userloginJs = require('../../../userlogin.js');
+//是否显示修改窗口
 var isshoweditfood = false;
+//编辑的商品对象
 var editfood;
-var tempimgsrc;
+//要上传的图片链接
+var tempimgsrc = null;
+//商品在food_list中的索引
+var foodindex;
+var isaddfood = false;
 Page({
 
   /**
@@ -55,6 +61,7 @@ Page({
       }
     })
     console.log("用户JSESSIONID： " + app.globalData.session);
+    //请求店内商品列表
     wx.request({
       url: durl + "/store/getstorefoods?storeid=" + storeinfo.id,
       header: { Cookie: "JSESSIONID=" + app.globalData.session },
@@ -74,33 +81,116 @@ Page({
         })
       }
     })
+
     pageobject.setData({
       screenHeight: app.globalData.windowHeight - 105 - (app.globalData.height * 2 + 20)
     })
 
   },
 
-  editfood: function (event) {
-    let index = event.currentTarget.dataset.indexid;
-    editfood = food_list[index];
-    console.log("商品ID", editfood.id)
-    pageobject.setData({
-      isshoweditfood: true,
-      editfood: editfood,
-      tempimgsrc: editfood.imgsrc
+  /**
+   * 用户点击菜品分类
+   */
+  changefoodtype: function (event) {
+    foodtypeindex = event.target.dataset.index;
+    this.setData({
+      scrollTop: 0,
+      typeindex: foodtypeindex
     })
   },
 
+  //删除商品
+  deletefood:function(event){
+    console.log(event.currentTarget)
+    var index = event.currentTarget.dataset.indexid;
+    var deletefood = food_list[index];
+
+    wx.showModal({
+      content: "确定删除吗？此操作不可撤销！",
+      title: deletefood.name,
+      success(res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+          userloginJs.userloginprocess().then(function () {
+            wx.request({
+              url: durl + "/rest/food/deletefood",
+              data: { foodid: deletefood.id},
+              method: 'POST',
+              header: { Cookie: "JSESSIONID=" + app.globalData.session, 'content-type': "application/x-www-form-urlencoded"},
+              success: function (res) {
+                console.log("success",res.data)
+                if (res.data.status == 200) {
+                  food_list.splice(index,1);
+                  pageobject.setData({
+                    foodlist: food_list
+                  })
+                  wx.showToast({
+                    title: "删除成功!"
+                  })
+                }else{
+                  wx.showToast({
+                    icon: "none",
+                    title: res.data.reason
+                  })
+                }
+              },
+              fail: function(res){
+                console.log("fail",res.data)
+                wx.showToast({
+                  icon: "none",
+                  title: res.data.reason
+                })
+              }
+            })
+          })
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      },
+      fail(res) {
+        console.log('用户点击取消')
+      }
+    })
+    
+  },
+
+  //添加商品
+  addfood:function(){
+    editfood = {};
+    isaddfood = true;
+    pageobject.setData({
+      editfood: editfood,
+      isshoweditfood: true
+    })
+  },
+
+  //编辑商品
+  editfood: function (event) {
+    isaddfood = false;
+    foodindex = event.currentTarget.dataset.indexid;
+    editfood = food_list[foodindex];
+    tempimgsrc = null;
+    console.log("商品ID", editfood.id)
+    pageobject.setData({
+      isshoweditfood: true,
+      editfood: editfood
+    })
+  },
+
+  //关闭编辑界面
   isshowout:function(){
+    editfood = null;
     pageobject.setData({
       isshoweditfood: false
     })
   },
 
+  //用于阻止事件冒泡
   donothing:function(){
 
   },
 
+  //picke是否销售
   issalepickerbindchange: function (event){
     editfood.issale = parseInt(event.detail.value);
     pageobject.setData({
@@ -108,6 +198,7 @@ Page({
     })
   },
 
+ //picke更改商品类型
   typepickerbindchange: function (event){
     editfood.type = parseInt(event.detail.value);
     pageobject.setData({
@@ -117,7 +208,7 @@ Page({
 
 
   
-
+  //选择商品照片
   choseimg:function(){
 
     tempimgsrc = null;
@@ -144,9 +235,10 @@ Page({
           sizeType: ['compressed'],
           success: function (res) {
             tempimgsrc = res.tempFilePaths;
+            editfood.imgsrc = tempimgsrc;
             pageobject.setData({
-            tempimgsrc: tempimgsrc
-            })
+              editfood: editfood
+            });
             resolve();
           },
           fail: function () {
@@ -158,49 +250,65 @@ Page({
     }
 
     getcameraauth()
-    .then(function () {
-      return getimg();
-    })
+    .then(getimg)
     .catch(function(error){
-      wx.showToast({
-        title: error.message,
-      });
       console.log(error.message);
     })
 
   },
 
+  //提交表单
   formsubmit:function(event){
-    console.log(event.detail.value);
+    console.log("修改商品为：",event.detail.value);
+
+    var targeturl ;
+    if (!isaddfood){
+      targeturl = durl + "/rest/food/editnameandprice";
+    }
+    else{
+      targeturl = durl + "/rest/food/addfood"
+    }
 
     function sendfoodinfo(){
       var foodinfo = new Promise(function (resolve, reject) {
         wx.request({
-          url: durl + "/rest/food/editnameandprice",
-          data: { id: event.detail.value.foodid, name: event.detail.value.name, price: event.detail.value.price },
+          url: targeturl,
+          data: { 
+            id: event.detail.value.id,
+            name: event.detail.value.name,
+            price: event.detail.value.price,
+            issale: event.detail.value.issale,
+            material: event.detail.value.material,
+            type: event.detail.value.type,
+            cost: event.detail.value.cost,
+            storeid: store_info.id
+           },
           method: 'POST',
           header: { Cookie: "JSESSIONID=" + app.globalData.session, 'content-type': "application/x-www-form-urlencoded" },
           success: function (res) {
-            if (res.data.status == 500) {
-              wx.showToast({
-                title: res.data.reason
-              })
-              reject(new Error("修改失败"));
-            }
-            else {
-              food_list[event.detail.value].name = event.detail.value.name;
-              food_list[event.detail.value].price = event.detail.value.price;
-              food_list[event.detail.value].cost = event.detail.value.cost;
-              food_list[event.detail.value].issale = event.detail.value.issale;
-              food_list[event.detail.value].type = event.detail.value.type;
-              food_list[event.detail.value].material = event.detail.value.material;
-              pageobject.setData({
-                isshoweditfood: false,
-                foodlist: food_list
-              })
-              console.log(res.data);
+            console.log("success",res.data);
+            if (res.data.status == 200) {
+              if (!isaddfood){
+                food_list[foodindex].name = event.detail.value.name;
+                food_list[foodindex].price = event.detail.value.price;
+                food_list[foodindex].cost = event.detail.value.cost;
+                food_list[foodindex].issale = event.detail.value.issale;
+                food_list[foodindex].type = event.detail.value.type;
+                food_list[foodindex].material = event.detail.value.material;
+                pageobject.setData({
+                  isshoweditfood: false,
+                  foodlist: food_list
+                })
+              }
               resolve();
             }
+            else {
+              reject(new Error("修改失败"));
+            }
+          },
+          fail(res){
+            console.log("fail(res)",res.data);
+            reject(new Error("修改失败"));
           }
         })
       });
@@ -208,54 +316,91 @@ Page({
     }
 
     function sendimg() {
-      var getimg = new Promise(function (resolve, reject) {
-        wx.uploadFile({
-          url: durl + '/rest/food/uploadfoodimg', // 仅为示例，非真实的接口地址
-          filePath: tempimgsrc[0],
-          name: 'foodimg',
-          header: { Cookie: "JSESSIONID=" + app.globalData.session },
-          formData: {
-            foodid: editfood.id
-          },
-          success(res) {
-            if (res.data.status == 200) {
-              const data = res.data
-              console.log(data);
-              wx.showToast({
-                title: "修改成功"
-              });
-              resolve();
-            }
-            else{
+      if (tempimgsrc != null) {
+        var getimg = new Promise(function (resolve, reject) {
+          wx.uploadFile({
+            url: durl + "/rest/food/uploadfoodimg",
+            filePath: tempimgsrc[0],
+            name: 'foodimg',
+            header: { Cookie: "JSESSIONID=" + app.globalData.session },
+            formData: {
+              foodid: editfood.id
+            },
+            success(res) {
+              res.data = JSON.parse(res.data);
+              console.log("success(res)", res.data);
+              if (res.data.status == 200) {
+                const data = res.data
+                wx.showToast({
+                  title: "修改成功"
+                });
+                food_list[foodindex].imgsrc = tempimgsrc;
+                pageobject.setData({
+                  foodlist: food_list
+                })
+                resolve();
+              }
+              else{
+                reject(new Error("修改图片失败"));
+              }
+            },
+            fail(res){
+              res.data = JSON.parse(res.data);
+              console.log("fail(res)", res.data);
               reject(new Error("修改图片失败"));
             }
-          },
-          fail(res){
-            reject(new Error("修改图片失败"));
-          }
+          })
         })
-      })
-      return getimg;
+        return getimg;
+      }else{
+        wx.showToast({
+          title: "修改成功"
+        });
+      }
     }
 
+    wx.showLoading({
+      title: '正在修改',
+      mask: true
+    })
 
-    userloginJs.userloginprocess().then(function () {
-      return sendfoodinfo()})
-    .then(function () {
-        return sendimg()})
-    .cath(function (error) {
+    userloginJs.userloginprocess()
+    .then(sendfoodinfo)
+    .then(sendimg)
+    .catch(function (res) {
+      tempimgsrc = null;
+      targeturl = false;
+      console.log(res.message);
       wx.showToast({
-        title: error.message,
-      })
-      console.log(error.message)
+        icon:"none",
+        title: res.message,
       });
+    });
+    
 
   },
 
   formreset:function(){
+    editfood = null;
     tempimgsrc = null;
   },
 
+  namebar: function (event){
+    console.log(event.detail.value)
+    editfood.name = event.detail.value;
+  },
+  materialbar: function (event) {
+    console.log(event.detail.value)
+    editfood.material = event.detail.value;
+  },
+  pricebar: function (event) {
+    console.log(event.detail.value)
+    editfood.price = event.detail.value;
+  },
+  costbar: function (event) {
+    console.log(event.detail.value)
+    editfood.cost = event.detail.value;
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

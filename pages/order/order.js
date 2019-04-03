@@ -55,6 +55,7 @@ Page({
         success: function (res) {
           if (res.data.status == 500) {
             wx.showToast({
+              icon:"none",
               title: res.data.reason
             })
           }

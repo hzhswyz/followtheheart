@@ -104,9 +104,20 @@ Page({
       titlearray: titlearray
     });
 
+    //获取腾讯地图API
+    qqmapsdk = new QQMapWX({
+      key: 'OKWBZ-H3RRF-D76JH-JE5BA-U5FQ5-NXBTH'
+    });
+
+    this.getData();
+    this.relogin();
+  },
+
+
+  relogin:function(){
     //确定是商户后显示商户管理图标
     userloginJs.userloginprocess().then(function () {
-      if (app.globalData.userInfo.IsBusiness){
+      if (app.globalData.userInfo.IsBusiness) {
         titlearray[4] = {
           bindtapfunction: 'clickmanage',
           imgsrc: "/pages/static/img/indexpage/titlecontent2.png",
@@ -116,8 +127,24 @@ Page({
       pageobject.setData({
         titlearray: titlearray
       })
+    }).catch(function (error) {
+      wx.showModal({
+        content: error.message,
+        confirmText: "重新登陆",
+        showCancel: false,
+        success(res) {
+          if (res.confirm) {
+            console.log('用户点击确定')
+            pageobject.relogin();
+          } else if (res.cancel) {
+            console.log('用户点击取消')
+          }
+        },
+        fail(res) {
+          console.log('用户点击取消')
+        }
+      })
     });
-
   },
 
   onShareAppMessage(Object){
@@ -214,20 +241,14 @@ Page({
   },
 
   //加载精选商户
-  onReady: function(){
-
-    //获取腾讯地图API
-    qqmapsdk = new QQMapWX({
-      key: 'OKWBZ-H3RRF-D76JH-JE5BA-U5FQ5-NXBTH'
-    });
-
+  getData:function(){
     //检查用户是否授予定位权限
     function positionpromise() {
       var userpositionpromise = new Promise(function (resolve, reject) {
         //获取用户位置
         wx.getSetting({
           success: function (res) {
-            console.log("权限信息",res);
+            console.log("权限信息", res);
             if (res.authSetting['scope.userLocation']) {
               console.log("userpositionpromise 已经获取用户位置授权了");
               resolve();
@@ -374,7 +395,7 @@ Page({
             },
             fail: function (res) {
               console.log(res);
-              reject();
+              reject(new Error("请求达到上限"));
             }
           });
         }
@@ -415,12 +436,34 @@ Page({
           Recommendarray: store_list
         })
       }).catch(function (mes) {
-        wx.showToast({
+        /*wx.showToast({
           title: mes.message,
           image: '/pages/static/img/indexpage/indexfail.png'
-        })
+        })*/
+        
         console.log(mes)
-      })
+        wx.showModal({
+          content: mes.message,
+          confirmText: "重新加载",
+          showCancel:false,
+          success(res) {
+            if (res.confirm) {
+              console.log('用户点击确定')
+              pageobject.getData();
+            } else if (res.cancel) {
+              console.log('用户点击取消')
+            }
+          },
+          fail(res){
+            console.log('用户点击取消')
+          }
+        })
+      });
+
+  },
+
+
+  onReady: function(){
 
   }
   /*onPageScroll: function (ev) {

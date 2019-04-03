@@ -29,7 +29,7 @@
     </block>
   </view>
 </view>
-<scroll-view class='scrollview' scroll-y="true" style='height:{{screenHeight}}px'>
+<scroll-view class='scrollview' scroll-y="true" style='height:{{screenHeight}}px' scroll-top="{{scrollTop}}">
   <block wx:for="{{foodlist}}" wx:if="{{item.type==typeindex}}" wx:key="{{index}}" >
     <view class='foodview'>
       <image src='{{item.imgsrc}}' mode='scaleToFill' class='foodimage' style="height:{{showheight}}px;"></image>
@@ -45,6 +45,7 @@
       </view>
     </view>
   </block>
+  <view style='width:100%;height:50px;'></view>
 </scroll-view>
 <view class='shoppingcart' bindtap='showorder'>
   <image class="shoppingcartimag" src='/pages/static/img/indexpage/shoppingcart.png' mode='scaleToFill'></image>

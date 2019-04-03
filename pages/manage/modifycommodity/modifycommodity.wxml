@@ -30,7 +30,7 @@
     </block>
   </view>
 </view>
-<scroll-view class='scrollview' scroll-y="true" style='height:{{screenHeight}}px'>
+<scroll-view class='scrollview' scroll-y="true" style='height:{{screenHeight}}px' scroll-top="{{scrollTop}}">
   <block wx:for="{{foodlist}}" wx:if="{{item.type==typeindex}}" wx:key="{{index}}" >
     <view class='foodview'>
       <image src='{{item.imgsrc}}' mode='scaleToFill' class='foodimage' style="height:{{showheight}}px;"></image>
@@ -40,32 +40,39 @@
       </view>
       <view class='foodpriceview'>
         <text>￥ {{item.price}}</text>
-        <image class='addbutton' src='/pages/static/img/indexpage/edit.png' data-indexid='{{index}}' bindtap='editfood'></image>
+        <image class='reducebutton' src='/pages/static/img/indexpage/deletefood.png' data-indexid='{{index}}'
+          bindtap='deletefood'></image>
+        <image class='addbutton' src='/pages/static/img/indexpage/editfood.png' data-indexid='{{index}}' bindtap='editfood'></image>
       </view>
     </view>
   </block>
+  <view style='width:100%;height:50px;'></view>
 </scroll-view>
 
 <view class='editnameandpriceandimgout' bind:tap='isshowout' wx:if="{{isshoweditfood}}">
   <view class='editnameandpriceandimg' catch:tap='donothing'>
     <form class='editnameandpriceandimgform' bindsubmit="formsubmit" bindreset='formreset'>
       <view class='foodimgare'>
-        <image class='editfoodimg' bindtap='choseimg' mode='aspectFit' src='{{tempimgsrc}}'></image>
+        <image class='editfoodimg' bindtap='choseimg' mode='aspectFit' src='{{editfood.imgsrc}}'></image>
       </view>
       <view class='namearea'>
-        名称:<input class ='input' value="{{editfood.name}}" placeholder="请输入名称" name="name" maxlength="15"></input>
+        名称:<input class ='input' value="{{editfood.name}}" placeholder="请输入名称" name="name" maxlength="15" 
+        bindblur="namebar"></input>
       </view>
       <view class='namearea'>
-        食材:<input class ='input' value="{{editfood.material}}" placeholder="请输入食材" name="material" maxlength='50'></input>
+        食材:<input class ='input' value="{{editfood.material}}" placeholder="请输入食材" name="material" maxlength='50' 
+        bindblur="materialbar"></input>
       </view>
       <view class='pricearea'>
         <view class='priceview'>
           <text>价格:</text>
-          <input class ='priceinput' value="{{editfood.price}}" placeholder="价格" name="price" maxlength='8' type='digit'></input>
+          <input class ='priceinput' value="{{editfood.price}}" placeholder="价格" name="price" maxlength='8' type='digit'
+          bindblur="pricebar"></input>
         </view>
         <view class='priceview'>
           <text>成本:</text>
-          <input class ='priceinput' value="{{editfood.cost}}" placeholder="成本" name="cost"  maxlength='8'type='digit'></input>
+          <input class ='priceinput' value="{{editfood.cost}}" placeholder="成本" name="cost"  maxlength='8'type='digit'
+          bindblur="costbar"></input>
         </view>
       </view>
       <wxs module="judgesalestatus">
@@ -95,11 +102,15 @@
           <button type="default" size="mini">分类: {{judgetype.judge(editfood.type,store.type)}}</button>
         </picker>
       </view>
-      <input name = 'foodid' value="{{editfood.id}}" hidden="true"></input>
+      <input name = 'id' value="{{editfood.id}}" hidden="true"></input>
       <view class='confirmandcancel'>
         <button  type="primary" plain="true" size="mini" form-type='submit'>确认</button>
         <button  type="warn" plain="true" size="mini" form-type="reset" bindtap='isshowout'>取消</button>
       </view>
     </form>
   </view>
+</view>
+
+<view class='shoppingcart' bindtap='addfood'>
+  <image class="shoppingcartimag" src='/pages/static/img/indexpage/addfood.png' mode='scaleToFill'></image>
 </view>

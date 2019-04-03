@@ -23,6 +23,7 @@ function userloginprocess () {
           }
         },
         fail: function () {
+          console.log("查询用户登陆失败")
           resolve();
         }
       })
@@ -59,6 +60,9 @@ function userloginprocess () {
           else {
             reject(new Error("获取_csrf失败"));
           }
+        },
+        fail:function(res){
+          reject(new Error("获取_csrf失败"));
         }
       })
     });
@@ -142,7 +146,7 @@ function userloginprocess () {
     if (error.message == "logined")
         userisloginresolve();
     else{
-      console.log(error);
+      console.log("登陆失败",error);
       userisloginreject(error);
     }
   })

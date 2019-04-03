@@ -181,6 +181,7 @@ Page({
   changefoodtype: function(event){
     foodtypeindex = event.target.dataset.index;
     this.setData({
+      scrollTop: 0,
       typeindex: foodtypeindex
     })
   },

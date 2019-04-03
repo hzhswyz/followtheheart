@@ -132,6 +132,14 @@ align-items: center;
   color: red;
 }
 
+.reducebutton{
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  right: 35%;
+  bottom: 1px;
+}
+
 .addbutton{
   position: absolute;
   width: 18px;
