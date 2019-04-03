@@ -101,7 +101,7 @@ Page({
 
   //删除商品
   deletefood:function(event){
-    console.log(event.currentTarget)
+    console.log("删除商品ID：",event.currentTarget.dataset.indexid)
     var index = event.currentTarget.dataset.indexid;
     var deletefood = food_list[index];
 
@@ -156,7 +156,12 @@ Page({
 
   //添加商品
   addfood:function(){
+    tempimgsrc = ["/pages/static/img/indexpage/default.jpg"];
     editfood = {};
+    editfood.issale = 1;
+    editfood.type = 0;
+    editfood.imgsrc = "../../static/img/indexpage/default.jpg";
+    foodindex = food_list.length;
     isaddfood = true;
     pageobject.setData({
       editfood: editfood,
@@ -210,8 +215,6 @@ Page({
   
   //选择商品照片
   choseimg:function(){
-
-    tempimgsrc = null;
 
     function getcameraauth() {
       var cameraauth = new Promise(function (resolve, reject) {
@@ -295,11 +298,15 @@ Page({
                 food_list[foodindex].issale = event.detail.value.issale;
                 food_list[foodindex].type = event.detail.value.type;
                 food_list[foodindex].material = event.detail.value.material;
-                pageobject.setData({
-                  isshoweditfood: false,
-                  foodlist: food_list
-                })
               }
+              else{
+                editfood.id = res.data.data;
+                food_list[foodindex] = editfood;
+              }
+              pageobject.setData({
+                isshoweditfood: false,
+                foodlist: food_list
+              })
               resolve();
             }
             else {
@@ -338,6 +345,7 @@ Page({
                 pageobject.setData({
                   foodlist: food_list
                 })
+                tempimgsrc = null;
                 resolve();
               }
               else{
@@ -345,8 +353,7 @@ Page({
               }
             },
             fail(res){
-              res.data = JSON.parse(res.data);
-              console.log("fail(res)", res.data);
+              console.log("fail(res)", res);
               reject(new Error("修改图片失败"));
             }
           })

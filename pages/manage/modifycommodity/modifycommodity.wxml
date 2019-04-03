@@ -21,14 +21,22 @@
       <text>{{store.notice ? store.notice : "暂无公告！"}}</text>
     </view>
   </view>
-  <view class='choiceview'>
-    <block wx:for="{{store.type}}" wx:key="{{index}}">
-      <view class='choiceitem' data-index='{{index}}' bindtap='changefoodtype' 
-      style="{{index==typeindex ? 'color:white;font-weight:bold;':''}}">
-      {{item}}</view>
-      <view class='divisionview'></view>
+
+<view class='choiceview'>
+  <scroll-view scroll-x="true" style="width:75%;height:100%">
+    <block wx:for="{{store.type}}" wx:key="{{index}}" >
+      <view class='choiceitem'  style="{{index==typeindex ? 'color:white;font-weight:bold;':''}}">
+        <view class='textarea'>
+          <view class='textview' data-index='{{index}}' bindtap='changefoodtype'>
+            {{item}}
+          </view>
+        </view>
+      </view>
     </block>
-  </view>
+  </scroll-view>
+  <view class=''></view>
+</view>
+
 </view>
 <scroll-view class='scrollview' scroll-y="true" style='height:{{screenHeight}}px' scroll-top="{{scrollTop}}">
   <block wx:for="{{foodlist}}" wx:if="{{item.type==typeindex}}" wx:key="{{index}}" >
@@ -75,6 +83,7 @@
           bindblur="costbar"></input>
         </view>
       </view>
+
       <wxs module="judgesalestatus">
         var judge = function(salestatus){
         var result;
@@ -93,6 +102,7 @@
         }
         module.exports.judge = judge;
       </wxs>
+      
       <view class='pricearea'>
         <picker name = 'issale' value='{{editfood.issale}}' range="{{issalearray}}" bindchange="issalepickerbindchange">
           <button type="default" size="mini">状态: {{judgesalestatus.judge(editfood.issale)}}</button>
