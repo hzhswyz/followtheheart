@@ -8,6 +8,8 @@ var food_list;
 var userloginJs = require('../../../userlogin.js');
 //是否显示修改窗口
 var isshoweditfood = false;
+//是否显示修改商店公告的窗口
+var isshoweditnotic = false;
 //编辑的商品对象
 var editfood;
 //要上传的图片链接
@@ -154,9 +156,19 @@ Page({
     
   },
 
+  //图片加载失败
+  foodimgloadfail:function(event){
+    console.log("使用默认图片替换",event);
+    var foodindex = event.currentTarget.dataset.indexid;
+    food_list[foodindex].imgsrc = "/pages/static/img/indexpage/default.jpg";
+    pageobject.setData({
+      foodlist: food_list
+    })
+  },
+
   //添加商品
   addfood:function(){
-    tempimgsrc = ["/pages/static/img/indexpage/default.jpg"];
+    //tempimgsrc = ["/pages/static/img/indexpage/default.jpg"];
     editfood = {};
     editfood.issale = 1;
     editfood.type = 0;
@@ -188,6 +200,61 @@ Page({
     pageobject.setData({
       isshoweditfood: false
     })
+  },
+
+  //展示编辑店铺公告窗口
+  isshownoticout: function(){
+    isshoweditnotic = !isshoweditnotic;
+    pageobject.setData({
+      isshoweditnotic: isshoweditnotic
+    })
+  },
+  
+  //提交店铺公告form
+  noticeformsubmit:function(event){
+    console.log("修改公告为：", event.detail.value.notice);
+    var notice = event.detail.value.notice;
+    wx.showLoading({
+      title: '正在修改',
+    })
+    userloginJs.userloginprocess()
+      .then(function(){
+        wx.request({
+          url: durl + "/rest/store/editnotic",
+          data: {
+            notice: notice,
+            id: store_info.id
+          },
+          method: 'POST',
+          header: { Cookie: "JSESSIONID=" + app.globalData.session, 'content-type': "application/x-www-form-urlencoded" },
+          success: function (res) {
+            console.log("success", res.data);
+            if (res.data.status == 200) {
+              store_info.notice = notice;
+              pageobject.setData({
+                store: store_info
+              })
+              wx.showToast({
+                title: '修改完成',
+              })
+            }
+            else {
+              wx.showToast({
+                title: '修改失败',
+              })
+            }
+          },
+          fail(res) {
+            console.log("fail(res)", res.data);
+            wx.showToast({
+              title: '修改失败',
+            })
+          },
+          complete(){
+            pageobject.isshownoticout();
+          }
+        });
+      })
   },
 
   //用于阻止事件冒泡
@@ -391,6 +458,7 @@ Page({
     editfood = null;
     tempimgsrc = null;
   },
+  
 
   namebar: function (event){
     console.log(event.detail.value)

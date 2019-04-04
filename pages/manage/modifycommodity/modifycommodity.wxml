@@ -17,7 +17,12 @@
       </view>
     </view>
     <view class='noticeview'>
-      <text style='align-self: center;font-weight: bold;'>店铺公告</text>
+      <view class='noticetitleview'>
+        <view class='editnoticeimg'>
+          <text style='font-weight: bold;'>店铺公告</text>
+          <image class='editnoticebutton' src='/pages/static/img/indexpage/editfood.png' bindtap='isshownoticout'></image>
+        </view>
+      </view>
       <text>{{store.notice ? store.notice : "暂无公告！"}}</text>
     </view>
   </view>
@@ -34,14 +39,14 @@
       </view>
     </block>
   </scroll-view>
-  <view class=''></view>
 </view>
 
 </view>
 <scroll-view class='scrollview' scroll-y="true" style='height:{{screenHeight}}px' scroll-top="{{scrollTop}}">
   <block wx:for="{{foodlist}}" wx:if="{{item.type==typeindex}}" wx:key="{{index}}" >
     <view class='foodview'>
-      <image src='{{item.imgsrc}}' mode='scaleToFill' class='foodimage' style="height:{{showheight}}px;"></image>
+      <image src='{{item.imgsrc}}' mode='scaleToFill' class='foodimage' data-indexid='{{index}}' style="height:{{showheight}}px;"
+      binderror="foodimgloadfail"></image>
       <view class='foodnameview'>
         <text>{{item.name}}</text>
         <text class='foodnumtext'  wx:if="{{item.num>0}}" >{{item.num}}份</text>
@@ -123,4 +128,17 @@
 
 <view class='shoppingcart' bindtap='addfood'>
   <image class="shoppingcartimag" src='/pages/static/img/indexpage/addfood.png' mode='scaleToFill'></image>
+</view>
+
+<view class='editnameandpriceandimgout' bind:tap='isshownoticout' wx:if="{{isshoweditnotic}}">
+  <view class='editnoticcontent' catch:tap='donothing'>
+    <form class='noticeformarea' bindsubmit="noticeformsubmit" bindreset='isshownoticout' >
+      <textarea class='noticetextarea' name="notice" value="{{store.notice}}" fixed="true" placeholder="请输入商店公告">
+      </textarea>
+      <view class='editnoticbuttonarea'>
+        <button  type="primary" plain="true" size="mini" form-type='submit'>确认</button>
+        <button  type="warn" plain="true" size="mini" form-type="reset" >取消</button>
+      </view>
+    </form>
+  </view>
 </view>

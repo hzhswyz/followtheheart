@@ -57,27 +57,33 @@
 }
 
 .choiceview{
-width: 100%;
-height: 40px;
-display: flex;
-flex-direction: row;
-align-items: center;
+  width: 100%;
+  height: 40px;
+  overflow:hidden;
+  white-space:nowrap;
 }
 
 .choiceitem{
-  width: 20%;
+  display:inline-block;
+  width: 70px;
   height: 100%;
-  display: flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items: center;
-  font-size: 16px; 
+  font-size: 16px;
+  vertical-align:middle;
 }
 
-.divisionview{
-  width: 1px;
+.textarea{
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items:center;
+}
+
+.textview{
   height: 25px;
-  background-color: rgb(218, 218, 218)
+  display: flex;
+  width: 100%;
+  border-right: 1px solid white;
+  justify-content: center;
 }
 
 .scrollview{

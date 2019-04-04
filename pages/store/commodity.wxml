@@ -20,19 +20,25 @@
       <text>{{store.notice ? store.notice : "暂无公告！"}}</text>
     </view>
   </view>
-  <view class='choiceview'>
-    <block wx:for="{{store.type}}" wx:key="{{index}}">
-      <view class='choiceitem' data-index='{{index}}' bindtap='changefoodtype' 
-      style="{{index==typeindex ? 'color:white;font-weight:bold;':''}}">
-      {{item}}</view>
-      <view class='divisionview'></view>
+<view class='choiceview'>
+  <scroll-view scroll-x="true" style="width:75%;height:100%">
+    <block wx:for="{{store.type}}" wx:key="{{index}}" >
+      <view class='choiceitem'  style="{{index==typeindex ? 'color:white;font-weight:bold;':''}}">
+        <view class='textarea'>
+          <view class='textview' data-index='{{index}}' bindtap='changefoodtype'>
+            {{item}}
+          </view>
+        </view>
+      </view>
     </block>
-  </view>
+  </scroll-view>
+</view>
 </view>
 <scroll-view class='scrollview' scroll-y="true" style='height:{{screenHeight}}px' scroll-top="{{scrollTop}}">
   <block wx:for="{{foodlist}}" wx:if="{{item.type==typeindex}}" wx:key="{{index}}" >
     <view class='foodview'>
-      <image src='{{item.imgsrc}}' mode='scaleToFill' class='foodimage' style="height:{{showheight}}px;"></image>
+      <image src='{{item.imgsrc}}' mode='scaleToFill' class='foodimage' data-indexid='{{index}}' style="height:{{showheight}}px;" 
+      binderror="foodimgloadfail"></image>
       <view class='foodnameview'>
         <text>{{item.name}}</text>
         <text class='foodnumtext'  wx:if="{{item.num>0}}" >{{item.num}}份</text>

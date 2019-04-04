@@ -135,6 +135,15 @@ Page({
     }
   },
 
+  //图片加载失败
+  foodimgloadfail: function (event) {
+    console.log("使用默认图片替换", event);
+    var foodindex = event.currentTarget.dataset.indexid;
+    food_list[foodindex].imgsrc = "/pages/static/img/indexpage/default.jpg";
+    pageobject.setData({
+      foodlist: food_list
+    })
+  },
   /**
    * 生命周期函数--监听页面隐藏
    */
