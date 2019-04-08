@@ -45,7 +45,7 @@
     if(distance>1000)
       result = (distance/1000).toFixed(1) +" Km";
     else
-      result = distance+" m";
+      result = distance.toFixed(0)+" m";
     return result;
     }
     module.exports.getdistance = getdistance;

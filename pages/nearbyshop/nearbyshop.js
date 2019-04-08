@@ -4,6 +4,9 @@ var pageobject;
 var filter_index = 0;
 var durl = app.globalData.dynamicrequest;
 var storelist;
+var isshowreserve = false;
+var reservetime = '09:10';
+var reservestore;
 Page({
 
   /**
@@ -165,6 +168,48 @@ Page({
     var index = event.target.dataset.index;
     filter_index = index;
     this.change();
+  },
+
+  //点击预定
+  reserve:function(event){
+    console.log(event.currentTarget.dataset.index)
+    var d = new Date();
+    var h = d.getHours();
+    if(parseInt(h)<10)
+      h = '0'+h;
+    var m = d.getMinutes();
+    if (parseInt(m) < 10)
+      m = '0' + m;
+    var date = h + ":" + m;
+    console.log(date)
+    reservestore = storelist[event.currentTarget.dataset.index];
+    reservetime = date;
+    this.isshowreserve();
+  },
+  //展示预定界面
+  isshowreserve:function (event){
+    isshowreserve = !isshowreserve;
+    pageobject.setData({
+      reservestore: reservestore,
+      isshowreserve: isshowreserve,
+      reservetime: reservetime,
+    })
+  },
+  //阻止事件冒泡
+  donothing:function(){
+
+  },
+  //更改预定时间
+  bindTimeChange:function(event){
+    console.log(event.detail.value);
+    reservetime = event.detail.value;
+    pageobject.setData({
+      reservetime: reservetime
+    })
+  },
+  //提交预定表单
+  reserveformsubmit: function (event){
+    console.log(event.detail.value);
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

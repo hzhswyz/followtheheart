@@ -146,6 +146,16 @@ Page({
                 (d2.getSeconds());
               res.data.data.transactiondate = date2;
             }*/
+            if (res.data.data.paymenttime != null) {
+              var d = new Date(res.data.data.paymenttime);
+              var date = (d.getFullYear()) + "-" +
+                (d.getMonth() + 1) + "-" +
+                (d.getDate()) + " " +
+                (d.getHours()) + ":" +
+                (d.getMinutes()) + ":" +
+                (d.getSeconds());
+              res.data.data.paymenttime = date;
+            }
           }
           res.data.data.sequenceid = touchsequenceid;
           res.data.data.content = JSON.parse(res.data.data.content);

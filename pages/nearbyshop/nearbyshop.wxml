@@ -14,6 +14,10 @@
       <view class='information'>
         <view class="storename">
           <text class='nametext'>{{item.name}}</text>
+          <view class="reserveview" wx:if="{{item.reserve==1}}" data-index="{{index}}" catchtap='reserve'>
+            <image class="reserveimg" src='/pages/static/img/indexpage/reserve.png'></image>
+            <text class='reservetext'>预定</text>
+          </view>
         </view>
         <view class="starandsaleanddistance">
           <view class='star'>
@@ -31,7 +35,7 @@
             if(distance>1000)
               result = (distance/1000).toFixed(1) +" Km";
             else
-              result = distance+" m";
+              result = distance.toFixed(0)+" m";
             return result;
             }
             module.exports.getdistance = getdistance;
@@ -52,4 +56,30 @@
       </view>
     </view>
   </block>
+</view>
+
+<view class='reserveviewout' bind:tap='isshowreserve' wx:if="{{isshowreserve}}">
+  <view class='reservecontent' catch:tap='donothing'>
+    <text class='reservetiptext'>当前已有<text style='color:red'>10</text>人在排队等候</text>
+    <form class='reserveform' bindsubmit="reserveformsubmit" bindreset='isshowreserve'>
+      <input name="storeid" value="{{reservestore.id}}" hidden='true'></input>
+      <picker class="reservepicker" name="time" mode="time" value="{{reservetime}}" start="{{reservestore.businesshoursbegin}}" 
+      end="{{reservestore.businesshoursend}}" bindchange="bindTimeChange">
+        <view >
+          预定时间：{{reservetime}} 分 <text style='color:rgb(8, 190, 8)'>更改</text>
+        </view>
+      </picker>
+      <view class='reservepeoplenum'>
+        <text class='peoplenumtext'>人数：</text>
+        <input class="peoplenuminput" name="peoplenum" placeholder='请输入人数'></input>
+      </view>
+      <view class="reserveremarks">
+        <textarea class='remarkstextarea' name="remarks" placeholder='请输入备注'></textarea>
+      </view>
+      <view class='reservebuttonarea'>
+        <button  type="primary" plain="true" size="mini" form-type='submit'>预定</button>
+        <button  type="warn" plain="true" size="mini" form-type="reset">取消</button>
+      </view>
+    </form>
+  </view>
 </view>
