@@ -7,6 +7,7 @@ var storelist;
 var isshowreserve = false;
 var reservetime = '09:10';
 var reservestore;
+var userloginJs = require('../../userlogin.js');
 Page({
 
   /**
@@ -209,7 +210,54 @@ Page({
   },
   //提交预定表单
   reserveformsubmit: function (event){
+    wx.showLoading({
+      title: '预定中',
+    })
     console.log(event.detail.value);
+    userloginJs.userloginprocess().then(function () {
+      var time = event.detail.value.time
+      var d = new Date();
+      var y = d.getFullYear();
+      var m = d.getMonth() + 1;
+      var day = d.getDate();
+      if (parseInt(day) < 10)
+        day = '0' + day;
+      if (parseInt(m)<10)
+        m = '0' + m;
+      time = y + '-' + m + '-' + day + ' ' + time + ":00";
+      console.log(time)
+      wx.request({
+        url: durl + "/rest/reserve/creatreserve",
+        data: {
+          storeid: reservestore.id,
+          time: time,
+          peoplenum: event.detail.value.peoplenum,
+          remarks: event.detail.value.remarks
+        },
+        header: { Cookie: "JSESSIONID=" + app.globalData.session, 'content-type': "application/x-www-form-urlencoded" },
+        method: 'POST',
+        success: function (res) {
+          if (res.data.status == 200) {
+            wx.showToast({
+              title: '预定成功',
+            })
+          }
+          else{
+            wx.showToast({
+              title: '预定失败',
+            })
+          }
+        },
+        fail:function(){
+          wx.showToast({
+            title: '预定失败',
+          })
+        },
+        complete:function(){
+          pageobject.isshowreserve();
+        }
+      });
+    });
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
