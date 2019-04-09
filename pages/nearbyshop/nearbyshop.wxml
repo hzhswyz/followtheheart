@@ -14,9 +14,13 @@
       <view class='information'>
         <view class="storename">
           <text class='nametext'>{{item.name}}</text>
-          <view class="reserveview" wx:if="{{item.reserve==1}}" data-index="{{index}}" catchtap='reserve'>
+          <view class="reserveview" wx:if="{{item.reserve==1 && (systime<item.businesshoursend && systime>item.businesshoursbegin)}}" 
+          data-index="{{index}}" catchtap='reserve'>
             <image class="reserveimg" src='/pages/static/img/indexpage/reserve.png'></image>
             <text class='reservetext'>预定</text>
+          </view>
+          <view class="reserveview" wx:if="{{systime>item.businesshoursend || systime<item.businesshoursbegin}}">
+            <text class='closedtext'>打烊了</text>
           </view>
         </view>
         <view class="starandsaleanddistance">

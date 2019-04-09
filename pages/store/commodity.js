@@ -333,8 +333,10 @@ Page({
                   console.log(res)
                   if (res.data.status == 200)
                     resolve(res);
-                  else
-                    reject(new Error("支付失败"));
+                  else{
+                    if (res.data.reason == 'store closed')
+                      reject(new Error("商店已经打烊了"));
+                  }
                 },
                 fail: function () {
                   reject(new Error("支付失败"));
@@ -372,7 +374,10 @@ Page({
             })
           }).catch(function (error) {
             wx.hideLoading()
-            wx.showToast({ title: '系统错误，请重新买单' })
+            wx.showToast({ 
+              image:'../static/img/indexpage/loginfail.png',
+              title: error.message
+               })
             console.log("error:" + error.message);
           })
 

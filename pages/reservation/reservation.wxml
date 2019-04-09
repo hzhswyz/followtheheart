@@ -1,5 +1,9 @@
 <!--pages/reservation/reservation.wxml-->
 <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
-<view class="t" style='margin-top:{{height}}px'>
-<text class="notice" >功能马上开通</text>
+<view class="container" style='margin-top:{{height}}px'>
+  <scroll-view scroll-y="true" class='scrollview' style='height:{{screenHeight}}px;' enable-back-to-top='true' 
+  bindscrolltolower='scrolltolower'>
+    <block wx:for="{{orderlist}}" wx:key="{{index}}">
+    </block>
+  </scroll-view>
 </view>

@@ -152,7 +152,12 @@ Page({
     pageobject.change = change;
 
     change();
-    
+
+    var systime = this.getSysTimeHM();
+    console.log(systime)
+    this.setData({
+      systime: systime
+    })
 
   },
 
@@ -190,7 +195,7 @@ Page({
       m = '0' + m;
     var date = y + '-' + M + '-' + day + ' ' + h + ":" + m + ":00";
     reservetime = h + ":" + m ;
-    console.log(reservetime)
+    console.log("预定时间：",reservetime)
     reservestore = storelist[event.currentTarget.dataset.index];
     this.isshowreserve();
     this.getQueuingNumber(date, reservestore.id);
@@ -199,7 +204,7 @@ Page({
   isshowreserve:function (event){
     isshowreserve = !isshowreserve;
     var systemtimehm = this.getSysTimeHM();
-    console.log(systemtimehm)
+    //console.log("系统时间：",systemtimehm)
     pageobject.setData({
       reservestore: reservestore,
       isshowreserve: isshowreserve,
