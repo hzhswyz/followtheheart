@@ -175,38 +175,96 @@ Page({
   reserve:function(event){
     console.log(event.currentTarget.dataset.index)
     var d = new Date();
+    var y = d.getFullYear();
+    var M = d.getMonth() + 1;
+    var day = d.getDate();
+    if (parseInt(day) < 10)
+      day = '0' + day;
+    if (parseInt(M) < 10)
+      M = '0' + M;
     var h = d.getHours();
     if(parseInt(h)<10)
       h = '0'+h;
     var m = d.getMinutes();
     if (parseInt(m) < 10)
       m = '0' + m;
-    var date = h + ":" + m;
-    console.log(date)
+    var date = y + '-' + M + '-' + day + ' ' + h + ":" + m + ":00";
+    reservetime = h + ":" + m ;
+    console.log(reservetime)
     reservestore = storelist[event.currentTarget.dataset.index];
-    reservetime = date;
     this.isshowreserve();
+    this.getQueuingNumber(date, reservestore.id);
   },
   //展示预定界面
   isshowreserve:function (event){
     isshowreserve = !isshowreserve;
+    var systemtimehm = this.getSysTimeHM();
+    console.log(systemtimehm)
     pageobject.setData({
       reservestore: reservestore,
       isshowreserve: isshowreserve,
       reservetime: reservetime,
+      systemtime: systemtimehm
     })
+  },
+  //获取当前排队人数
+  getQueuingNumber:function(date,storeid){
+
+    wx.request({
+      url: durl + "/rest/reserve/getqueuingnumber",
+      data: {
+        storeid: storeid,
+        date: date
+      },
+      header: { Cookie: "JSESSIONID=" + app.globalData.session, 'content-type': "application/x-www-form-urlencoded" },
+      success: function (res) {
+        if (res.data.status == 200) {
+          pageobject.setData({
+            queuingnumber: res.data.data
+          })
+        }
+        else{
+        }
+      },
+      fail:function(){
+      }
+    });
   },
   //阻止事件冒泡
   donothing:function(){
 
   },
+  //获取系统时间
+  getSysTimeHM(){
+    var d = new Date();
+    var h = d.getHours();
+    if (parseInt(h) < 10)
+      h = '0' + h;
+    var m = d.getMinutes();
+    if (parseInt(m) < 10)
+      m = '0' + m;
+    return h+":"+m;
+  },
   //更改预定时间
   bindTimeChange:function(event){
     console.log(event.detail.value);
     reservetime = event.detail.value;
+    var systemtimehm = this.getSysTimeHM();
     pageobject.setData({
-      reservetime: reservetime
+      reservetime: reservetime,
+      systemtime: systemtimehm
     })
+
+    var d = new Date();
+    var y = d.getFullYear();
+    var M = d.getMonth() + 1;
+    var day = d.getDate();
+    if (parseInt(day) < 10)
+      day = '0' + day;
+    if (parseInt(M) < 10)
+      M = '0' + M;
+    var date = y + '-' + M + '-' + day + ' ' + reservetime +":00";
+    this.getQueuingNumber(date, reservestore.id);
   },
   //提交预定表单
   reserveformsubmit: function (event){
@@ -243,9 +301,17 @@ Page({
             })
           }
           else{
-            wx.showToast({
-              title: '预定失败',
-            })
+            console.log(res)
+            if (res.data.reason == 'intervaltime error')
+              wx.showToast({
+                icon:'none',
+                image:"../static/img/indexpage/indexfail.png",
+                title: '已经预定过此店',
+              })
+            else
+              wx.showToast({
+                title: '预定失败',
+              })
           }
         },
         fail:function(){

@@ -76,7 +76,7 @@ font-weight: bold;
 }
 .reservetext{
   font-size: 16px;
-  color: #10c0ec;
+  color: #3cccf0;
 }
 .starandsaleanddistance{
   width: 100%;

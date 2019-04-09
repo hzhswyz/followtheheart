@@ -60,12 +60,12 @@
 
 <view class='reserveviewout' bind:tap='isshowreserve' wx:if="{{isshowreserve}}">
   <view class='reservecontent' catch:tap='donothing'>
-    <text class='reservetiptext'>当前已有<text style='color:red'>10</text>人在排队等候</text>
+    <text class='reservetiptext' wx:if="queuingnumber">当前已有<text style='color:red'>{{queuingnumber}}</text>人在排队等候</text>
     <form class='reserveform' bindsubmit="reserveformsubmit" bindreset='isshowreserve'>
       <input name="storeid" value="{{reservestore.id}}" hidden='true'></input>
-      <picker class="reservepicker" name="time" mode="time" value="{{reservetime}}" start="{{reservestore.businesshoursbegin}}" 
+      <picker class="reservepicker" name="time" mode="time" value="{{reservetime}}" start="{{systemtime}}" 
       end="{{reservestore.businesshoursend}}" bindchange="bindTimeChange">
-        <view >
+        <view>
           预定时间：{{reservetime}} 分 <text style='color:rgb(8, 190, 8)'>更改</text>
         </view>
       </picker>
