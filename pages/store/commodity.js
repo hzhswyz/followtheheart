@@ -19,13 +19,13 @@ Page({
    * 页面的初始数据
    */
   data: {
-    starssrc:"/pages/static/img/indexpage/stars.png",
-    typeindex: foodtypeindex,
     nvabarData: {
       showCapsule: 1, //是否显示左上角图标
-      title: '随心菜单', //导航栏 中间的标题
+      title: '', //导航栏 中间的标题
       navbackground: "#f9d423"
     },
+    starssrc:"/pages/static/img/indexpage/stars.png",
+    typeindex: foodtypeindex,
     // 此页面 页面内容距最顶部的距离
     height: app.globalData.height * 2 + 20,
   },
@@ -38,6 +38,20 @@ Page({
     totalnum = 0;
     totalamount = 0;
     pageobject = this;
+
+
+    let storeinfo = JSON.parse(options.storeinfo);
+    storeinfo.image = durl + "/static/image/" + storeinfo.id + "image.jpg"
+    store_info = storeinfo;
+    this.setData({
+      store: storeinfo,
+      nvabarData: {
+        showCapsule: 1, //是否显示左上角图标
+        title: storeinfo.name, //导航栏 中间的标题
+        navbackground: "#f9d423"
+      }
+    })
+
     wx.getSystemInfo({
       success: (res) => {
         var showwidth = res.windowWidth/2;
@@ -50,21 +64,7 @@ Page({
         })
       }
     });
-    let storeinfo = JSON.parse(options.storeinfo);
-    storeinfo.image = durl +"/static/image/" + storeinfo.id +"image.jpg"
-    store_info = storeinfo;
-    this.setData({
-      store: storeinfo,
-      nvabarData: {
-        showCapsule: 1, //是否显示左上角图标
-        title: storeinfo.name, //导航栏 中间的标题
-        navbackground:"#f9d423"
-      }
-    })
-    wx.setNavigationBarTitle({
-      title: storeinfo.name
-    })
-    
+
     console.log(totalnum + " totalnum0")
     console.log("用户JSESSIONID： " + app.globalData.session);
     wx.request({
