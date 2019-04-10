@@ -115,11 +115,7 @@ Page({
         header: { Cookie: "JSESSIONID=" + app.globalData.session },
         data: data,
         success: function success(res) {
-          if ('Set-Cookie' in res.header) {
-            console.log("用户JSESSIONID：", res.header["Set-Cookie"].split(";")[0].split("=")[1]);
-            app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
-          }
-          console.log("res.data.data", res.data.data)
+          console.log("附近商店", res.data.data)
           storelist = res.data.data;
           for (var i = 0; i < storelist.length; i++) {
             storelist[i].type = storelist[i].type.split(",");

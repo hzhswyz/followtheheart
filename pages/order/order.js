@@ -62,6 +62,13 @@ Page({
           else {
             wx.hideLoading();
             console.log(res.data);
+            if (res.data.data.length == 0) {
+              wx.showToast({
+                icon: "none",
+                title: "没有更多数据了",
+              })
+              return;
+            }
             //更改时间显示格式
             for (var i = 0; i < res.data.data.length; i++) {
               //序列id

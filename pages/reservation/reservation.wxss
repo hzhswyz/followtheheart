@@ -1,16 +1,83 @@
 /* pages/reservation/reservation.wxss */
-.t{
-  position: absolute;
-  width: 100%;
-  height: 300px;
-  top: 35%;
-  display: flex;
-  flex-direction: column;
-  align-items: center
+
+.item{
+display: flex;
+flex-direction: column;
+margin: auto;
+width: 95%;
+padding: 10px 0px 10px 0px;
+justify-content: center;
+margin-top:10px;
+border-radius: 20px; 
+background: linear-gradient(to right, #fd746c, #ff9068); 
 }
-.notice{
-  vertical-align: middle;
-  align-items: center;
-  margin-top: 20px;
-  font-size: 30px;
+.imgandname{
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: center;
+}
+.storeimg{
+width: 35px;
+height: 35px;
+border-radius: 35px;
+}
+.storename{
+margin-left: 20px;
+font-size: 20px;
+color: white;
+}
+.serialnumber{
+margin-top: 15px;
+display: flex;
+flex-direction: row;
+justify-content: center;
+font-size:13px;
+font-family: menlo,tahoma;
+text-shadow: 1px 1px 2px #666;
+color: rgb(255, 255, 255);
+}
+.peonumandtime{
+margin-top: 15px;
+display: flex;
+flex-direction: row;
+justify-content: space-evenly;
+}
+.peonum{
+color: white;
+font-size: 15px;
+}
+.time{
+color: white;
+font-size: 15px;
+}
+.more{
+margin-top: 15px;
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+}
+.moreimg{
+width: 20px;
+height: 20px;
+}
+.showremark{
+margin-top: 10px;
+display: flex;
+flex-direction: columns;
+justify-content: center;
+color: white;
+font-size: 15px;
+max-height: 50px;
+}
+.remarktextview{
+padding: 5px;
+width: 80%;
+display: flex;
+flex-direction: column;
+overflow-y: auto;
+}
+.remarktext{
+align-self: center;
 }
