@@ -24,6 +24,7 @@ Page({
     nvabarData: {
       showCapsule: 1, //是否显示左上角图标
       title: '随心菜单', //导航栏 中间的标题
+      navbackground: "#f9d423"
     },
     // 此页面 页面内容距最顶部的距离
     height: app.globalData.height * 2 + 20,
