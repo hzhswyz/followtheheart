@@ -41,17 +41,19 @@
 
   <wxs module="calculatedistance">
     var getdistance = function(distance){
-    var result;
-    if(distance>1000)
-      result = (distance/1000).toFixed(1) +" Km";
-    else
-      result = distance.toFixed(0)+" m";
-    return result;
+    console.log(distance)
+      var result;
+      if(distance>1000)
+        result = (distance/1000).toFixed(1) +" Km";
+      else
+        result = distance.toFixed(0)+" m";
+      return result;
     }
     module.exports.getdistance = getdistance;
   </wxs>
+  
 
-  <view class="recommendationview" wx:for="{{Recommendarray}}" wx:key="imgsrc" bindtap='openstore' 
+  <view class="recommendationview" wx:for="{{recommendarray}}" wx:key="id" bindtap='openstore' 
 data-id="{{index}}" style='width:{{showwidth}}px;height:{{showheight}}px'>
     <view  class="recommendationimgview">
       <image class="foodimg" mode="scaleToFill" src="{{item.imgsrc}}"></image>

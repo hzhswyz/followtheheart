@@ -4,5 +4,6 @@
 "usingComponents": {
   "titlebar": "titlebar",
   "nav-bar": "../navigation/navigation"
-}
+},
+"onReachBottomDistance": 60
 }
