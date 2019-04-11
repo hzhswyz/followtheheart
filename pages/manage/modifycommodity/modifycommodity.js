@@ -30,7 +30,7 @@ Page({
       title: '商店管理', //导航栏 中间的标题
     },
     // 此页面 页面内容距最顶部的距离
-    height: app.globalData.height * 2 + 20,
+    height: app.globalData.height * 3,
   },
 
   /**
@@ -44,9 +44,9 @@ Page({
         var showheight = showwidth * 0.6;
         app.globalData.windowHeight = res.windowHeight;
         console.log("conmmodity windowheight", res.windowHeight)
-        //console.log("宽度：", showwidth, "高度：", showheight);
         pageobject.setData({
-          showheight: showheight
+          showheight: showheight,
+          screenHeight: app.globalData.windowHeight - 100 - (app.globalData.height * 3)
         })
       }
     });
@@ -82,10 +82,6 @@ Page({
           foodlist: food_list
         })
       }
-    })
-
-    pageobject.setData({
-      screenHeight: app.globalData.windowHeight - 105 - (app.globalData.height * 2 + 20)
     })
 
   },

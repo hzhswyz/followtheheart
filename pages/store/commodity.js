@@ -27,7 +27,7 @@ Page({
     starssrc:"/pages/static/img/indexpage/stars.png",
     typeindex: foodtypeindex,
     // 此页面 页面内容距最顶部的距离
-    height: app.globalData.height * 2 + 20,
+    height: app.globalData.height * 3,
   },
   /**
    * 生命周期函数--监听页面加载
@@ -51,24 +51,27 @@ Page({
         navbackground: "#f9d423"
       }
     })
-
+  },
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
     wx.getSystemInfo({
       success: (res) => {
-        var showwidth = res.windowWidth/2;
+        var showwidth = res.windowWidth / 2;
         var showheight = showwidth * 0.6;
         app.globalData.windowHeight = res.windowHeight;
         console.log("conmmodity windowheight", res.windowHeight)
-        //console.log("宽度：", showwidth, "高度：", showheight);
         pageobject.setData({
-          showheight: showheight
+          showheight: showheight,
+          screenHeight: app.globalData.windowHeight - 100 - (app.globalData.height * 3)
         })
       }
     });
-
     console.log(totalnum + " totalnum0")
     console.log("用户JSESSIONID： " + app.globalData.session);
     wx.request({
-      url: durl + "/store/getstorefoods?storeid=" + storeinfo.id,
+      url: durl + "/store/getstorefoods?storeid=" + store_info.id,
       header: { Cookie: "JSESSIONID=" + app.globalData.session },
       success: function success(res) {
         if ('Set-Cookie' in res.header) {
@@ -76,21 +79,21 @@ Page({
           app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
         }
         var foodlist = res.data.data;
-        console.log("foodlist:",foodlist); 
+        console.log("foodlist:", foodlist);
         //遍历商店的所有商品,与store_food_map中的商品对比,已查看商店内已经加入购物车的商品
-        for (var i = 0; i < foodlist.length; i++){
-          if (store_food_map.has(store_info.id) && store_food_map.get(store_info.id).has(foodlist[i].id)){
-          foodlist[i].num = store_food_map.get(store_info.id).get(foodlist[i].id).num;
-          totalnum += foodlist[i].num;
-            console.log("totalnum1:"+totalnum)
+        for (var i = 0; i < foodlist.length; i++) {
+          if (store_food_map.has(store_info.id) && store_food_map.get(store_info.id).has(foodlist[i].id)) {
+            foodlist[i].num = store_food_map.get(store_info.id).get(foodlist[i].id).num;
+            totalnum += foodlist[i].num;
+            console.log("totalnum1:" + totalnum)
           }
-          foodlist[i].imgsrc = durl +"/static/image/food/food" + foodlist[i].id + ".jpg";
+          foodlist[i].imgsrc = durl + "/static/image/food/food" + foodlist[i].id + ".jpg";
         }
         food_list = foodlist;
         console.log("refresh")
         //refresh为true 则onShow时需要刷新
         refresh = true;
-        console.log("totalnum2: "+totalnum )
+        console.log("totalnum2: " + totalnum)
         pageobject.setData({
           foodlist: foodlist,
           totalnum: totalnum
@@ -98,19 +101,6 @@ Page({
       },
       dataType: "json"
     })
-    pageobject.setData({
-      screenHeight: app.globalData.windowHeight - 105 - (app.globalData.height * 2 + 20)
-    })
-  },
-
-  editfood:function(){
-    
-  },
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
   },
 
   /**

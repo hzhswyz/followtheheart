@@ -13,7 +13,7 @@ Page({
       navbackground: "white"
     },
     // 此页面 页面内容距最顶部的距离
-    height: app.globalData.height * 2 + 20,
+    height: app.globalData.height * 3,
     objectArray: [
       { id: 5, unique: 'unique_5' },
       { id: 4, unique: 'unique_4' },

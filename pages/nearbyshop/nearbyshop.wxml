@@ -1,11 +1,11 @@
 <!--pages/nearbyshop/nearbyshop.wxml-->
 <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
-<view class="filter" style='margin-top:{{height}}px' >
+<view class="filter" style='top:{{height}}px' >
   <text class="{{0 != filterindex ? 'filteritem':'filteritemclick'}}" data-index='0' bindtap='changefilter'>距离最近</text>
   <text class="{{1 != filterindex ? 'filteritem':'filteritemclick'}}" data-index='1' bindtap='changefilter'>销量最多</text>
   <text class="{{2 != filterindex ? 'filteritem':'filteritemclick'}}" data-index='2' bindtap='changefilter'>人均最低</text>
 </view>
-<view class='container'>
+<view class='container' style='margin-top:{{height+15}}px'>
   <block wx:for="{{store}}" wx:key="id">
     <view class="item" bindtap='openstore' data-id='{{index}}'>
       <view class='imgarea'>

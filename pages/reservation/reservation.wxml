@@ -1,11 +1,11 @@
 <!--pages/reservation/reservation.wxml-->
 <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
 <view class="container" style='margin-top:{{height}}px'>
-  <scroll-view scroll-y="true" class='scrollview' style='height:{{screenHeight}}px;' enable-back-to-top='true' 
-  bindscrolltolower='scrolltolower' scroll-top="{{scrollTop}}">
     <block wx:for="{{reservationlist}}" wx:key="{{index}}">
-
     <view class='item'>
+      <view class='expiredview' wx:if="{{item.status!=0}}">
+         <image class="expiredimg" src='/pages/static/img/indexpage/expired.png'></image>
+      </view>
       <view class='imgandname'>
         <image class="storeimg" src='{{item.storeimg}}'></image>
         <view class='storename'>{{item.storename}}</view>
@@ -25,10 +25,9 @@
       </view>
       <view class='showremark' wx:if="{{isshowremark && reservationindex==index}}">
         <view class='remarktextview'>
-          <text class='remarktext'>{{item.remarks}}</text>
+          <text class='remarktext'>备注：{{item.remarks}}</text>
         </view>
       </view>
     </view>
     </block>
-  </scroll-view>
 </view>

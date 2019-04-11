@@ -3,11 +3,15 @@ const app = getApp();
 var pageobject;
 var filter_index = 0;
 var durl = app.globalData.dynamicrequest;
-var storelist;
+var storelist = [];
 var isshowreserve = false;
 var reservetime = '09:10';
 var reservestore;
 var userloginJs = require('../../userlogin.js');
+var latitude = null;
+var longitude = null;
+//当前加载的页数
+var currentpage = 1;
 Page({
 
   /**
@@ -20,7 +24,7 @@ Page({
       navbackground: "white"
     },
     // 此页面 页面内容距最顶部的距离
-    height: app.globalData.height * 2 + 20,
+    height: app.globalData.height * 3,
     starssrc: "/pages/static/img/indexpage/stars.png"
   },
 
@@ -28,6 +32,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+
+    currentpage = 1;
+    storelist = [];
+
     this.setData({
       itemheight: 150,
     })
@@ -85,8 +93,8 @@ Page({
           success: function (res) {
             console.log("经度" + res.latitude);
             console.log("纬度" + res.longitude);
-            var latitude = res.latitude;
-            var longitude = res.longitude;
+            latitude = res.latitude;
+            longitude = res.longitude;
             resolve({la: latitude, lo: longitude});
           },
           fail: function (res) {
@@ -99,7 +107,15 @@ Page({
     }
 
     function getstorespromise(localinfo) {
-      var data = { latitude: localinfo.la, longitude: localinfo.lo };
+
+      //没有执行getlocationpromise（）方法情况下
+      if (localinfo == undefined){
+        localinfo = {};
+        localinfo.la = latitude;
+        localinfo.lo = longitude;
+      }
+
+      var data = { latitude: localinfo.la, longitude: localinfo.lo, currentpage: currentpage };
 
       if (filter_index == 0)
         data.distance = 5
@@ -114,16 +130,38 @@ Page({
         url: durl + "/store/getnearbyshops",
         header: { Cookie: "JSESSIONID=" + app.globalData.session },
         data: data,
-        success: function success(res) {
-          console.log("附近商店", res.data.data)
-          storelist = res.data.data;
-          for (var i = 0; i < storelist.length; i++) {
-            storelist[i].type = storelist[i].type.split(",");
-            storelist[i].imgsrc = durl + "/static/image/recommendimg" + storelist[i].id + ".jpg";
+        success: function (res) {
+          if (res.data.status==200){
+            console.log("附近商店", res.data.data)
+            var list = res.data.data;
+            wx.hideLoading();
+            if (list.length == 0) {
+              wx.showToast({
+                icon: "none",
+                title: "没有更多数据了",
+              })
+              return;
+            }
+            for (var i = 0; i < list.length; i++) {
+              list[i].type = list[i].type.split(",");
+              list[i].imgsrc = durl + "/static/image/recommendimg" + list[i].id + ".jpg";
+            }
+            storelist = storelist.concat(list);
+            pageobject.setData({
+              store: storelist,
+              filterindex: filter_index
+            })
+          }else{
+            wx.showToast({
+              icon:'none',
+              title: '加载失败',
+            })
           }
-          pageobject.setData({
-            store: storelist,
-            filterindex: filter_index
+        },
+        fail:function(){
+          wx.showToast({
+            icon: 'none',
+            title: '加载失败',
           })
         }
       })
@@ -137,8 +175,10 @@ Page({
           return getlocaltionauthorizepromise();
         })
         .then(function (res) {
-          //获取用户位置信息（经纬度信息）
-          return getlocationpromise();
+          if (latitude == null || longitude == null){
+            //获取用户位置信息（经纬度信息）
+            return getlocationpromise();
+          }
         })
         .then(function (res) {
           getstorespromise(res)
@@ -166,7 +206,16 @@ Page({
     })
   },
 
+//更改选择条件
   changefilter: function (event){
+    currentpage = 1;
+    storelist = [];
+    wx.showLoading({
+      title: '正在加载',
+    })
+    this.setData({
+      store: storelist,
+    });
     var index = event.target.dataset.index;
     filter_index = index;
     this.change();
@@ -326,6 +375,7 @@ Page({
       });
     });
   },
+
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -337,7 +387,8 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    latitude = null;
+    longitude = null;
   },
 
   /**
@@ -365,7 +416,12 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    wx.showLoading({
+      title: '正在加载',
+      mask: true
+    })
+    currentpage++;
+    this.change();
   },
 
   /**

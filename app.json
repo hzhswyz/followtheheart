@@ -13,6 +13,8 @@
     "pages/manage/modifycommodity/modifycommodity"
   ],
   "tabBar": {
+    "selectedColor":"#11cd6e",
+    "borderStyle": "white",
     "list": [
       {
         "text": "首页",
@@ -36,7 +38,7 @@
   "window": {
     "navigationStyle": "custom",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#3f88bf",
+    "navigationBarBackgroundColor": "white",
     "navigationBarTitleText": "随心菜单",
     "navigationBarTextStyle": "white",
     "backgroundColor": "#000000",
