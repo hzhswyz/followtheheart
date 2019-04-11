@@ -20,7 +20,7 @@ Page({
       navbackground: "white"
     },
     // 此页面 页面内容距最顶部的距离
-    height: app.globalData.height * 2 + 20,
+    height: app.globalData.height * 3 + 6,
   },
 
   /**
@@ -32,15 +32,6 @@ Page({
     isshowremark = false;
     reservationindex = 0;
     pageobject = this;
-    wx.getSystemInfo({
-      success: (res) => {
-        app.globalData.windowHeightminusttabbar = res.windowHeight
-        console.log("order windowHeightminusttabbar", res.windowHeight)
-      }
-    })
-    this.setData({
-      screenHeight: app.globalData.windowHeightminusttabbar - (app.globalData.height * 2 + 26)
-    })
   },
 
   /**
@@ -94,7 +85,7 @@ Page({
     })
   },
   //下拉到底部刷新
-  scrolltolower: function () {
+  onReachBottom: function () {
     wx.showLoading({
       title: '正在加载',
       mask: true
@@ -137,13 +128,6 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
 
   },
 

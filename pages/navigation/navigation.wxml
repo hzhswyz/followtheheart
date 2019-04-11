@@ -17,9 +17,9 @@
   </view>
 </view>-->
 
-<cover-view class='nav-wrap' style='height:{{height*2+20}}px; background:{{navbarData.navbackground}};'>
+<cover-view class='nav-wrap' style='height:{{height*3}}px; background:{{navbarData.navbackground}};'>
    <!-- // 导航栏 中间的标题-->
-  <cover-view class="navbar" style='margin-top:{{height}}px;height:{{height+24}}px;'>
+  <cover-view class="navbar" style='margin-top:{{height}}px;height:{{height*2}}px;'>
     <cover-view class='nav-title' >{{navbarData.title}}</cover-view>
     <cover-view  class="back_home" wx:if='{{navbarData.showCapsule}}'>
       <!-- // 导航栏  左上角的返回按钮 和home按钮

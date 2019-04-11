@@ -1,15 +1,24 @@
 /* pages/reservation/reservation.wxss */
-
 .item{
 display: flex;
 flex-direction: column;
 margin: auto;
+position: relative;
 width: 95%;
 padding: 10px 0px 10px 0px;
 justify-content: center;
-margin-top:10px;
+margin-bottom:10px;
 border-radius: 20px; 
 background: linear-gradient(to right, #fd746c, #ff9068); 
+}
+.expiredview{
+position: absolute;
+right: 13px;
+top: 5px;
+}
+.expiredimg{
+width: 60px;
+height: 60px;
 }
 .imgandname{
 display: flex;

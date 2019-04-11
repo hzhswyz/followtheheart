@@ -25,7 +25,7 @@ Page({
       title: '我的订单', //导航栏 中间的标题
     },
     // 此页面 页面内容距最顶部的距离
-    height: app.globalData.height * 2 + 26,
+    height: app.globalData.height * 3 + 6,
   },
 
   /**
@@ -40,7 +40,7 @@ Page({
       }
     })
     this.setData({
-      screenHeight: app.globalData.windowHeightminusttabbar - (app.globalData.height * 2 + 26)
+      screenHeight: app.globalData.windowHeightminusttabbar - (app.globalData.height * 3 + 6)
     })
   },
 
@@ -60,8 +60,8 @@ Page({
             })
           }
           else {
-            wx.hideLoading();
             console.log(res.data);
+            
             if (res.data.data.length == 0) {
               wx.showToast({
                 icon: "none",
@@ -101,11 +101,13 @@ Page({
             pageobject.setData({
               orderlist: orderlistarray
             });
+
+            wx.hideLoading();
           }
         }
       })
-
-    }, function (err){
+    }, 
+    function (err){
       wx.showToast({
         title: err.message,
         image:'/pages/static/img/indexpage/loginfail.png'

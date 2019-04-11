@@ -7,6 +7,7 @@ var pageobject;
 var showwidth;
 var showheight;
 var wxCharts = require('../lib/wx-charts-master/dist/wxcharts.js');
+var effectivenumber = 0;
 Page({
 
   /**
@@ -20,7 +21,7 @@ Page({
     navbackground: "white"
     },
     // 此页面 页面内容距最顶部的距离
-    height: app.globalData.height * 2 + 26
+    height: app.globalData.height * 3 + 6
   },
   /**
    * 生命周期函数--监听页面加载
@@ -47,52 +48,61 @@ Page({
           console.log("我的商店:", res.data.data)
           storelist = res.data.data;
           var wc = 0;
+          //实际有效的绘图数
           for (var i = 0; i < storelist.length; i++) {
+            if (storelist[i].thePastSixMonthsSaleAndCost.costlist.length != 0
+              && storelist[i].thePastSixMonthsSaleAndCost.salelist.size != 0) {
+              effectivenumber++;
+              }
+          }
 
+          for (var i = 0; i < storelist.length; i++) {
             storelist[i].storeInfomation.imgsrc = durl + "/static/image/recommendimg" + storelist[i].storeInfomation.id + ".jpg";
             storelist[i].storeInfomation.type = storelist[i].storeInfomation.type.split(",");
-
-            let chart = new wxCharts({
-              background: 'rgba(255, 255, 255, 0)',
-              canvasId: 'columnCanvas' + i,
-              type: 'column',
-              categories: storelist[i].thePastSixMonthsSaleAndCost.date,
-              series: [{
-                name: '成本',
-                data: storelist[i].thePastSixMonthsSaleAndCost.costlist,
-                color: '#ff6600',
-              }, {
-                name: '销售额',
-                  data: storelist[i].thePastSixMonthsSaleAndCost.salelist
-              }],
-              xAxis: {
-                gridColor: '#ffffff',
-                fontColor: '#ffffff',
-                disableGrid: true
-              },
-              yAxis: {
-                gridColor: '#ffffff',
-                fontColor: '#ffffff',
-                titleFontColor: '#ffffff',
-                format: function (val) {
-                  return val + '元';
-                }
-              },
-              extra: {
-                legendTextColor: 'white'
-              },
-              width: showwidth,
-              height: showheight * 0.86
-            });
-            chart.addEventListener('renderComplete', () => {
-              // your code here
-              wc += 1;
-              if (wc == storelist.length){
-                pageobject.setData({
-                  ifshowcoverview: true
-                })
-              }
-            });
+              if (storelist[i].thePastSixMonthsSaleAndCost.costlist.length != 0 
+              && storelist[i].thePastSixMonthsSaleAndCost.salelist.size != 0){
+                let chart = new wxCharts({
+                  background: 'rgba(255, 255, 255, 0)',
+                  canvasId: 'columnCanvas' + i,
+                  type: 'column',
+                  categories: storelist[i].thePastSixMonthsSaleAndCost.date,
+                  series: [{
+                    name: '成本',
+                    data: storelist[i].thePastSixMonthsSaleAndCost.costlist,
+                    color: '#ff6600',
+                  }, {
+                    name: '销售额',
+                      data: storelist[i].thePastSixMonthsSaleAndCost.salelist
+                  }],
+                  xAxis: {
+                    gridColor: '#ffffff',
+                    fontColor: '#ffffff',
+                    disableGrid: true
+                  },
+                  yAxis: {
+                    gridColor: '#ffffff',
+                    fontColor: '#ffffff',
+                    titleFontColor: '#ffffff',
+                    format: function (val) {
+                      return val + '元';
+                    }
+                  },
+                  extra: {
+                    legendTextColor: 'white'
+                  },
+                  width: showwidth,
+                  height: showheight * 0.86
+                });
+                chart.addEventListener('renderComplete', () => {
+                  // your code here
+                  wc += 1;
+                  if (wc == effectivenumber){
+                    pageobject.setData({
+                      ifshowcoverview: true
+                    })
+                  }
+                });
+            }
           }
           pageobject.setData({
             storelist: storelist

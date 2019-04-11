@@ -28,18 +28,13 @@
   </view>
 
 <view class='choiceview'>
-  <scroll-view scroll-x="true" style="width:75%;height:100%">
     <block wx:for="{{store.type}}" wx:key="{{index}}" >
-      <view class='choiceitem'  style="{{index==typeindex ? 'color:white;font-weight:bold;':''}}">
-        <view class='textarea'>
-          <view class='textview' data-index='{{index}}' bindtap='changefoodtype'>
-            {{item}}
-          </view>
-        </view>
+      <view class='choiceitem'  style="{{index==typeindex ? 'color:white;font-weight:bold;':''}}" 
+      data-index='{{index}}' bindtap='changefoodtype'>
+        {{item}}
       </view>
     </block>
-  </scroll-view>
-</view>
+  </view>
 
 </view>
 <scroll-view class='scrollview' scroll-y="true" style='height:{{screenHeight}}px' scroll-top="{{scrollTop}}">

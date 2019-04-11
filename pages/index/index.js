@@ -7,13 +7,16 @@ var qqmapsdk;
 var WxSearch = require('../../wxSearch/wxSearch.js');
 var userloginJs = require('../../userlogin.js');
 var position = "定位中";
-var store_list;
+var store_list = [];
 var userinfo = {};
 var search_display= false;
 var tabbarishide = false;
 //pageobject为page对象
 var pageobject;
 var titlearray;
+var currentpage = 1;
+var latitude = null;
+var longitude = null;
 Page({
   data: {
     // wxSearchData:{
@@ -29,7 +32,7 @@ Page({
       navbackground: "white"
     },
     // 此页面 页面内容距最顶部的距离
-    height: app.globalData.height * 2 + 20,
+    height: app.globalData.height * 3,
     searchdisplay: search_display,
     userInfo: {},
     hasUserInfo: false,
@@ -293,8 +296,8 @@ Page({
           success: function (res) {
             console.log("经度" + res.latitude);
             console.log("纬度" + res.longitude);
-            userinfo.latitude = res.latitude;
-            userinfo.longitude = res.longitude;
+            latitude = res.latitude;
+            longitude = res.longitude;
             resolve();
           },
           fail: function (res) {
@@ -312,8 +315,8 @@ Page({
       var getuseraddresspromise = new Promise(function (resolve, reject) {
         qqmapsdk.reverseGeocoder({
           location: {
-            latitude: userinfo.latitude,
-            longitude: userinfo.longitude
+            latitude: latitude,
+            longitude: longitude
           },
           success: function (res) {
             console.log("经纬度转地址: ", res);
@@ -354,7 +357,10 @@ Page({
             }
             var storelist = res.data.data;
             console.log("商店列表：", storelist);
-            store_list = storelist;
+            if (storelist.length==0){
+              reject(new Error("no data"));
+            }
+            store_list.concat(storelist) ;
             resolve();
           },
           fail: function (res) {
@@ -365,6 +371,9 @@ Page({
       return getstorelistpromise;
     }
 
+    function sleep(d) {
+      for (var t = Date.now(); Date.now() - t <= d;);
+    }
     //利用商店经纬度信息与用户经纬度信息计算双方距离
     function getstoredistancetpromise() {
 
@@ -374,12 +383,13 @@ Page({
         for (var i = 0; i < store_list.length; i++) {
           store_list[i].imgsrc = durl + "/static/image/recommendimg" + store_list[i].id + ".jpg";
           store_list[i].type = store_list[i].type.split(",");
+          sleep(300)
           qqmapsdk.calculateDistance({
             //num避免success中store_list[i]产生闭包
             num: i,
             from: {
-              latitude: userinfo.latitude,
-              longitude: userinfo.longitude
+              latitude: latitude,
+              longitude: longitude
             },
             to: [{
               latitude: store_list[i].storeaddress.latitude,
@@ -398,6 +408,8 @@ Page({
               reject(new Error("请求达到上限"));
             }
           });
+
+          
         }
       });
       return getdistancetpromise;
@@ -405,14 +417,16 @@ Page({
 
     //检查用户是否授予定位权限
     positionpromise()
-      .catch(
+      .catch(function(){
         //向用户获取位置权限
-        getlocaltionauthorizepromise
-      )
-      .then(
-        //获取用户位置信息（经纬度信息）
-        getlocationpromise
-      )
+        return getlocaltionauthorizepromise();
+      })
+      .then(function () {
+        if (latitude == null || longitude == null) {
+          //获取用户位置信息（经纬度信息）
+          return getlocationpromise();
+        }
+      })
       .then(
         //进行经纬度转街道地址
         addresstranslationpromise
@@ -432,15 +446,18 @@ Page({
         getstoredistancetpromise
       )
       .then(function () {
+        wx.hideLoading();
         pageobject.setData({
           Recommendarray: store_list
         })
       }).catch(function (mes) {
-        /*wx.showToast({
-          title: mes.message,
-          image: '/pages/static/img/indexpage/indexfail.png'
-        })*/
-        
+        if (mes.message == 'no data'){
+          wx.showToast({
+            icon: "none",
+            title: "没有更多数据了",
+          })
+          return;
+        }
         console.log(mes)
         wx.showModal({
           content: mes.message,
@@ -462,7 +479,24 @@ Page({
 
   },
 
-
+  /**
+     * 生命周期函数--监听页面显示
+     */
+  onShow: function () {
+    latitude = null;
+    longitude = null;
+  },
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+    wx.showLoading({
+      title: '正在加载',
+      mask: true
+    })
+    currentpage++;
+    this.getData();
+  },
   onReady: function(){
 
   }
