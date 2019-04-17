@@ -3,7 +3,8 @@
 "navigationBarTextStyle": "white",
 "usingComponents": {
   "titlebar": "titlebar",
-  "nav-bar": "../navigation/navigation"
+  "nav-bar": "../navigation/navigation",
+  "rotation": "../customcomponents/rotationpicture"
 },
 "onReachBottomDistance": 60
 }

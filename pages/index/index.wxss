@@ -1,6 +1,7 @@
 /**index.wxss**/
 
 @import "/wxSearch/wxSearch.wxss";
+
 .userinfo {
   display: none;
   flex-direction: column;
@@ -17,56 +18,6 @@
 
 .userinfo-nickname {
   color: #aaa;
-}
-
-.swiperoutview{
-  width: 100%;
-  padding-top: 5px;
-  padding-bottom: 15px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.swiperview{
-  width: 97%;
-  overflow: hidden;
-}
-
-.swiper-item{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-
-.swiper-item-view{
-  width: 100%;
-  height: 100%; 
-  overflow: hidden;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  transition:all 0.3s ease-in 0s;
-}
-
-.swiper-item-currentview{
-  width: 90%;
-  height: 90%; 
-  overflow: hidden;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  transition:all 0.3s ease-in 0s;
-} 
-
-.swiper-img{
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  border-radius: 10px;
 }
 
 .secondtitle{
@@ -89,8 +40,7 @@ justify-content: center;
 .recommendationview{
   flex-direction: column;
   align-items: center;
-  display: flex;
-  position: relative;
+  display: flex; 
   border-radius: 10px;
   margin-bottom: 20px;
   box-shadow:0px 5px 10px 0px rgb(173, 173, 173);
@@ -100,6 +50,7 @@ justify-content: center;
 .recommendationimgview{
   width: 100%;
   height: 100%;
+  position: relative;
   display: flex;
   flex-direction:column;
 }
@@ -111,54 +62,38 @@ justify-content: center;
 }
 
 .recommendationtextview{
+  padding: 10px 0px 10px 0px;
   width: 100%;
-  padding-top: 14px;
-  padding-right: 30px;
-  padding-bottom: 22px;
   position: absolute;
-  bottom: -15px;
-  left: -15px;
-  flex-direction:column;
-  color: rgb(61, 61, 61);
-  border-radius: 0px 0px 10px 10px;
+  bottom: 0px;
+  left: 0px;
+  display: flex;
+  justify-content: space-around;
+  flex-direction:row;
   z-index: 1;
+  overflow: hidden;
 }
 
-.recommendationtextview:after{
-  position: absolute;
-  content: '';
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 0px 0px 10px 10px;
-  background-color: rgba(255, 255, 255, 0.85);
-  z-index: -1;
-  filter: blur(5px);
+.foodimg2{
+filter: blur(15px);  /*设置模糊度*/
+position: absolute;
+bottom: -20px;
+left: -20px;
 }
-
 
 .recommendationtextview1{
-  width:100%;
   display:flex;
   flex-direction: row;
-  position: relative;
-  margin-left: 15px;
-}
-
-.recommendationtextview2{
-  width:50%;
-  height:20px;
-  font-size: 14px;
-  display: flex;
   align-items: center;
-  margin-left: 20px;
+  justify-content: center;
+  z-index:1;
+  color: rgb(238, 238, 238);
+  font-size: 16px;
 }
 
 .recommendationicon{
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   margin-right: 5px;
 }
-
 

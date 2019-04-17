@@ -40,7 +40,6 @@ Page({
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    swipercurrentindex: 0,
     //图片滑动窗口对象数组 “imgsrc”=图片路径
     swiperarray: [{
       imgsrc: durl + "/static/image/shareswiper1.png"
@@ -55,19 +54,10 @@ Page({
     recommendationiconconsume:"/pages/static/img/indexpage/consume.png",
     choiceimg: "/pages/static/img/indexpage/choice.png"
   },
-  //事件处理函数
-  bindViewTap: function() {
-    wx.navigateTo({
-      url: '../logs/logs'
-    })
-  },
+
+
   clickswiper: function(event){
-    console.log(event.currentTarget.dataset.swipercurrentindex)
-  },
-  changswiperindex: function (event){
-    this.setData({
-      swipercurrentindex: event.detail.current
-    })
+    console.log(event.detail)
   },
 
   onLoad: function () {
@@ -294,7 +284,7 @@ Page({
           store_list[i].imgsrc = durl + "/static/image/recommendimg" + store_list[i].id + ".jpg";
           store_list[i].type = store_list[i].type.split(",");
           //避免key到达请求上限
-          sleep(300);
+          //sleep(300);
           qqmapsdk.calculateDistance({
             //num避免success中store_list[i]产生闭包
             num: i,
@@ -362,7 +352,6 @@ Page({
       )
       .then(function () {
         wx.hideLoading();
-        console.log("dddd", store_list)
         pageobject.setData({
           recommendarray: store_list
         })

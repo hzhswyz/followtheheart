@@ -1,0 +1,12 @@
+<!--pages/customcomponents/rotationpicture.wxml -->
+<view class="swiperoutview">
+    <swiper class="swiperview" bindtap='clickswiper' bindchange="changswiperindex" data-swipercurrentindex='{{swipercurrentindex}}'
+    indicator-dots="true" autoplay="true" circular="true" previous-margin="60rpx" next-margin="60rpx"
+    interval="4000" >
+      <swiper-item wx:for="{{swiperarray}}" wx:key="imgsrc" class="swiper-item">
+        <view class="{{swipercurrentindex==index ? 'swiper-item-view':'swiper-item-currentview'}}" >
+          <image class="swiper-img" src="{{item.imgsrc}}" mode="aspectFill" ></image>
+        </view>
+      </swiper-item>
+    </swiper>
+</view>

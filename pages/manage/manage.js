@@ -7,7 +7,6 @@ var pageobject;
 var showwidth;
 var showheight;
 var wxCharts = require('../lib/wx-charts-master/dist/wxcharts.js');
-var effectivenumber = 0;
 Page({
 
   /**
@@ -47,7 +46,7 @@ Page({
         success: function (res) {
           console.log("我的商店:", res.data.data)
           storelist = res.data.data;
-          var wc = 0;
+          var effectivenumber = 0;
           //实际有效的绘图数
           for (var i = 0; i < storelist.length; i++) {
             if (storelist[i].thePastSixMonthsSaleAndCost.costlist.length != 0
@@ -95,8 +94,7 @@ Page({
                 });
                 chart.addEventListener('renderComplete', () => {
                   // your code here
-                  wc += 1;
-                  if (wc == effectivenumber){
+                  if ( --effectivenumber == 0){
                     pageobject.setData({
                       ifshowcoverview: true
                     })

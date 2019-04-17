@@ -20,19 +20,7 @@
   
 <titlebar titlearray="{{titlearray}}" style="width:100%;"></titlebar>
   
-  <view class="swiperoutview">
-    <swiper
-    class="swiperview" bindtap='clickswiper' bindchange="changswiperindex" data-swipercurrentindex='{{swipercurrentindex}}'
-    indicator-dots="true" autoplay="true" circular="true" previous-margin="60rpx" next-margin="60rpx"
-    interval="4000" >
-      <swiper-item wx:for="{{swiperarray}}" wx:key="imgsrc" class="swiper-item">
-        <view class="{{swipercurrentindex==index ? 'swiper-item-view':'swiper-item-currentview'}}" >
-          <image class="swiper-img" src="{{item.imgsrc}}" mode="aspectFill" ></image>
-        </view>
-      </swiper-item>
-    </swiper>
-  </view>
-
+<rotation swiperarray="{{swiperarray}}" style="width:100%;" bind:clickswiper="clickswiper"></rotation>
 
   <view class="secondtitle">
     <image src='{{choiceimg}}' class='secondtitleimg' mode="aspectFit"></image>
@@ -40,8 +28,8 @@
   </view>
 
   <wxs module="calculatedistance">
+  var i = 0;
     var getdistance = function(distance){
-    console.log(distance)
       var result;
       if(distance>1000)
         result = (distance/1000).toFixed(1) +" Km";
@@ -58,30 +46,20 @@ data-id="{{index}}" style='width:{{showwidth}}px;height:{{showheight}}px'>
     <view  class="recommendationimgview">
       <image class="foodimg" mode="scaleToFill" src="{{item.imgsrc}}"></image>
       <view class="recommendationtextview">
+        <image  class= "foodimg2" style='width:{{showwidth+40}}px;height:{{showheight+40}}px' 
+        mode="scaleToFill" src="{{item.imgsrc}}"></image>
         <view class='recommendationtextview1'>
-          <view class='recommendationtextview2'>
-            <image class="recommendationicon" src="{{recommendationiconshop}}" mode='aspectFit'></image>
-            <text>店名：{{item.name}}</text>
-          </view>
-          <view class='recommendationtextview2'>
-            <image class="recommendationicon" src="{{recommendationiconposition}}" mode='aspectFit'></image>
-            <text>距离我：{{calculatedistance.getdistance(item.distance)}}</text>
-          </view>
+          <image class="recommendationicon" src="{{recommendationiconshop}}" mode='aspectFit'></image>
+          <text>店名：{{item.name}}</text>
         </view>
         <view class="recommendationtextview1">
-          <view class='recommendationtextview2'>
-            <image class="recommendationicon" src="{{recommendationiconsales}}" mode='aspectFit'></image>
-            <text>月销量：{{item.sales}}笔</text>
-          </view>
-          <view class='recommendationtextview2'>
-            <image class="recommendationicon" src="{{recommendationiconconsume}}" mode='aspectFit'></image>
-            <text>人均：{{item.consume}}元</text>
-          </view>
+          <image class="recommendationicon" src="{{recommendationiconposition}}" mode='aspectFit'></image>
+          <text>距离我：{{calculatedistance.getdistance(item.distance)}}</text>
         </view>
       </view>
     </view>
   </view>
 
-
+  
 
 </view>

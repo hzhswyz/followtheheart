@@ -10,10 +10,9 @@ App({
       success: (res) => {
         this.globalData.height = res.statusBarHeight;
         console.log("状态栏高度：",res.statusBarHeight)
-        console.log(res.statusBarHeight * 2 + 20)
+        console.log("导航栏高度",res.statusBarHeight * 3)
         console.log("屏幕高度",res.screenHeight);
         console.log("可用高度",res.windowHeight);
-        console.log(res.screenHeight - res.windowHeight);
       }
     });
     // 获取用户信息
@@ -37,10 +36,10 @@ App({
       }
     })
   },
-  globalData: {//120.79.16.31 localhost
+  globalData: {//120.79.16.31 localhost www.hzhb2c.xin
     userInfo: {},
     requestdomainname:"http://120.79.16.31:8080",
-    dynamicrequest:"http://120.79.16.31:8080/IntelligentMenus",
+    dynamicrequest:"https://hzhb2c.xin:8443/IntelligentMenus",
     share: false,  // 分享默认为false
     height: 0,
     store_food_map : new Map(),
