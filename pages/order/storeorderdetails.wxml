@@ -1,0 +1,82 @@
+<!--pages/order/storeorderdetails.wxml-->
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+
+<view class='container'  style='margin-top:{{height}}px;'>
+
+  <view class='title'>
+    <image src='{{payinfo.userimg}}' class='storeimg' mode='widthFix'></image>{{payinfo.username}}
+  </view>
+
+  <view class='money'>
+    <text>{{payinfo.money}}￥</text>
+  </view>
+  
+  <view class='moreview'>
+    <text class='moretext'>商品详情</text>
+    <image wx:if="{{!isshowlist}}" class='moreimg' src='/pages/static/img/indexpage/more.png' mode="widthFix" bindtap='showlist'></image>
+    <image wx:else class='moreimg' class='moreimg' src='/pages/static/img/indexpage/retract.png' mode="widthFix" bindtap='showlist'></image>
+
+    <scroll-view class='foodlist' scroll-y="true" style='{{isshowlist?"display:block":"display:none"}}'>
+      <view class='foodlisttable'>
+        <view class='foodlisttabletr'>
+          <view class='foodlisttabletd1'>
+            <text >名称</text>
+          </view>
+          <view class='foodlisttabletd2'>
+            <text >数量</text>
+          </view>
+          <view class='foodlisttabletd3'>
+            <text >单价</text>
+          </view>
+        </view>
+        <block wx:for="{{foodlist}}" wx:key="{{index}}">
+          <view class='tabletr'>
+            <view class='foodlisttabletd1'>
+              <text class='itemtext'>{{item.name}}</text>
+            </view>
+            <view class='foodlisttabletd2'>
+              <text class='itemtext'>{{item.num}}份</text>
+            </view>
+            <view class='foodlisttabletd3'>
+              <text class='itemtext'>{{item.price}}元</text>
+            </view>
+          </view>
+        </block>
+      </view>
+    </scroll-view>
+
+
+  </view>
+
+  <view class='detailstable'>
+  
+    <view class='tabletr'>
+      <view class='tabletd1'>
+        <text>交易时间：</text>
+      </view>
+      <view class="tabletd2">
+        <text class='transactiondatetext'>{{payinfo.transdate}}</text>
+      </view>
+    </view>
+
+    <view class='tabletr'>
+      <view class='tabletd1'>
+        <text >付款时间：</text>
+      </view>
+      <view class="tabletd2">
+        <text class="paymenttimetext" style='{{payinfo.paytime==null?"color:red;":""}}'>{{payinfo.paytime==null?"未付款":payinfo.paytime}}</text>
+      </view>
+    </view>
+
+    <view class="tabletr">
+      <view class='tabletd1'>
+        <text>订单编号：</text>
+      </view>
+      <view class="tabletd2">
+        <text class='orderidtext'>{{payinfo.id}}</text>
+      </view>
+    </view>
+    
+  </view>
+
+</view>

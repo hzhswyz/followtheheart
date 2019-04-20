@@ -1,0 +1,37 @@
+/* pages/customcomponents/orderfilter/orderfilter.wxss */
+.filter-form{
+  width: 100%;
+}
+.filter-view{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  overflow: hidden;
+}
+
+.filter-input{
+  border:1px solid #8d8d8d;
+  border-radius: 5px;
+  min-width: 15%;
+  max-width: 15%;
+  font-size: 12px;
+  padding-left: 5px;
+}
+
+.timeview{
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 15px;
+  color: rgb(0, 195, 255);
+  background-color: rgb(212, 224, 226);
+}
+
+.filterbutton{
+  margin-left: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

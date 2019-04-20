@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "nav-bar": "../navigation/navigation",
+    "order-filter":"../customcomponents/orderfilter/orderfilter"
+  },
+  "onReachBottomDistance": 100
+}

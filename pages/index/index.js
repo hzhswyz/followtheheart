@@ -200,9 +200,14 @@ Page({
           success: function (res) {
             console.log("经度" + res.latitude);
             console.log("纬度" + res.longitude);
-            latitude = res.latitude;
-            longitude = res.longitude;
-            resolve();
+            if (latitude == 0 && longitude==0){
+              reject(new Error("wx.getLocation获取用户位置失败"));
+            }
+            else{
+              latitude = res.latitude;
+              longitude = res.longitude;
+              resolve();
+            }
           },
           fail: function (res) {
             console.log("getLocationpromise", res);

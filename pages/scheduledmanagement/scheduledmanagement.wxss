@@ -1,0 +1,108 @@
+/* pages/scheduledmanagement/scheduledmanagement.wxss */
+/* pages/storeorder/storeorder.wxss */
+.container{
+  width: 100%;
+}
+.orderitem{
+  position: relative;
+  margin: auto;
+  width: 96%;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  box-shadow:2px 2px 5px #adadad;
+  padding: 10px 0px 10px 0px;
+  border-radius: 10px;
+  background: linear-gradient(to right, #1fa2ff, #12d8fa, #a6ffcb);
+  color: white;
+}
+.expiredview{
+position: absolute;
+right: 13px;
+top: 5px;
+}
+.expiredimg{
+width: 60px;
+height: 60px;
+}
+.userimgandname{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+  justify-content: center;
+}
+.userimg{
+  margin: 0px 20px 0px 0px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+}
+.username{
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+}
+.ordermoney{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.moneytext{
+  display: flex;
+  flex-direction: row;
+  font-size: 26px;
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+  justify-content: center;
+}
+.orderid{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.idtext{
+  display: flex;
+  flex-direction: row;
+  font-size: 12px;
+  color: rgb(255, 255, 255);
+  justify-content: center;
+}
+.consumebutton{
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.more{
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+}
+.moreimg{
+width: 20px;
+height: 20px;
+}
+.showremark{
+margin-top: 10px;
+display: flex;
+flex-direction: columns;
+justify-content: center;
+color: white;
+font-size: 15px;
+max-height: 50px;
+}
+.remarktextview{
+padding: 5px;
+width: 80%;
+display: flex;
+flex-direction: column;
+overflow-y: auto;
+}
+.remarktext{
+align-self: center;
+}

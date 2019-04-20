@@ -1,0 +1,17 @@
+<!--pages/customcomponents/orderfilter/orderfilter.wxml-->
+  <form class='filter-form' bindsubmit="formSubmit" bindreset="formReset">
+    <view class='filter-view'  style='height:{{filterheight}}px;'>
+        <input name="minmoney" class="filter-input" type='digit' placeholder="最低金额"></input>
+        <text decode='true'>&nbsp;-&nbsp;</text>
+        <input name="maxmoney" class="filter-input" type='digit' placeholder="最高金额"></input>
+
+        <text decode='true'>&nbsp;&nbsp;</text>
+        <picker name="time" mode="date" fields="month" bindchange="timechange" value='{{filtercondition.time}}'>
+          <view class='timeview'>时间：{{filtercondition.time}}</view>
+        </picker>
+
+        <view class='filterbutton'>
+          <button form-type='submit' size="mini" type='primary' plain="true">筛选</button>
+        </view>
+    </view>
+  </form>

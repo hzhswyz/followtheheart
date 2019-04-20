@@ -71,3 +71,16 @@
   height:86%;
   width:100%;
 }
+
+.titleclass{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.titleitem{
+  display: flex;
+  flex-direction: column;
+}

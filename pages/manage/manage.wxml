@@ -10,7 +10,11 @@
 		          <view wx:if="{{!isMainChartDisplay}}" class="showdataback-btn" bindtap="backToMainChart">
                 返回
               </view>
-              <view bindtap='openstore' data-id='{{index}}'>{{item.storeInfomation.name}}</view>
+              <view class="titleclass" data-storeid='{{index}}' bindtap='click'>
+                <view class="titleitem"  data-id='{{0}}'>预定管理</view>
+                <view class="titleitem"  data-id='{{1}}'>{{item.storeInfomation.name}}</view>
+                <view class="titleitem"  data-id='{{2}}'>商店订单</view>
+              </view>
           	</view>
             <canvas canvas-id="{{'columnCanvas'+index}}"  class='showdatacanvas' ></canvas>
           </view>

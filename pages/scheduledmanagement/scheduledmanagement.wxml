@@ -1,0 +1,35 @@
+<!--pages/scheduledmanagement/scheduledmanagement.wxml-->
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+<view class="container" style='margin-top:{{height}}px'>
+  <block wx:for="{{reservationlist}}" wx:key="queuingcode">
+    <view class='orderitem'>
+      <view class='expiredview' wx:if="{{item.status!=0}}">
+         <image class="expiredimg" src='/pages/static/img/indexpage/expired.png'></image>
+      </view>
+      <view class='userimgandname'>
+        <image class='userimg' src='{{item.userimg}}'></image>
+        <text class='username'>{{item.username}}</text>
+      </view>
+      <view class='ordermoney'>
+        <text class='moneytext'>{{item.time}}</text>
+      </view>
+      <view class="orderid">
+        <text class='idtext'>预约码：{{item.queuingcode}}</text>
+      </view>
+      <view class="consumebutton" wx:if="{{item.status==0}}">
+        <button type='warn' size='mini' bindtap='confirmcomsume' data-confirmconsumeindex='{{item.confirmconsumeindex}}'>确认到店</button>
+      </view>
+      <view class='more'>
+        <image wx:if="{{isshowremark && reservationindex==index}}" class='moreimg' src='/pages/static/img/indexpage/moreup.png' 
+        mode="widthFix" bindtap='showremark' data-index='{{index}}'></image>
+        <image wx:else class='moreimg' src='/pages/static/img/indexpage/moredown.png' mode="widthFix" 
+        bindtap='showremark' data-index='{{index}}'></image>
+      </view>
+      <view class='showremark' wx:if="{{isshowremark && reservationindex==index}}">
+        <view class='remarktextview'>
+          <text class='remarktext'>备注：{{item.remarks}}</text>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

@@ -1,0 +1,165 @@
+/* pages/order/storeorderdetails.wxss */
+page{
+background-color:  #97d9e1;
+}
+.container{
+  display: flex;
+  flex-direction: column;
+  color: #4e4e4e;
+}
+.title{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  padding: 20px 0px 20px 0px;
+  color: rgb(79, 79, 79);
+}
+.storeimg{
+  width: 60px;
+  height: 60px;
+  margin-right: 10px;
+  border-radius: 60px;
+}
+.money{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px;
+  color: red;
+  padding: 10px 0px 10px 0px;
+  background-color: hsla(0, 0%, 100%, 0.5);
+}
+.moreview{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: hsla(0, 0%, 100%, 0.5);
+  border-bottom:1px solid rgb(151, 151, 151)
+}
+.moreimg{
+  width: 20px;
+  height: 20px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.moretext{
+  margin-bottom: 10px;
+}
+.foodlist{
+  width: 80%;
+  height: 150px;
+  margin-bottom: 20px;
+}
+.foodlisttable{
+  display: table;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: black;
+}
+.foodlisttabletr{
+display: table-row;
+}
+.foodlisttabletd1{
+display: table-cell;
+width: 50%;
+padding-bottom: 10px;
+}
+.foodlisttabletd2{
+display: table-cell;
+width: 20%;
+}
+.foodlisttabletd3{
+display: table-cell;
+text-align: right;
+width: 30%;
+}
+.itemtext{
+  color: rgb(75, 75, 75);
+}
+.orderidtext{
+font-size: 12px;
+color: rgb(122, 122, 122);
+word-break:break-all;
+}
+.transactiondatetext{
+
+}
+.paymenttimetext{
+
+}
+.addresstext{
+  font-size: 14px;
+}
+.minwidth{
+  float: left;
+}
+.detailstable{
+  display: table;
+  width: 100%;
+  overflow: hidden;
+  background-color: hsla(0, 0%, 100%, 0.5);
+  padding-bottom: 20px;
+}
+.tabletr{
+  height: 50px;
+  display: table-row;
+}
+.tabletd1{
+  display: table-cell;
+  width: 30%;
+  vertical-align: middle;
+  padding-left: 10px;
+}
+.tabletd2{
+  text-align:right;
+  vertical-align: middle;
+  width: 70%;
+  word-wrap : break-word;
+  display: table-cell;
+  padding-right: 10px;
+}
+
+.buttonview{
+  margin-top: 30px;
+  margin-bottom: 30px;
+  width: 80%;
+  height: 50px;
+  background-image: radial-gradient(circle 248px at center, #16d9e3 0%, #30c7ec 47%, #46aef7 100%);
+  border-radius: 20px;
+  font-size: 25px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items: center; 
+  align-self: center;
+}
+
+::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 2px;     /*高宽分别对应横竖滚动条的尺寸*/
+    height: 2px;
+    display:none;
+}
+
+::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 2px;
+    box-shadow: inset 0 0 5px rgba(51, 183, 201, 0.8);
+    background: rgba(51, 183, 201, 0.8);
+}
+::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    box-shadow: inset 0 0 5px rgba(21, 210, 235, 0.2);
+    border-radius: 0;
+    background: rgba(21, 210, 235, 0.2);
+}

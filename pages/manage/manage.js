@@ -111,15 +111,24 @@ Page({
 
   },
 
-  openstore: function (event) {
-    console.log("点击第" + event.currentTarget.dataset.id)
-    let str = JSON.stringify(storelist[event.currentTarget.dataset.id].storeInfomation);
+  click: function (event) {
+    if (event.target.dataset.id == undefined)
+      return;
+    console.log("点击第 ", event.target.dataset.id)
+    console.log("点击商店ID " + event.currentTarget.dataset.storeid)
+    let str = JSON.stringify(storelist[event.currentTarget.dataset.storeid].storeInfomation);
     console.log(str)
+    var url;
+    switch (event.target.dataset.id){
+      case 0: url = '../scheduledmanagement/scheduledmanagement?storeinfo=' + str;break;
+      case 1: url = 'modifycommodity/modifycommodity?storeinfo=' + str; break;
+      case 2: url = '../storeorder/storeorder?storeinfo=' + str; break;
+    }
     wx.navigateTo({
-      url: 'modifycommodity/modifycommodity?storeinfo=' + str
+      url: url,
     })
   },
-
+  
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

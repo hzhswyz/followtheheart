@@ -10,10 +10,13 @@
     "pages/reservation/reservation",
     "pages/nearbyshop/nearbyshop",
     "pages/manage/manage",
-    "pages/manage/modifycommodity/modifycommodity"
+    "pages/manage/modifycommodity/modifycommodity",
+    "pages/storeorder/storeorder",
+    "pages/scheduledmanagement/scheduledmanagement",
+    "pages/order/storeorderdetails"
   ],
   "tabBar": {
-    "selectedColor":"#11cd6e",
+    "selectedColor": "#11cd6e",
     "borderStyle": "white",
     "list": [
       {
@@ -45,5 +48,6 @@
     "backgroundColorTop": "#943e3e",
     "backgroundColorBottom": "#943e3e"
   },
-  "resizable": true
+  "resizable": true,
+  "sitemapLocation": "sitemap.json"
 }

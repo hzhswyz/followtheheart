@@ -1,0 +1,24 @@
+<!--pages/storeorder/storeorder.wxml-->
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+<view class="filterview" style='margin-top:{{height}}px'>
+  <order-filter bind:filterchange="filterchange" filterheight="{{filterheight}}"/>
+</view>
+<view class="container" style='margin-top:{{height+filterheight}}px'>
+  <block wx:for="{{orderlist}}" wx:key="id">
+    <view class='orderitem' data-orderid='{{item.id}}' bindtap='vieworderdetails'>
+      <view class='userimgandname'>
+        <image class='userimg' src='{{item.userimg}}'></image>
+        <text class='username'>{{item.username}}</text>
+      </view>
+      <view class='ordermoney'>
+        <text class='moneytext'>{{item.paymenttime==null?"待支付":"已支付"}} <text class='moneytext2'>{{item.money}}</text> 元</text>
+      </view>
+      <view class="orderid">
+        <text class='idtext'>订单编号：{{item.id}}</text>
+      </view>
+      <view class='ordertime'>
+        <text class='timetext'>{{item.paymenttime==null?"未付款":item.paymenttime}}</text>
+      </view>
+    </view>
+  </block>
+</view>
