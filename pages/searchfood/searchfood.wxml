@@ -37,7 +37,7 @@
       <view class='context' >
         <view class='foodview'>
           <block wx:for="{{item.foodlist}}" wx:key="foodid">
-            <view class='fooditem' hover-class="openstore" bindtap="openfood">
+            <view class='fooditem'>
               <view class='foodimgview'>
                 <image class='foodimg' src='{{item.foodimg}}'></image>
               </view>
