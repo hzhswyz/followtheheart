@@ -23,7 +23,7 @@
   flex-direction:row;
 }
 .openstore{
-  background-color: rgb(238, 238, 238);
+  background-color: rgba(49, 49, 49, 0.1);
 }
 .storeimg{
   display: flex;

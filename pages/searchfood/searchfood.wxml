@@ -14,12 +14,12 @@
   </wxs>
 <view class='container' style='margin-top:{{height}}px'>
   <block wx:for="{{storearray}}" wx:key="id">
-    <view class='item'>
+    <view class='item' hover-class="openstore" bindtap='openstore' data-index='{{index}}'>
       <view class='title'>
         <view class='storeimg'>
           <image class='img' src='{{item.imgsrc}}'></image>
         </view>
-        <view class='storeinfo' hover-class="openstore" bindtap='openstore' data-index='{{index}}'>
+        <view class='storeinfo'>
           <view class="nameanddistance">
             <view class='storename'>{{item.name}}</view>
             <view class='distance'>距离：{{calculatedistance.getdistance(item.distance)}}</view>
