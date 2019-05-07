@@ -1,0 +1,90 @@
+<!--pages/store/fooddetail/fooddetail.wxml-->
+<view class='container' style='height:{{showheight}}'>
+
+  <view class='swaperview' style='height:{{showheight*0.3}}px'>
+    <view class="backbutton" bindtap='onback' style='top:{{height}}px'>
+      <image src="../../static/img/indexpage/backwhite.png" mode='scaleToFill' class="backimg"/>
+    </view>
+    <swiper class="imgswaper" indicator-dots="{{true}}" autoplay="{{true}}" interval="{{3000}}" >
+      <block wx:for="{{food.moreimg}}" wx:key="index">
+        <swiper-item>
+          <image src="{{item}}" class="slide-image"/>
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+
+  <view class='nameandprice' style='height:{{showheight*0.12}}px'>
+    <view class='nameandsales'>
+      <view class='name'>
+        {{food.name}}
+      </view>
+      <view class='price'>
+        {{food.price}} 元
+      </view>
+      <view class='foodnum'>
+        <view class='foodnumtext' wx:if="{{food.num > 0}}">
+          {{food.num}}份
+        </view>
+      </view>
+    </view>
+    
+    <view class='priceandreduceandadd'>
+      <view class='sales'>
+        月销量：{{food.sales}} 笔
+      </view>
+      <view class='foodnum'>
+        <view class='foodnumtext'>
+        </view>
+      </view>
+      <view class='reduceandadd'>
+        <view class='reduce'>
+          <image src='/pages/static/img/indexpage/reduce.png' wx:if="{{food.num > 0}}" class='reducebutton' 
+          data-foodid='{{food.id}}' bindtap='reducefood'></image>
+        </view>
+        <view class='add'>
+          <image src='/pages/static/img/indexpage/add.png' class='addbutton' data-foodid='{{food.id}}' bindtap='addfood'></image>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class='material' style='height:{{showheight*0.12}}px'>
+    <view class='materialtitle'>
+      食材
+    </view>
+    <view class='materialcontext'>
+      <block wx:for="{{food.material}}" wx:key="index">
+        <view class='materialitem'>
+          {{item}}
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <view class='comment' style='height:{{showheight*0.46}}px'>
+    <view class='commenttext'>
+      评价
+    </view>
+    <view class='commentscrollview'>
+      <scroll-view class='scrollview' scroll-y="true">
+        <block wx:for="{{comments}}" wx:key="id">
+          <view class='commentitem'>
+            <view class='userinfo'>
+              <image class="userimg" src='{{item.isanonymous == 1 ? "/pages/static/img/indexpage/isanonymous.png" : item.userimg}}'>
+              </image>
+            </view>
+            <view class='context'>
+              <view class='nameandtime'>
+                <view class="username">{{item.isanonymous == 1 ? "匿名用户" : item.username}}</view>
+                <view class='time'>{{item.time}}</view>
+              </view>
+              <view class='contexttext'>{{item.context == "" ? "系统默认评价" : item.context}}</view>
+            </view>
+          </view>
+        </block>
+      </scroll-view>
+    </view>
+  </view>
+
+</view>

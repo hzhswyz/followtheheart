@@ -33,7 +33,7 @@
   <block wx:for="{{foodlist}}" wx:if="{{item.type==typeindex}}" wx:key="{{index}}" >
     <view class='foodview'>
       <image src='{{item.imgsrc}}' mode='scaleToFill' class='foodimage' data-indexid='{{index}}' style="height:{{showheight}}px;" 
-      binderror="foodimgloadfail"></image>
+      binderror="foodimgloadfail" bindtap='fooddetail'></image>
       <view class='foodnameview'>
         <text>{{item.name}}</text>
         <text class='foodnumtext'  wx:if="{{item.num>0}}" >{{item.num}}份</text>

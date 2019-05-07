@@ -1,0 +1,57 @@
+<!--pages/order/comment/comment.wxml-->
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+<view class='container' style='margin-top: {{height}}px'>
+  <form class='form' bindsubmit="formSubmit">
+    <view class='store'>
+      <view class='storeimg'>
+        <image class='img' src='{{orderform.store.image}}'></image>
+      </view>
+      <view class='storename'>
+        <text>{{orderform.store.name}}</text>
+      </view>
+      <view class='storescore'>
+        <text>店铺评分：</text>
+        <picker range="{{score}}" value='{{storescoreindex}}' name="store" bindchange="scorePickerChange">
+          <view class='scoreview'>
+            <text>{{storescoreindex+1+'分'}}</text>
+          </view>
+        </picker>
+      </view>
+    </view>
+    <block wx:for='{{orderform.content}}' wx:key="{{index}}">
+      <view class='commentitem'>
+        <view class='fooditem'>
+          <view class='foodimgview'>
+            <image class='foodimg' src='{{item.imgsrc}}' style='height:{{showheight}}px'></image>
+          </view>
+          <view class='foodinfo'>
+            <text class='foodinfotext'>商品名：{{item.name}}</text>
+            <text class='foodinfotext'>数量：{{item.num}}</text>
+            <text class='foodinfotext'>价格：{{item.price}}元</text>
+            <view class='storescore'>
+              <text>商品评分：</text>
+              <picker range="{{score}}" data-foodindex='{{index}}' name="{{item.id+'_score'}}" value="{{item.score}}"
+                bindchange="scorePickerChange">
+                <view class='scoreview'>
+                  <text>{{item.score+1+'分'}}</text>
+                </view>
+              </picker>
+            </view>
+            <view class='isanonymous'>
+              <label class='anonymouslabel' data-index='{{index}}' bindtap='radiobindchange'>
+                <radio checked="{{item.isanonymous}}"></radio>
+                匿名评论
+              </label>
+            </view>
+          </view>
+        </view>
+        <view class='commentview'>
+          <textarea placeholder="发表点评" name="{{item.id+'_comment'}}" class='textarea'></textarea>
+        </view>
+      </view>
+    </block>
+    <view class='submit'>
+      <button type='primary' form-type="submit">提交评价</button>
+    </view>
+  </form>
+</view>

@@ -13,7 +13,10 @@
     "pages/manage/modifycommodity/modifycommodity",
     "pages/storeorder/storeorder",
     "pages/scheduledmanagement/scheduledmanagement",
-    "pages/order/storeorderdetails"
+    "pages/order/storeorderdetails",
+    "pages/store/fooddetail/fooddetail",
+    "pages/order/comment/comment",
+    "pages/searchfood/searchfood"
   ],
   "tabBar": {
     "selectedColor": "#11cd6e",

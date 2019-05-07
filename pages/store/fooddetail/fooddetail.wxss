@@ -1,0 +1,223 @@
+/* pages/store/fooddetail/fooddetail.wxss */
+.container{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(to right, #fc4a1a, #f7b733);
+  color: rgb(233, 233, 233);
+}
+.swaperview{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+.backbutton{
+  position: fixed;
+  width: 35px;
+  height: 35px;
+  left:10px;
+  z-index: 100;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 35px;
+  background-color: rgba(112, 128, 144, 0.527);
+}
+.backimg{
+  width: 25px;
+  height: 25px;
+}
+.imgswaper{
+  width: 100%;
+  height: 100%;
+}
+.slide-image{
+  width: 100%;
+}
+.nameandprice{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content:space-around;
+}
+.nameandsales{
+  display: flex;
+  flex-direction: row;
+  justify-content:space-around;
+  align-items: center;
+}
+.name{
+  width: 40%;
+  display: flex;
+  flex-direction: row;
+  font-size: 25px;
+  align-items: center;
+}
+.price{
+  width: 30%;
+  display: flex;
+  flex-direction: row;
+  font-size: 20px;
+  align-items: center;
+}
+.foodnum{
+  width: 10%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.foodnumtext{
+  display: flex;
+  flex-direction: row;
+  font-size: 20px;
+  align-items: center;
+  color: #1296db;
+}
+.priceandreduceandadd{
+  display: flex;
+  flex-direction: row;
+  justify-content:space-around;
+  align-items: center;
+}
+.sales{
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  font-size: 18px;
+}
+.reduceandadd{
+  width: 30%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+.reduce{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.add{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.reducebutton{
+  width: 18px;
+  height: 18px;
+}
+.addbutton{
+  width: 18px;
+  height: 18px;
+}
+.material{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.3);
+  
+}
+.materialtitle{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  font-size: 20px;
+  font-weight:bold;
+}
+.materialcontext{
+  display: flex;
+  width: 90%;
+  flex-direction: row;
+  font-size: 16px;
+}
+.materialitem{
+  display: flex;
+  flex-direction: row;
+  padding: 3px 5px 3px 5px;
+  border-radius: 6px;
+  background-color: rgba(107, 87, 87, 0.4);
+  margin-right: 10px;
+}
+.comment{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: rgba(139, 129, 129, 0.4);
+}
+.commenttext{
+  height: 15%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.13);
+}
+.commentscrollview{
+  height: 85%;
+  background-color: rgba(255, 255, 255, 0.13);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.scrollview{
+  height: 95%;
+  border-radius: 10px;
+}
+.commentitem{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.userinfo{
+  padding: 5px 10px 5px 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+}
+.userimg{
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+}
+.context{
+  display: flex;
+  flex-direction: column;
+  flex-grow:1;
+  margin-right: 10px;
+  justify-content: center;
+  border-bottom: 1px solid rgb(207, 198, 198);
+}
+.nameandtime{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 12px;
+}
+.username{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 12px;
+  margin-right: 10px;
+}
+.time{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.contexttext{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 16px;
+}

@@ -33,6 +33,10 @@
         </view>
         <view class='item3'>
           <text class='commoditynum'>一共{{sumup.foodsnum(item.content)}}件商品</text>
+          <view class='comment' wx:if='{{item.iscomment != 1 && item.paymenttime != null}}'  
+          capture-catch:tap="comment" data-index='{{index}}'>
+            <image src='/pages/static/img/indexpage/comment.png' class='commentimg'></image>
+          </view>
           <text class='paydate'>{{item.paymenttime==null?"未付款":item.paymenttime}}</text>
         </view>
       </view>

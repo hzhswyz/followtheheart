@@ -47,7 +47,9 @@ function init(that, barHeight, keys, isShowKey, isShowHis, callBack) {
     }else{
         view.isShowSearchHistory = isShowHis;
     }
+
     temData.keys = keys;
+    
     wx.getSystemInfo({
         success: function(res) {
             var wHeight = res.windowHeight;
@@ -58,6 +60,8 @@ function init(that, barHeight, keys, isShowKey, isShowHis, callBack) {
             });
         }
     })
+
+  console.log("搜索框初始化数据:", temData)
     
     if (typeof (callBack) == "function") {
         callBack();
@@ -109,6 +113,7 @@ function wxSearchFocus(e, that, callBack) {
 function wxSearchBlur(e, that, callBack) {
     var temData = that.data.wxSearchData;
     temData.value = e.detail.value;
+    console.log("失去焦点后 输入框文本", e.detail.value)
     that.setData({
         wxSearchData: temData
     });

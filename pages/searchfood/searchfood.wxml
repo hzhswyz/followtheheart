@@ -1,0 +1,58 @@
+<!--pages/searchfood/searchfood.wxml-->
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+<wxs module="calculatedistance">
+  var i = 0;
+    var getdistance = function(distance){
+      var result;
+      if(distance>1000)
+        result = (distance/1000).toFixed(1) +" Km";
+      else
+        result = distance.toFixed(0)+" m";
+      return result;
+    }
+    module.exports.getdistance = getdistance;
+  </wxs>
+<view class='container' style='margin-top:{{height}}px'>
+  <block wx:for="{{storearray}}" wx:key="id">
+    <view class='item'>
+      <view class='title'>
+        <view class='storeimg'>
+          <image class='img' src='{{item.imgsrc}}'></image>
+        </view>
+        <view class='storeinfo' hover-class="openstore" bindtap='openstore' data-index='{{index}}'>
+          <view class="nameanddistance">
+            <view class='storename'>{{item.name}}</view>
+            <view class='distance'>距离：{{calculatedistance.getdistance(item.distance)}}</view>
+          </view>
+          <view class='scoreandsalesandper'>
+            <view class='scoreview'>
+              <image src='{{starssrc}}' class='starsimg' mode='aspectFit'></image>
+              <view class='score'>{{item.stars}} 分</view>
+            </view>
+            <view class='sales'>月销量：{{item.sales}} 笔</view>
+            <view class='per'>人均：{{item.consume}} 元</view>
+          </view>
+        </view>
+      </view>
+      <view class='context' >
+        <view class='foodview'>
+          <block wx:for="{{item.foodlist}}" wx:key="foodid">
+            <view class='fooditem' hover-class="openstore" bindtap="openfood">
+              <view class='foodimgview'>
+                <image class='foodimg' src='{{item.foodimg}}'></image>
+              </view>
+              <view class='foodinfo'>
+                <view class='foodname'>{{item.foodname}}</view>
+                <view class='foodpriceview'>
+                  <image class='rmb' src='{{rmbimg}}'></image>
+                  <view class='foodprice'>{{item.foodprice}} 元</view>
+                </view>
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>
+

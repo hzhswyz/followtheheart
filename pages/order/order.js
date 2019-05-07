@@ -33,19 +33,7 @@ Page({
    */
   onLoad: function (options) {
     pageobject = this;
-    wx.getSystemInfo({ 
-      success: (res) => {
-        app.globalData.windowHeightminusttabbar = res.windowHeight
-        console.log("order windowHeightminusttabbar", res.windowHeight)
-      }
-    })
-    this.setData({
-      screenHeight: app.globalData.windowHeightminusttabbar - (app.globalData.height * 3 + 6)
-    })
-    wx.showLoading({
-      title: '正在加载',
-      mask: true
-    })
+    
   },
 
 
@@ -65,7 +53,6 @@ Page({
           }
           else {
             console.log(res.data);
-            
             if (res.data.data.length == 0) {
               wx.showToast({
                 icon: "none",
@@ -124,8 +111,6 @@ Page({
   getdatabyorderid: function () {
 
     userloginJs.userloginprocess().then(function () {
-
-      
       wx.request({
         url: durl + "/order/getorderandstore",
         data: { orderid: orderlistarray[touchsequenceid].id },
@@ -187,7 +172,15 @@ Page({
     });
 
   },
-
+  // 点击评论
+  comment:function (event){
+    isviewdetails = true;
+    console.log("评价：",orderlistarray[event.currentTarget.dataset.index]);
+    let str = JSON.stringify(orderlistarray[event.currentTarget.dataset.index]);
+    wx.navigateTo({
+      url: 'comment/comment?orderform=' + str
+    });
+  },
   // 当距离scroll-view底部距离小于50像素时触发回调
   scrolltolower: function () {
     wx.showLoading({
@@ -202,6 +195,15 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
+    wx.getSystemInfo({
+      success: (res) => {
+        app.globalData.windowHeightminusttabbar = res.windowHeight
+        console.log("order windowHeightminusttabbar", res.windowHeight)
+      }
+    });
+    this.setData({
+      screenHeight: app.globalData.windowHeightminusttabbar - (app.globalData.height * 3 + 6)
+    })
   },
 
   /**
@@ -215,6 +217,11 @@ Page({
       pageobject.setData({
         scrollTop : 0
       });
+
+      wx.showLoading({
+        title: '正在加载',
+        mask: true
+      })
 
       //初始化参数
       orderlistarray = [];

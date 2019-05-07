@@ -14,6 +14,7 @@ var userloginJs = require('../../userlogin.js');
    * 记录所有商店点购的食物
    */
 var store_food_map = app.globalData.store_food_map;
+
 Page({
   /**
    * 页面的初始数据
@@ -38,8 +39,6 @@ Page({
     totalnum = 0;
     totalamount = 0;
     pageobject = this;
-
-
     let storeinfo = JSON.parse(options.storeinfo);
     storeinfo.image = durl + "/static/image/" + storeinfo.id + "image.jpg"
     store_info = storeinfo;
@@ -82,12 +81,25 @@ Page({
         console.log("foodlist:", foodlist);
         //遍历商店的所有商品,与store_food_map中的商品对比,已查看商店内已经加入购物车的商品
         for (var i = 0; i < foodlist.length; i++) {
+
+          if (foodlist[i].material != null)
+            foodlist[i].material = foodlist[i].material.split(",");
           if (store_food_map.has(store_info.id) && store_food_map.get(store_info.id).has(foodlist[i].id)) {
             foodlist[i].num = store_food_map.get(store_info.id).get(foodlist[i].id).num;
             totalnum += foodlist[i].num;
             console.log("totalnum1:" + totalnum)
           }
           foodlist[i].imgsrc = durl + "/static/image/food/food" + foodlist[i].id + ".jpg";
+
+          if (foodlist[i].moreimg != null) {
+            foodlist[i].moreimg = foodlist[i].moreimg.split(",");
+            for (var z = 0; z < foodlist[i].moreimg.length; z++)
+              foodlist[i].moreimg[z] = durl + "/static/image/food/moreimg/" + foodlist[i].moreimg[z] + ".jpg";
+            var length = foodlist[i].moreimg.length;
+            foodlist[i].moreimg.unshift(foodlist[i].imgsrc);
+          } else {
+            foodlist[i].moreimg = [foodlist[i].imgsrc];
+          }
         }
         food_list = foodlist;
         console.log("refresh")
@@ -274,6 +286,18 @@ Page({
       });
       is_showorder = false;
     }
+  },
+  /**
+   * 点击商品查看详情
+   */
+  fooddetail: function (even){
+    app.globalData.food_list = food_list;
+    app.globalData.totalnum = totalnum;
+    console.log("商品索引:",even.currentTarget.dataset.indexid)
+    let str = JSON.stringify(food_list[even.currentTarget.dataset.indexid]);
+    wx.navigateTo({
+      url: 'fooddetail/fooddetail?food=' + str
+    })
   },
   /**
    * 什么也不做

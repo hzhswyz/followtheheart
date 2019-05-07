@@ -20,6 +20,9 @@ var currentpage = 1;
 //经纬度
 var latitude = null;
 var longitude = null;
+var searchtext = "";
+//避免在安卓上点击热门搜索或者搜索历史或者搜索推荐时会触发inputchange函数引起的更改input内容失效
+var flag = false;
 Page({
   data: {
     // wxSearchData:{
@@ -74,7 +77,8 @@ Page({
     });
 
     //初始化的时候渲染wxSearchdata
-    WxSearch.init(pageobject, 50 + app.globalData.height * 2 + 20, ['小炒肉', '肉末茄子', '茄子牛肉', '麻辣串串香', '大盘鸡']);
+    //搜索框高度40+10=50 40为搜索按钮的高度 wxSearch-section中paddingtop=5 paddingbottom=5 共50px
+    WxSearch.init(pageobject, app.globalData.height * 3 + 45, ['小炒肉', '肉末茄子', '茄子牛肉', '麻辣串串香', '大盘鸡']);
     WxSearch.initMindKeys(['小炒肉', '肉末茄子', '茄子牛肉', '麻辣串串香', '大盘鸡']);
 
     //顶端图标对象数组 “bindtapfunction:”=点击回调函数“ “titletext”=图标对应的名称 imgsrc”=图片路径
@@ -123,6 +127,7 @@ Page({
         titlearray: titlearray
       })
     }).catch(function (error) {
+      wx.hideLoading();
       wx.showModal({
         content: error.message,
         confirmText: "重新登陆",
@@ -200,10 +205,9 @@ Page({
           success: function (res) {
             console.log("经度" + res.latitude);
             console.log("纬度" + res.longitude);
-            if (latitude == 0 && longitude==0){
-              reject(new Error("wx.getLocation获取用户位置失败"));
-            }
-            else{
+            if (res.latitude == 0 && res.longitude == 0){
+              reject(new Error("获取位置失败" + "经度" + res.latitude + "纬度" + res.longitude));
+            }else{
               latitude = res.latitude;
               longitude = res.longitude;
               resolve();
@@ -211,7 +215,7 @@ Page({
           },
           fail: function (res) {
             console.log("getLocationpromise", res);
-            reject(new Error("wx.getLocation获取用户位置失败"));
+            reject(new Error("获取用户位置失败" + "经度" + latitude + "纬度" + longitude));
           }
         });
       });
@@ -229,7 +233,13 @@ Page({
           success: function (res) {
             console.log("经纬度转地址: ", res);
             var str = "无法定位";
-            str = res.result.address_component.street;
+            if (res.result.address_component.street != "")
+              str = res.result.address_component.street
+            else
+              if (res.result.address_reference.town.title != "")
+                str = res.result.address_reference.town.title;
+              else
+                str = res.result.formatted_addresses.recommend
             if (str.length >= 6) {
               str = str.substring(0, 4) + "‧‧‧";
             }
@@ -257,18 +267,28 @@ Page({
         wx.request({
           url: durl + "/store/getrecommendationstore?currentpage=" + currentpage,
           header: { Cookie: "JSESSIONID=" + app.globalData.session },
-          success: function success(res) {
+          success: function (res) {
+            console.log("res:",res);
             if ('Set-Cookie' in res.header) {
               console.log("服务器返回的JSESSIONID：", res.header["Set-Cookie"].split(";")[0].split("=")[1]);
               app.globalData.session = res.header["Set-Cookie"].split(";")[0].split("=")[1];
             }
-            var storelist = res.data.data;
-            console.log("商店列表：", storelist);
-            if (storelist.length == 0) {
-              reject(new Error("no data"));
+            if (res.data.status == 200) {
+              var storelist = res.data.data;
+              for (var i = 0; i < storelist.length; i++) {
+                storelist[i].imgsrc = durl + "/static/image/recommendimg" + storelist[i].id + ".jpg";
+                storelist[i].type = storelist[i].type.split(",");
+              }
+              console.log("新获取的商店列表：", storelist);
+              if (storelist.length == 0) {
+                reject(new Error("no data"));
+              }
+              store_list = store_list.concat(storelist);
+              console.log("当前商店列表：", store_list);
+              resolve();
+            }else{
+              reject(new Error("获取附件精选商户列表失败"));
             }
-            store_list = store_list.concat(storelist);
-            resolve();
           },
           fail: function (res) {
             reject(new Error("获取附件精选商户列表失败"));
@@ -278,18 +298,10 @@ Page({
       return getstorelistpromise;
     }
 
-    function sleep(d) {
-      for (var t = Date.now(); Date.now() - t <= d;);
-    }
-
     //利用商店经纬度信息与用户经纬度信息计算双方距离
     function getstoredistancetpromise() {
       var getdistancetpromise = new Promise(function (resolve, reject) {
         for (var i = sumindex; i < store_list.length; i++) {
-          store_list[i].imgsrc = durl + "/static/image/recommendimg" + store_list[i].id + ".jpg";
-          store_list[i].type = store_list[i].type.split(",");
-          //避免key到达请求上限
-          //sleep(300);
           qqmapsdk.calculateDistance({
             //num避免success中store_list[i]产生闭包
             num: i,
@@ -310,6 +322,7 @@ Page({
               }
             },
             fail: function (res) {
+              sumindex = this.num;
               console.log(res);
               reject(new Error("请求达到上限"));
             }
@@ -369,6 +382,7 @@ Page({
           return;
         }
         console.log(mes)
+        wx.hideLoading();
         wx.showModal({
           content: mes.message,
           confirmText: "重新加载",
@@ -414,32 +428,53 @@ Page({
 
    wxSearchFn: function (e) {
     console.log("wxSearchFn");
+
     var that = this
     WxSearch.wxSearchAddHisKey(that);
+
+    searchtext = this.data.wxSearchData.value;
+    console.log("搜索内容:", searchtext);
+    if (searchtext == null || searchtext == "" || searchtext == undefined)
+      return;
+
+    wx.navigateTo({
+      url: '/pages/searchfood/searchfood?keyword=' + searchtext,
+    })
   },
 
   wxSearchInput: function (e) {
-    console.log("wxSearchInput");
+    console.log("wxSearchInput：", e);
     var that = this
-    WxSearch.wxSearchInput(e, that);
+    console.log(flag)
+    if (!flag)
+      WxSearch.wxSearchInput(e, that);
+    console.log("wxSearchInput：", this.data.wxSearchData.value);
+  },
+
+  showsearch:function(){
+    var temData = this.data.wxSearchData;
+    temData.isShow = true;
+    this.setData({
+      searchdisplay: true,
+      wxSearchData: temData
+    });
   },
 
   wxSearchFocus: function (e) {
-    console.log("wxSearchFocus");
-    this.setData({
-      searchdisplay: true
-    });
+    flag = false;
+    console.log("wxSearchFocus","获取焦点");
     var that = this
     WxSearch.wxSearchFocus(e, that);
   },
 
   wxSearchBlur: function (e) {
-    console.log("wxSearchBlur");
+    console.log("wxSearchBlur", "失去焦点");
     var that = this
-    WxSearch.wxSearchBlur(e, that);
+    //WxSearch.wxSearchBlur(e, that);
   },
 
   wxSearchKeyTap: function (e) {
+    flag = true;
     console.log("wxSearchKeyTap");
     var that = this
     WxSearch.wxSearchKeyTap(e, that);
@@ -459,6 +494,7 @@ Page({
 
   wxSearchTap: function (e) {
     console.log("wxSearchTap");
+    //隐藏搜索界面
     this.setData({
       searchdisplay: false
     })
