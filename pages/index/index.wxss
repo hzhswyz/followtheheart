@@ -1,7 +1,9 @@
 /**index.wxss**/
-
 @import "/wxSearch/wxSearch.wxss";
-
+.container{
+  display: flex;
+  flex-direction: column;
+}
 .userinfo {
   display: none;
   flex-direction: column;

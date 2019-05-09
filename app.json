@@ -16,7 +16,8 @@
     "pages/order/storeorderdetails",
     "pages/store/fooddetail/fooddetail",
     "pages/order/comment/comment",
-    "pages/searchfood/searchfood"
+    "pages/searchfood/searchfood",
+    "pages/registerbusiness/registerbusiness"
   ],
   "tabBar": {
     "selectedColor": "#11cd6e",

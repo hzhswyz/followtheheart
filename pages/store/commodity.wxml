@@ -31,7 +31,7 @@
 </view>
 <scroll-view class='scrollview' scroll-y="true" style='height:{{screenHeight}}px' scroll-top="{{scrollTop}}">
   <block wx:for="{{foodlist}}" wx:if="{{item.type==typeindex}}" wx:key="{{index}}" >
-    <view class='foodview'>
+    <view class='foodview' wx:if="{{item.issale==1}}">
       <image src='{{item.imgsrc}}' mode='scaleToFill' class='foodimage' data-indexid='{{index}}' style="height:{{showheight}}px;" 
       binderror="foodimgloadfail" bindtap='fooddetail'></image>
       <view class='foodnameview'>

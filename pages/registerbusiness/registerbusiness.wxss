@@ -1,0 +1,80 @@
+/* pages/registerbusiness/registerbusiness.wxss */
+input{
+  padding:5px;
+  max-width: 60%;
+  min-width: 60%;
+  border-bottom: 1px solid black;
+}
+.container{
+  display: flex;
+  flex-direction: column;
+}
+.form{
+  width: 95%;
+}
+.storeinfo{
+  display: flex;
+  flex-direction: column;
+}
+.recommendview{
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  margin: 20px 0px 20px 0px;
+}
+.recommendimg{
+  width: 500rpx;
+  height: 300rpx;
+  border-radius: 5px;
+}
+.storeimgandname{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.storeimg{
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  margin-right: 20px;
+  font-size: 14px;
+}
+.img{
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 5px;
+}
+.storename{
+  display: flex;
+  flex-direction: row; 
+  align-items: center;
+}
+.storenotic{
+  display: flex;
+  flex-direction: row; 
+  align-items: center;
+  margin-bottom: 20px;
+}
+.textarea{
+  padding: 5px;
+  width: 70%;
+  height: 60px;
+  border: 1px solid black;
+}
+.storefoodtype{
+  display: flex;
+  flex-direction: row; 
+  align-items: center;
+  margin-bottom: 20px;
+}
+.storetype{
+  display: flex;
+  flex-direction: row; 
+  margin-bottom: 20px;
+}
+.radio{
+  display: flex;
+  flex-direction: row; 
+  justify-content: space-evenly;
+}

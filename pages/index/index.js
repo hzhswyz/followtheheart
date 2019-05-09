@@ -23,6 +23,8 @@ var longitude = null;
 var searchtext = "";
 //避免在安卓上点击热门搜索或者搜索历史或者搜索推荐时会触发inputchange函数引起的更改input内容失效
 var flag = false;
+//不需要获取新数据
+var nogetdata = false;
 Page({
   data: {
     // wxSearchData:{
@@ -77,7 +79,7 @@ Page({
     });
 
     //初始化的时候渲染wxSearchdata
-    //搜索框高度40+10=50 40为搜索按钮的高度 wxSearch-section中paddingtop=5 paddingbottom=5 共50px
+    //搜索框高度35+10=45 35为搜索按钮的高度 wxSearch-section中paddingtop=5 paddingbottom=5 共45px
     WxSearch.init(pageobject, app.globalData.height * 3 + 45, ['小炒肉', '肉末茄子', '茄子牛肉', '麻辣串串香', '大盘鸡']);
     WxSearch.initMindKeys(['小炒肉', '肉末茄子', '茄子牛肉', '麻辣串串香', '大盘鸡']);
 
@@ -98,7 +100,13 @@ Page({
       bindtapfunction: 'clickactivity',
       imgsrc: "/pages/static/img/indexpage/titlecontent4.png",
       titletext: "活动"
-    }];
+    },
+    {
+      bindtapfunction: 'clickopenstore',
+      imgsrc: "/pages/static/img/indexpage/titlecontent2.png",
+      titletext: "开店"
+    }
+    ];
 
     pageobject.setData({
       titlearray: titlearray
@@ -318,11 +326,13 @@ Page({
               console.log("store_list[" + this.num + "] 距离用户：" + res.result.elements[0].distance + "m")
               store_list[this.num].distance = res.result.elements[0].distance;
               if (sumindex == store_list.length) {
+                nogetdata = false;
                 resolve();
               }
             },
             fail: function (res) {
               sumindex = this.num;
+              nogetdata = true;
               console.log(res);
               reject(new Error("请求达到上限"));
             }
@@ -354,7 +364,10 @@ Page({
           );
       }else{
         console.log("不需要获取经纬度")
-        return getstorespromise();
+        if(!nogetdata)
+          return getstorespromise();
+        else
+          return positionpromise();
       }
     }
 
@@ -436,7 +449,9 @@ Page({
     console.log("搜索内容:", searchtext);
     if (searchtext == null || searchtext == "" || searchtext == undefined)
       return;
-
+     this.setData({
+       searchdisplay: false,
+     });
     wx.navigateTo({
       url: '/pages/searchfood/searchfood?keyword=' + searchtext,
     })
@@ -511,7 +526,6 @@ Page({
       url: '../store/commodity?storeinfo='+str
     })
   },
-
 
   /**
      * 生命周期函数--监听页面显示

@@ -10,7 +10,6 @@ Page({
     nvabarData: {
       showCapsule: 1, //是否显示左上角图标
       title: '活动', //导航栏 中间的标题
-      navbackground: "white"
     },
     // 此页面 页面内容距最顶部的距离
     height: app.globalData.height * 3,
@@ -22,7 +21,9 @@ Page({
       { id: 1, unique: 'unique_1' },
       { id: 0, unique: 'unique_0' },
     ],
-    numberArray: [1, 2, 3, 4]
+    numberArray: [1, 2, 3, 4],
+    // 此页面 页面内容距最顶部的距离
+    height: app.globalData.height * 3
   },
   switch: function (e) {
     /*const length = this.data.objectArray.length

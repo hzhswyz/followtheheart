@@ -1,13 +1,12 @@
 <!--index.wxml-->
 <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
-<view class="container" >
-
+<view class="container" style='margin-top: {{height}}px'>
 <import src="/wxSearch/wxSearch.wxml"/>
-  <view class="wxSearch-section" style='margin-top: {{height}}px'>
+  <view class="wxSearch-section" >
     <view class="wxSearch-pancel">
       <view  class='wxposition' hidden='{{searchdisplay}}'>
         <image src='{{positioncomplete?"/pages/static/img/indexpage/address.png":"/pages/static/img/indexpage/position.gif"}}' 
-        style="width:18px;margin-right:2px;" mode='widthFix'></image>{{position}}
+        style="width:18px;height:18px;margin-right:2px;" mode='widthFix'></image>{{position}}
       </view>
       <view class='wxSearch-input-view'>
         <input bindinput="wxSearchInput"  value="{{wxSearchData.value}}" bindblur="wxSearchBlur"
@@ -18,7 +17,7 @@
   </view>
 <template is="wxSearch" data="{{wxSearchData}}"/>
   
-<titlebar titlearray="{{titlearray}}" style="width:100%;margin-top: {{wxSearchData.view.barHeight}}px"></titlebar>
+<titlebar titlearray="{{titlearray}}" style="width:100%;margin-top: {{45}}px"></titlebar>
   
 <rotation swiperarray="{{swiperarray}}" style="width:100%;" bind:clickswiper="clickswiper"></rotation>
 

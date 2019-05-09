@@ -47,6 +47,12 @@ Component({
       wx.navigateTo({
         url: '../nearbyshop/nearbyshop'
       })
-    }
+    },
+    //打开注册商店
+    clickopenstore: function (event) {
+      wx.navigateTo({
+        url: '../registerbusiness/registerbusiness'
+      })
+    },
   }
 })

@@ -1,0 +1,52 @@
+<!--pages/registerbusiness/registerbusiness.wxml-->
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+<view class='container' style='margin-top:{{height}}px'>
+  <form class='form'>
+   <view class='storeinfo'>
+    <view class='recommendview'>
+      <image class='recommendimg' src='{{x}}'></image>
+      <text>商店大图</text>
+    </view>
+    <view class='storeimgandname'>
+      <view class='storeimg'>
+        <image class='img' src='{{z}}'></image>
+        <text>商店头像</text>
+      </view>
+      <view class='storename'>
+        <view>商店名：</view><input class='nameinput' name="name" placeholder='输入商店名称'></input>
+      </view>
+    </view>
+    <view class='storenotic'>
+      <view>商店公告：</view><textarea class='textarea' name="notic" placeholder='输入商店公告'></textarea>
+    </view>
+    <view class='storefoodtype'>
+      <view>食物类型：</view><input class='foodtypeinput' name="type" placeholder='输入商品类型'></input>
+    </view>
+    <view class='storetype'>
+    商店类型：<picker name="restypeid" value='{{store.restypeid}}' range='{{restype}}'><text>{{restypetext}}</text></picker>
+    </view>
+    <view class="radio">
+      <view class='reserve'>
+        <label  data-index='{{index}}' bindtap='reserveradiobindchange'>
+          <radio></radio>
+          接受预定
+        </label>
+      </view>
+      <view class='business'>
+        <label  data-index='{{index}}' bindtap='reserveradiobindchange'>
+          <radio></radio>
+          是否营业
+        </label>
+      </view>
+    </view>
+    <view class="time">
+      <view>
+        <picker name="businessHoursBegin"><text>{{store.businessHoursBegin}}</text></picker>
+      </view>
+      <view>
+        <picker name="businessHoursEnd"><text>{{store.businessHoursEnd}}</text></picker>
+      </view>
+    </view>
+   </view>
+  </form>
+</view>
