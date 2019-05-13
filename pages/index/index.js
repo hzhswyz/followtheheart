@@ -6,7 +6,7 @@ var QQMapWX = require('../lib/map/qqmap-wx-jssdk.js');
 var qqmapsdk;
 var WxSearch = require('../../wxSearch/wxSearch.js');
 var userloginJs = require('../../userlogin.js');
-var position = "定位中";
+
 //获取的商店列表
 var store_list = [];
 var search_display= false;
@@ -17,9 +17,7 @@ var pageobject;
 var titlearray;
 //当前页
 var currentpage = 1;
-//经纬度
-var latitude = null;
-var longitude = null;
+
 var searchtext = "";
 //避免在安卓上点击热门搜索或者搜索历史或者搜索推荐时会触发inputchange函数引起的更改input内容失效
 var flag = false;
@@ -33,7 +31,7 @@ Page({
     //   }
     // }
     positioncomplete:false,
-    position:position,
+    position: app.globalData.position,
     nvabarData: {
       showCapsule: 0, //是否显示左上角图标
       title: '随心菜单', //导航栏 中间的标题
@@ -213,17 +211,19 @@ Page({
           success: function (res) {
             console.log("经度" + res.latitude);
             console.log("纬度" + res.longitude);
+            //res.latitude = 0 
+            //res.longitude = 0
             if (res.latitude == 0 && res.longitude == 0){
-              reject(new Error("获取位置失败" + "经度" + res.latitude + "纬度" + res.longitude));
+              reject(new Error("Location acquisition failed"));
             }else{
-              latitude = res.latitude;
-              longitude = res.longitude;
+              app.globalData.latitude = res.latitude;
+              app.globalData.longitude = res.longitude;
               resolve();
             }
           },
           fail: function (res) {
             console.log("getLocationpromise", res);
-            reject(new Error("获取用户位置失败" + "经度" + latitude + "纬度" + longitude));
+            reject(new Error("Location acquisition failed"));
           }
         });
       });
@@ -235,8 +235,8 @@ Page({
       var getuseraddresspromise = new Promise(function (resolve, reject) {
         qqmapsdk.reverseGeocoder({
           location: {
-            latitude: latitude,
-            longitude: longitude
+            latitude: app.globalData.latitude,
+            longitude: app.globalData.longitude
           },
           success: function (res) {
             console.log("经纬度转地址: ", res);
@@ -249,13 +249,13 @@ Page({
               else
                 str = res.result.formatted_addresses.recommend
             if (str.length >= 6) {
-              str = str.substring(0, 4) + "‧‧‧";
+              str = str.substring(0, 4) + "…";
             }
-            position = str;
+            app.globalData.position = str; 
             console.log("经纬度转街道地址成功：" + str);
             pageobject.setData({
               positioncomplete: true,
-              position: position
+              position: app.globalData.position
             });
             resolve();
           },
@@ -314,8 +314,8 @@ Page({
             //num避免success中store_list[i]产生闭包
             num: i,
             from: {
-              latitude: latitude,
-              longitude: longitude
+              latitude: app.globalData.latitude,
+              longitude: app.globalData.longitude
             },
             to: [{
               latitude: store_list[i].storeaddress.latitude,
@@ -343,7 +343,7 @@ Page({
     }
 
     function needGetLatitudeAndLongitude(){
-      if (latitude == null || longitude == null) {
+      if (app.globalData.latitude == null || app.globalData.longitude == null) {
         console.log("需要获取经纬度")
         return positionpromise()
           .catch(function () {
@@ -364,17 +364,21 @@ Page({
           );
       }else{
         console.log("不需要获取经纬度")
-        if(!nogetdata)
+        if(!nogetdata){
+          console.log("需要获取数据")
           return getstorespromise();
-        else
+        }
+        else{
+          console.log("不需要获取数据")
           return positionpromise();
+        }
       }
     }
 
     needGetLatitudeAndLongitude()
     .then(function () {
         pageobject.setData({
-          position: position
+          position: app.globalData.position
         })
       })
       .then(
@@ -394,28 +398,73 @@ Page({
           })
           return;
         }
-        console.log(mes)
-        wx.hideLoading();
-        wx.showModal({
-          content: mes.message,
-          confirmText: "重新加载",
-          showCancel: false,
-          success(res) {
-            if (res.confirm) {
-              console.log('用户点击确定')
-              pageobject.getData();
-            } else if (res.cancel) {
+        if (mes.message == "Location acquisition failed"){
+          wx.hideLoading();
+          wx.showModal({
+            content: "无法获取位置",
+            confirmText: "选择位置",
+            showCancel: false,
+            success(res) {
+              if (res.confirm) {
+
+                console.log('用户点击确定');
+                pageobject.choseposition();
+
+              } else if (res.cancel) {
+                console.log('用户点击取消')
+              }
+            },
+            fail(res) {
               console.log('用户点击取消')
             }
-          },
-          fail(res) {
-            console.log('用户点击取消')
-          }
-        })
+          })
+        }else{
+          console.log(mes)
+          wx.hideLoading();
+          wx.showModal({
+            content: mes.message,
+            confirmText: "重新加载",
+            showCancel: false,
+            success(res) {
+              if (res.confirm) {
+                console.log('用户点击确定')
+                pageobject.getData();
+              } else if (res.cancel) {
+                console.log('用户点击取消')
+              }
+            },
+            fail(res) {
+              console.log('用户点击取消')
+            }
+          })
+        }
       });
 
   },
-
+  choseposition:function(){
+    wx.chooseLocation({
+      success: function (result) {
+        console.log(result)
+        if (result.name!=""){
+          var str = result.name;
+          if (str.length >= 6) {
+            str = str.substring(0, 4) + "…";
+          }
+          app.globalData.position = str;
+          pageobject.setData({
+            positioncomplete: true,
+            position: app.globalData.position
+          });
+          app.globalData.latitude = result.latitude;
+          app.globalData.longitude = result.longitude;
+          store_list = [];
+          sumindex = 0;
+          currentpage = 1;
+          pageobject.getData();
+        }
+      }
+    });
+  },
   //用户点击分享
   onShareAppMessage(Object){
     var url = "/pages/index/share.png";

@@ -1,0 +1,27 @@
+<!--pages/mappage/mappage.wxml-->
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+<view class='container' style='margin-top:{{height}}px'>
+  <view class='mapview'>
+    <map
+      id="map"
+      longitude="113.324520"
+      latitude="23.099994"
+      scale="{{scale}}"
+      controls="{{controls}}"
+      bindcontroltap="controltap"
+      markers="{{markers}}"
+      bindmarkertap="markertap"
+      bindregionchange="regionchange"
+      show-location
+      style="width: 100%; height: 300px;"
+      subkey="OKWBZ-H3RRF-D76JH-JE5BA-U5FQ5-NXBTH">
+
+      <cover-view>
+        <cover-image src="/pages/static/img/indexpage/addmap.png" class='addmap' bindtap="onaddmap"/>
+      </cover-view>
+      <cover-view>
+        <cover-image src="/pages/static/img/indexpage/reducemap.png" class='reducemap' bindtap="onreducemap"/>
+      </cover-view>
+      </map>
+  </view>
+</view>

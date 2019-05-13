@@ -4,7 +4,7 @@
 <import src="/wxSearch/wxSearch.wxml"/>
   <view class="wxSearch-section" >
     <view class="wxSearch-pancel">
-      <view  class='wxposition' hidden='{{searchdisplay}}'>
+      <view  class='wxposition' hidden='{{searchdisplay}}' bindtap='choseposition'>
         <image src='{{positioncomplete?"/pages/static/img/indexpage/address.png":"/pages/static/img/indexpage/position.gif"}}' 
         style="width:18px;height:18px;margin-right:2px;" mode='widthFix'></image>{{position}}
       </view>
